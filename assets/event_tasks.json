@@ -1,0 +1,8626 @@
+{
+ "fetchedAt": "2026-09-27T15:26:43.593Z",
+ "quests": [
+  {
+   "enName": "A Familiar Face...",
+   "wiki": "A_Familiar_Face...",
+   "trader": "Skier",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "All-Inclusive Support"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Extract from Lighthouse through the Armored Train while wearing a Kirasa-N or NFM THOR CRV body armor",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "A Key to Salvation",
+   "wiki": "A_Key_to_Salvation",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "A Key to Salvation",
+    "date": "24 June 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over a TerraGroup Labs access keycard",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over a TerraGroup Labs keycard (Violet)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over a TerraGroup Labs keycard (Yellow)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over a TerraGroup Labs keycard (Red)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over a TerraGroup Labs keycard (Green)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over a TerraGroup Labs keycard (Blue)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over a TerraGroup Labs keycard (Black)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "A Kind Snow Maiden",
+   "wiki": "A_Kind_Snow_Maiden",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [
+    "Home Comfort"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Hide a Golden neck chain under the Christmas tree on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Hide a Horse figurine under the Christmas tree on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Hide a Chainlet under the Christmas tree on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Hide an Antique teapot under the Christmas tree on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Hide an Antique vase under the Christmas tree on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hide a Cat figurine under the Christmas tree on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "A New Hope",
+   "wiki": "A_New_Hope",
+   "trader": "Peacekeeper",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Obstruction Destruction"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain The Unheard's laptop at the smugglers' base on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hand over the laptop",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "A Small Celebration",
+   "wiki": "A_Small_Celebration",
+   "trader": "Ragman",
+   "maps": [
+    "customs",
+    "interchange",
+    "lighthouse",
+    "reserve",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Knuckle Sandwich"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Launch a firework in the appropriate spot",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eat some Olivier salad",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Drink some vodka",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Accept Delivery",
+   "wiki": "Accept_Delivery",
+   "trader": "Peacekeeper",
+   "maps": [],
+   "requires": [
+    "Bulldogs Under The Rug"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Smugglers 2026",
+    "date": "12 March 2026"
+   },
+   "objectives": [
+    {
+     "description": "Obtain and hand over the locked smugglers' case",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Obtain and hand over the key to the locked case",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Action test",
+   "wiki": "Action_test",
+   "trader": "Fence",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": null,
+   "objectives": [
+    {
+     "description": "Eliminate 3 PMC operatives in a single raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Adaptive Diplomacy",
+   "wiki": "Adaptive_Diplomacy",
+   "trader": "Ref",
+   "maps": [
+    "customs",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Guardian of Nature"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Tarkov Hospitality",
+    "date": "5 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 PMC operatives at Ref's camps on Woods, Customs, or Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods",
+      "customs",
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Failure condition: Do not kill Ref's cleanup crew",
+     "optional": false,
+     "sub": true,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Afterparty",
+   "wiki": "Afterparty",
+   "trader": "Prapor",
+   "maps": [
+    "customs",
+    "reserve",
+    "interchange",
+    "woods",
+    "shoreline",
+    "factory",
+    "streets-of-tarkov",
+    "lighthouse"
+   ],
+   "requires": [
+    "Debut"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Afterparty",
+    "date": "8 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate and eliminate Reshala",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Glukhar",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Killa",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Shturman",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Sanitar",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Tagilla",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Kaban",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Knight",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Big Pipe",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Birdeye",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "All-Inclusive Support",
+   "wiki": "All-Inclusive_Support",
+   "trader": "Prapor",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Number Temporarily Unavailable"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 15 targets on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Launch a red signal flare at the abandoned mountain lake cabin on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Use the transit from Lighthouse to Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse",
+      "reserve"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Alloy",
+   "wiki": "Alloy",
+   "trader": "Peacekeeper",
+   "maps": [
+    "shoreline",
+    "lighthouse"
+   ],
+   "requires": [
+    "Stealing the Stolen"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Full Speed Ahead",
+    "date": "15 May 2026"
+   },
+   "objectives": [
+    {
+     "description": "Plant a WI-FI Camera at the weather station on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Transit from Shoreline to Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline",
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Plant a WI-FI Camera at the waterside cottage on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "An Alternative",
+   "wiki": "An_Alternative",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [
+    "Secret Benefactor"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Art of Explosion",
+    "date": "29 April 2025"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 5 found in raid dry food type items",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 5 found in raid clean water type items",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Atonement",
+   "wiki": "Atonement",
+   "trader": "Skier",
+   "maps": [
+    "customs",
+    "shoreline"
+   ],
+   "requires": [
+    "Trade Embargo",
+    "Trade Embargo - Last Chance"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 Scavs on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Reach the roof of the three-story dorm on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate 5 Scavs on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Reach the east wing of the Health Resort on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Backup Plan",
+   "wiki": "Backup_Plan",
+   "trader": "Ref",
+   "maps": [
+    "woods",
+    "customs"
+   ],
+   "requires": [
+    "Casus belli"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Casus belli",
+    "date": "9 April 2026"
+   },
+   "objectives": [
+    {
+     "description": "Stash the Grizzly medkit in the large barn at the old sawmill on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Transit from Woods to Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods",
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate any 6 targets on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Survive and extract from Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Bad Feeling",
+   "wiki": "Bad_Feeling",
+   "trader": "Jaeger",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Bad Feeling",
+    "date": "26 July 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 57 Raiders in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Eliminate 23 PMC operatives in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Bad Santa",
+   "wiki": "Bad_Santa",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "Disrupting the Party"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 celebrating enemies while wearing the specified equipment on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Eliminate 5 celebrating enemies while wearing the specified equipment on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Eliminate 5 celebrating enemies while wearing the specified equipment on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Eliminate 5 celebrating enemies while wearing the specified equipment on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate 5 celebrating enemies while wearing the specified equipment on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Eliminate 5 celebrating enemies while wearing the specified equipment on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate 5 celebrating enemies while wearing the specified equipment on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    },
+    {
+     "description": "Eliminate 5 celebrating enemies while wearing the specified equipment on The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Before the Rain",
+   "wiki": "Before_the_Rain",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "Cream of the Crop"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Mortar Strike",
+    "date": "26 September 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 25 found in raid Radar station spare parts",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 15 found in raid GARY ZONT portable electronic warfare devices",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Bloodhounds",
+   "wiki": "Bloodhounds_(quest)",
+   "trader": "Jaeger",
+   "maps": [
+    "customs",
+    "woods",
+    "shoreline"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Bloodhounds Reveal",
+    "date": "9 June 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 30 Bloodhounds",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Break Through",
+   "wiki": "Break_Through",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "The Tarkov Mystery"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the decrypted flash drive",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Breathing Room",
+   "wiki": "Breathing_Room",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Friend from Norvinsk - Part 5"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Modify an IWI UZI to comply with the given specifications",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Bucket of Nothing",
+   "wiki": "Bucket_of_Nothing",
+   "trader": "Prapor",
+   "maps": [
+    "customs"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "April Fools",
+    "date": "1 April 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate and neutralize Reshala while using a Toy gun",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 3 Reshala's guards while using a Toy gun",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Bulldogs Under The Rug",
+   "wiki": "Bulldogs_Under_The_Rug",
+   "trader": "Peacekeeper",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Fishing Gear"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Smugglers 2026",
+    "date": "12 March 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate a smuggler on any location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate the smuggler's camp on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Obtain the evidence of the smugglers' ties to Edward",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Burn It Down",
+   "wiki": "Burn_It_Down",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [
+    "Dirty Blood"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 50 infected on any location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Callsign Malachite",
+   "wiki": "Callsign_Malachite",
+   "trader": "Prapor",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Lose the Tail"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the BEAR operative's personnel file on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Read S.I. Tretyakov's personnel file",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    },
+    {
+     "description": "Hand over the found intel",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Casus belli",
+   "wiki": "Casus_belli",
+   "trader": "Ref",
+   "maps": [
+    "customs",
+    "interchange",
+    "lighthouse",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Casus belli",
+    "date": "9 April 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 pillagers",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 3 found in raid painted CQCM masks",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Caught Red-Handed",
+   "wiki": "Caught_Red-Handed",
+   "trader": "Peacekeeper",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "What’s Your Evidence?"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Arms Race",
+    "date": "16 July 2024"
+   },
+   "objectives": [
+    {
+     "description": "Install a WI-FI Camera to watch the first water treatment plant building entrance on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Install a WI-FI Camera to watch the second water treatment plant building entrance on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Install a WI-FI Camera to watch the third water treatment plant building entrance on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Ceasefire - Information",
+   "wiki": "Ceasefire_-_Information",
+   "trader": "Fence",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Radio Club",
+    "Liaison"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain Skier and Peacekeeper correspondence in the village on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hand over the letter",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Ceasefire - Part 2",
+   "wiki": "Ceasefire_-_Part_2",
+   "trader": "Fence",
+   "maps": [
+    "customs",
+    "shoreline"
+   ],
+   "requires": [
+    "Ceasefire - Information"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 5 targets while using an M4A1, UNTAR helmet and armor on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate any 5 targets while using an AK-74N, Kora-Kulon DFL body armor and 6B47 helmet on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Cheer Up",
+   "wiki": "Cheer_Up",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "Burning Rubber"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Christmas Tree level 1",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Chilly",
+   "wiki": "Chilly",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [
+    "Acquaintance"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 10 targets while suffering from the Frostbite effect",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Chop the Thieving Hand",
+   "wiki": "Chop_the_Thieving_Hand",
+   "trader": "Peacekeeper",
+   "maps": [
+    "interchange",
+    "shoreline",
+    "factory",
+    "woods",
+    "customs",
+    "reserve",
+    "lighthouse",
+    "streets-of-tarkov",
+    "ground-zero"
+   ],
+   "requires": [
+    "That’s a Great Plan, Walter"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Smugglers 2024",
+    "date": "6 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 25 \"Smugglers\"",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Christmas Dinner",
+   "wiki": "Christmas_Dinner",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "Shooting Cans"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 5 Salty Dog beef sausage",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 5 Can of green peas",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 5 Jar of DevilDog mayo",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 1 Bottle of Tarkovskaya vodka",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 1 Bottle of Dan Jackiel whiskey",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 3 Jar of pickles",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Clear Conscience",
+   "wiki": "Clear_Conscience",
+   "trader": "Jaeger",
+   "maps": [
+    "lighthouse",
+    "shoreline",
+    "woods",
+    "customs",
+    "factory",
+    "the-lab"
+   ],
+   "requires": [
+    "Forgotten Oaths"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Spread the vaccine on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Clearing the Way",
+   "wiki": "Clearing_the_Way",
+   "trader": "Skier",
+   "maps": [
+    "customs"
+   ],
+   "requires": [
+    "Missing in Action"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 20 targets on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Cocktail Tasting",
+   "wiki": "Cocktail_Tasting",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Hardcore Mode",
+    "date": "7 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 20 PMC operatives while under the influence of the \"Obdolbos\" cocktail",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Cold Start",
+   "wiki": "Cold_Start",
+   "trader": "BTR Driver",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 4 Fuel conditioners to the BTR Driver",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Come by the Fire",
+   "wiki": "Come_by_the_Fire",
+   "trader": "Skier",
+   "maps": [
+    "woods"
+   ],
+   "requires": [
+    "Clearing the Way"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Locate and mark the first spot from Skier's route with an MS2000 Marker",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and mark the second spot from Skier's route with an MS2000 Marker",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and mark the third spot from Skier's route with an MS2000 Marker",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and mark the fourth spot from Skier's route with an MS2000 Marker",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate any 5 targets while wearing a Pompon hat on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Conservation Area",
+   "wiki": "Conservation_Area",
+   "trader": "Jaeger",
+   "maps": [
+    "woods"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 40 infected on night-time Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Contagious Beast",
+   "wiki": "Contagious_Beast",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [
+    "Darkest Hour Is Just Before Dawn"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and neutralize infected Tagilla",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Cream of the Crop",
+   "wiki": "Cream_of_the_Crop",
+   "trader": "Prapor",
+   "maps": [
+    "shoreline",
+    "lighthouse"
+   ],
+   "requires": [
+    "Provide Cover"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Mortar Strike",
+    "date": "26 September 2024"
+   },
+   "objectives": [
+    {
+     "description": "Find the KOSA UAV electronic jamming device in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Use the transit from Shoreline to Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline",
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Stash the KOSA device on the second floor of the yacht club cottage on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Customer Communication",
+   "wiki": "Customer_Communication",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Gun Connoisseur"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Supply and Demand",
+    "date": "2 August 2024"
+   },
+   "objectives": [
+    {
+     "description": "Find 1 Military cable in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Find 2 Working LCDs in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Find 2 Power cords in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 1 Military cable to Mechanic",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 2 Working LCDs to Mechanic",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 2 Power cords to Mechanic",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Cut Down to the Root",
+   "wiki": "Cut_Down_to_the_Root",
+   "trader": "Jaeger",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Callsign Malachite"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 15 Rogues on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Dark Times",
+   "wiki": "Dark_Times",
+   "trader": "Fence",
+   "maps": [
+    "factory"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Dark Times",
+    "date": "16 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 30 targets while using a TOZ-106 on night-time Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Darkest Hour Is Just Before Dawn",
+   "wiki": "Darkest_Hour_Is_Just_Before_Dawn",
+   "trader": "Jaeger",
+   "maps": [
+    "ground-zero",
+    "streets-of-tarkov",
+    "the-lab"
+   ],
+   "requires": [
+    "Sample IV - A New Hope"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 60 infected on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    },
+    {
+     "description": "Eliminate 60 infected on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Eliminate 60 infected in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Decryption Hurdles - Part 1",
+   "wiki": "Decryption_Hurdles_-_Part_1",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Break Through"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the encrypted flash drive",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Find 3 PC CPUs in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the 3 PC CPUs",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Find 3 RAM stick in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the 3 RAM stick",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Find 2 SSD drives in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the 2 SSD drives",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Decryption Hurdles - Part 2",
+   "wiki": "Decryption_Hurdles_-_Part_2",
+   "trader": "Mechanic",
+   "maps": [
+    "reserve"
+   ],
+   "requires": [
+    "Decryption Hurdles - Part 1"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Stash a Military gyrotachometer at the designated place on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Launch a signal flare at the roof of the radar station on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Decryption Hurdles - Part 3",
+   "wiki": "Decryption_Hurdles_-_Part_3",
+   "trader": "Mechanic",
+   "maps": [
+    "customs"
+   ],
+   "requires": [
+    "Decryption Hurdles - Part 2"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 10 Scavs on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Ding-Ding-Ding",
+   "wiki": "Ding-Ding-Ding",
+   "trader": "Lightkeeper",
+   "maps": [
+    "customs",
+    "shoreline"
+   ],
+   "requires": [
+    "Atonement"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Sell any 5 weapons to Skier",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and obtain The Unheard's phone on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Hand over the phone",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Sell any 5 weapons to Peacekeeper",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and obtain The Unheard's laptop on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hand over the laptop",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Dirty Blood",
+   "wiki": "Dirty_Blood",
+   "trader": "Jaeger",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the infected blood sample in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Dish Served Cold",
+   "wiki": "Dish_Served_Cold",
+   "trader": "Skier",
+   "maps": [
+    "customs",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Distributed Strike"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Tarkov Hospitality",
+    "date": "5 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Plant a Signal jammer in Room 209 of the three-story dorm on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Plant a Signal jammer in Room 210 of the two-story dorm on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Plant a Signal jammer in the tables in the bottom hangar at the smugglers' camp on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Plant a Signal jammer in the beds in the upper hangar at the smugglers' camp on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Plant a Signal jammer inside the white shipping container at the EMERCOM camp on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Disrupting the Party",
+   "wiki": "Disrupting_the_Party",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "To the Tree!"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 enemies celebrating around the Christmas tree on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate 5 enemies celebrating around the Christmas tree on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Eliminate 5 enemies celebrating around the Christmas tree on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Distributed Strike",
+   "wiki": "Distributed_Strike",
+   "trader": "Jaeger",
+   "maps": [
+    "customs",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Adaptive Diplomacy"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Tarkov Hospitality",
+    "date": "5 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 6 members of the cleanup crew at Ref's camp on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Eliminate 6 members of the cleanup crew at Ref's camp on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate 6 members of the cleanup crew at Ref's camp on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Don’t Believe Your Eyes",
+   "wiki": "Don%E2%80%99t_Believe_Your_Eyes",
+   "trader": "Jaeger",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate the source of rumors of the living dead in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Find a way inside the quarantined section in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Down the Rabbit Hole - Part 1",
+   "wiki": "Down_the_Rabbit_Hole_-_Part_1",
+   "trader": "Prapor",
+   "maps": [
+    "woods"
+   ],
+   "requires": [
+    "Debut"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Down the Rabbit Hole",
+    "date": "2 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 15 Scavs on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Obtain the encrypted drive",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the device",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Down the Rabbit Hole - Part 2",
+   "wiki": "Down_the_Rabbit_Hole_-_Part_2",
+   "trader": "Prapor",
+   "maps": [
+    "woods"
+   ],
+   "requires": [
+    "Down the Rabbit Hole - Part 1"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Down the Rabbit Hole",
+    "date": "2 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate the area where the documents are stashed",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Down the Rabbit Hole - Part 3",
+   "wiki": "Down_the_Rabbit_Hole_-_Part_3",
+   "trader": "Skier",
+   "maps": [
+    "streets-of-tarkov",
+    "customs"
+   ],
+   "requires": [
+    "Down the Rabbit Hole - Part 2"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Down the Rabbit Hole",
+    "date": "2 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Place a WI-FI Camera at the fenced area on the second floor of the car dealership on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Place a WI-FI Camera at Kaban's office on the second floor of the car dealership on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Obtain the documents in the car dealership on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Stash the documents at the marked room inside dorms on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Shoot a yellow signal flare from the dorms courtyard on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Down the Rabbit Hole - Part 4",
+   "wiki": "Down_the_Rabbit_Hole_-_Part_4",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "Down the Rabbit Hole - Part 3"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Down the Rabbit Hole",
+    "date": "2 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 1 BEAR Buddy plush toy",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Down the Rabbit Hole - Part 5",
+   "wiki": "Down_the_Rabbit_Hole_-_Part_5",
+   "trader": "Prapor",
+   "maps": [
+    "shoreline",
+    "customs",
+    "interchange",
+    "lighthouse",
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Down the Rabbit Hole - Part 4"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Down the Rabbit Hole",
+    "date": "2 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Obtain the first flash drive on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Obtain the second flash drive on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Obtain the third flash drive on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Obtain the fourth flash drive on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Stash the first flash drive by the car extraction on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Stash the second flash drive by the car extraction on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Stash the third flash drive by the car extraction on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Stash the fourth flash drive by the car extraction on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate 7 PMC operatives on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Eliminate 7 PMC operatives on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Eliminate 7 PMC operatives on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Eliminate 7 PMC operatives on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Down the Rabbit Hole - Part 6",
+   "wiki": "Down_the_Rabbit_Hole_-_Part_6",
+   "trader": "Prapor",
+   "maps": [
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Down the Rabbit Hole - Part 5"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Down the Rabbit Hole",
+    "date": "2 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate and eliminate Reshala in a single raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Glukhar in a single raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Killa in a single raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Shturman in a single raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Sanitar in a single raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Tagilla in a single raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Kaban in a single raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Duck Hunt",
+   "wiki": "Duck_Hunt",
+   "trader": "Jaeger",
+   "maps": [
+    "customs",
+    "shoreline",
+    "factory",
+    "woods",
+    "ground-zero",
+    "interchange",
+    "reserve"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Duck Hunt - Escape from Duckov Collaboration",
+    "date": "10 February 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate and shoot down all the 10 toy ducks on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Locate and shoot down all the 10 toy ducks on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Locate and shoot down all the 9 toy ducks on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    },
+    {
+     "description": "Locate and shoot down all the 10 toy ducks on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Locate and shoot down all the 10 toy ducks on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    },
+    {
+     "description": "Locate and shoot down all the 10 toy ducks on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Locate and shoot down all the 10 toy ducks on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Hand over 15 Cans of duck pate",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Ease the Move",
+   "wiki": "Ease_the_Move",
+   "trader": "Peacekeeper",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Callsign Malachite"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate and mark the first Rogue stash at the abandoned island village with an MS2000 Marker on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Locate and mark the second Rogue stash at the abandoned island village with an MS2000 Marker on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Locate and mark the Rogue stash at the grotto with an MS2000 Marker on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Enough Drinks for That One",
+   "wiki": "Enough_Drinks_for_That_One",
+   "trader": "Ragman",
+   "maps": [
+    "interchange"
+   ],
+   "requires": [
+    "Hide in Plain Sight"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and neutralize Killa in the time period of 22:00-10:00 on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Scavs with festive masks in the time period of 22:00-10:00 on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Every Man for Himself",
+   "wiki": "Every_Man_for_Himself",
+   "trader": "Skier",
+   "maps": [
+    "customs"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 30 infected at the dorms area on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Evil Spirits",
+   "wiki": "Evil_Spirits",
+   "trader": "Prapor",
+   "maps": [
+    "ground-zero",
+    "customs",
+    "woods",
+    "shoreline",
+    "interchange",
+    "reserve",
+    "lighthouse",
+    "streets-of-tarkov"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Winter Tales",
+    "date": "28 March 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate the effigy of Morana on any location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate a follower of Morana",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "External Interest",
+   "wiki": "External_Interest",
+   "trader": "Fence",
+   "maps": [],
+   "requires": [
+    "Progression Difficulties - Part 2"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the copy of the programmer's diary",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Failed Setup",
+   "wiki": "Failed_Setup",
+   "trader": "Mechanic",
+   "maps": [
+    "factory",
+    "customs",
+    "woods",
+    "shoreline"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Cultist Hunting",
+    "date": "26 June 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 30 of the group responsible for the marked circles",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Fairy Tale Showdown",
+   "wiki": "Fairy_Tale_Showdown",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "To the Tree!"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 10 BEAR PMC operatives while wearing a Ded Moroz hat",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 10 USEC PMC operatives while wearing a Santa hat",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Fearless Beast",
+   "wiki": "Fearless_Beast",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [
+    "Preemptive Strike"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Art of Explosion",
+    "date": "29 April 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 3 targets while using the F-1 hand grenade (Reduced delay)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Fight Back",
+   "wiki": "Fight_Back",
+   "trader": "Jaeger",
+   "maps": [
+    "shoreline",
+    "customs",
+    "woods"
+   ],
+   "requires": [
+    "Acquaintance"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Art of Explosion",
+    "date": "29 April 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 7 Scavs on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate 7 Scavs on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate 7 Scavs on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Find the Source",
+   "wiki": "Find_the_Source",
+   "trader": "Therapist",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "Matter of Technique"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Access the sealed room with the virus in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Locate and obtain the diary inside the room",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Fishing With Shishiga",
+   "wiki": "Fishing_With_Shishiga",
+   "trader": "Prapor",
+   "maps": [
+    "customs",
+    "woods",
+    "shoreline",
+    "interchange",
+    "reserve",
+    "lighthouse",
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Granny's Tales"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Winter Tales",
+    "date": "28 March 2024"
+   },
+   "objectives": [
+    {
+     "description": "Take part in the Morana followers' ritual on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Take part in the Morana followers' ritual on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Take part in the Morana followers' ritual on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Take part in the Morana followers' ritual on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Take part in the Morana followers' ritual on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Take part in the Morana followers' ritual on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Take part in the Morana followers' ritual on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Fog of War",
+   "wiki": "Fog_of_War",
+   "trader": "Prapor",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Scout the Rogues' position near the BRDM car in the northern part of the water treatment plant on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Scout the Rogues' checkpoint with the guard tower in the southwestern part of the water treatment plant on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Scout the water treatment plant territory from the roof of any of the plant buildings on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Forced Measure",
+   "wiki": "Forced_Measure",
+   "trader": "Therapist",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 100 infected on The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Foreign Support",
+   "wiki": "Foreign_Support",
+   "trader": "Peacekeeper",
+   "maps": [
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes",
+    "Fishing Gear"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 40 infected while wearing a UN uniform (UN helmet, MF-UNTAR body armor, M4A1 rifle) on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Forgotten Acquaintance",
+   "wiki": "Forgotten_Acquaintance",
+   "trader": "Mechanic",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Photo Hunt",
+    "No Peeking!"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate the hideout at the cottages on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Forgotten Oaths",
+   "wiki": "Forgotten_Oaths",
+   "trader": "Jaeger",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Darkest Hour Is Just Before Dawn"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the true vaccine in Sanitar's office on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and neutralize Sanitar",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Friend from Norvinsk - Alternative Solution",
+   "wiki": "Friend_from_Norvinsk_-_Alternative_Solution",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Friend from Norvinsk - Part 3"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 1,000,000 RUB to Mechanic",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Friend from Norvinsk - Part 1",
+   "wiki": "Friend_from_Norvinsk_-_Part_1",
+   "trader": "Mechanic",
+   "maps": [
+    "reserve"
+   ],
+   "requires": [
+    "Introduction"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Scout the command bunker offices on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Scout the medical building commander's office on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Scout the educational building offices on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Friend from Norvinsk - Part 2",
+   "wiki": "Friend_from_Norvinsk_-_Part_2",
+   "trader": "Mechanic",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Friend from Norvinsk - Part 1"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain anything that could help with the investigation at the Health Resort on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hand over the found info",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Friend from Norvinsk - Part 3",
+   "wiki": "Friend_from_Norvinsk_-_Part_3",
+   "trader": "Mechanic",
+   "maps": [
+    "woods"
+   ],
+   "requires": [
+    "Friend from Norvinsk - Part 2"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 15 Scavs",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Obtain any information on the diary from the Scavs",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    },
+    {
+     "description": "Locate and obtain Mechanic friend's diary",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Friend from Norvinsk - Part 4",
+   "wiki": "Friend_from_Norvinsk_-_Part_4",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Friend from Norvinsk - Part 3"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 2 found in raid PC CPUs",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 4 found in raid RAM sticks",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 3 found in raid Printed circuit boards or Microcontroller boards",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Friend from Norvinsk - Part 5",
+   "wiki": "Friend_from_Norvinsk_-_Part_5",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Friend from Norvinsk - Part 4",
+    "Friend from Norvinsk - Alternative Solution"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Figure out the cipher and hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate the place mentioned in the cipher",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    },
+    {
+     "description": "Stash the copy of the diary in the specified location",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "From Beginning To End",
+   "wiki": "From_Beginning_To_End",
+   "trader": "Fence",
+   "maps": [
+    "ground-zero",
+    "streets-of-tarkov",
+    "interchange",
+    "customs",
+    "factory",
+    "woods",
+    "reserve",
+    "lighthouse",
+    "shoreline"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Marathon",
+    "date": "20 August 2024"
+   },
+   "objectives": [
+    {
+     "description": "Use the transit from Ground Zero to Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero",
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Use the transit from Streets of Tarkov to Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov",
+      "interchange"
+     ]
+    },
+    {
+     "description": "Use the transit from Interchange to Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange",
+      "customs"
+     ]
+    },
+    {
+     "description": "Use the transit from Customs to Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs",
+      "factory"
+     ]
+    },
+    {
+     "description": "Use the transit from Factory to Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory",
+      "woods"
+     ]
+    },
+    {
+     "description": "Use the transit from Woods to Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods",
+      "reserve"
+     ]
+    },
+    {
+     "description": "Use the transit from Reserve to Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve",
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Use the transit from Lighthouse to Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse",
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Survive and extract from Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Game Review - Part 1",
+   "wiki": "Game_Review_-_Part_1",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Breathing Room"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Explore the game disk's contents",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Game Review - Part 2",
+   "wiki": "Game_Review_-_Part_2",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Progression Difficulties - Part 2"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Continue exploring the disk's contents",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Game Review - Part 3",
+   "wiki": "Game_Review_-_Part_3",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Last Spurt - Pioneer"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Explore the game disk's contents",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Getting to the Core",
+   "wiki": "Getting_to_the_Core",
+   "trader": "Peacekeeper",
+   "maps": [],
+   "requires": [
+    "U Turn"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the Documents with decrypted data",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Global Threat",
+   "wiki": "Global_Threat",
+   "trader": "Peacekeeper",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes",
+    "Fishing Gear"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 50 infected on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Gloves Off",
+   "wiki": "Gloves_Off",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [
+    "Find the Source"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 25 infected with a headshot while using a shotgun on any location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Granny's Tales",
+   "wiki": "Granny's_Tales",
+   "trader": "Prapor",
+   "maps": [
+    "ground-zero",
+    "customs",
+    "woods",
+    "shoreline",
+    "interchange",
+    "reserve",
+    "lighthouse",
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Evil Spirits"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Winter Tales",
+    "date": "28 March 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 50 followers of Morana",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Guardian of Nature",
+   "wiki": "Guardian_of_Nature",
+   "trader": "Jaeger",
+   "maps": [
+    "woods"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Tarkov Hospitality",
+    "date": "5 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate any information on Ref's plan in the EMERCOM camp on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Locate the position of Ref's mercenaries on Customs",
+     "optional": true,
+     "sub": true,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Locate the position of Ref's mercenaries on Shoreline",
+     "optional": true,
+     "sub": true,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hand over the found intel",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Gun Connoisseur",
+   "wiki": "Gun_Connoisseur",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Gunsmith - Special Order"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Supply and Demand",
+    "date": "2 August 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 10 targets while using 5.56x45 caliber weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate any 10 targets while using 5.45x39 caliber weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate any 10 targets while using 7.62x39 caliber weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate any 5 targets while using 7.62x54R caliber weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate any 5 targets while using 9x19 caliber weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate any 5 targets while using 9x39 caliber weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Gunsmith - Special Order",
+   "wiki": "Gunsmith_-_Special_Order",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Supply and Demand",
+    "date": "2 August 2024"
+   },
+   "objectives": [
+    {
+     "description": "Modify an M4A1 to comply with the given specifications",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Habet, hoc habet!",
+   "wiki": "Habet%2C_hoc_habet!",
+   "trader": "Skier",
+   "maps": [
+    "interchange"
+   ],
+   "requires": [
+    "Run Aground"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Casus belli",
+    "date": "9 April 2026"
+   },
+   "objectives": [
+    {
+     "description": "Mark the stash with new Arena rewards with 2 MS2000 Markers",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 10 PMC operatives while wearing a painted CQCM mask (Demon, Skull, Demonic Face)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Healer",
+   "wiki": "Healer",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [
+    "Poisoning"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Complete the task \"Parasites\"",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Healing",
+   "wiki": "Healing",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [
+    "Remedy"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Hand over a medical bloodset",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Hide in Plain Sight",
+   "wiki": "Hide_in_Plain_Sight",
+   "trader": "Ragman",
+   "maps": [
+    "customs",
+    "woods",
+    "shoreline",
+    "interchange",
+    "reserve",
+    "lighthouse"
+   ],
+   "requires": [
+    "Shooting Cans"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and visit the Christmas tree on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Hint",
+   "wiki": "Hint",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Bosses, take a Hint!",
+    "date": "2 June 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate and eliminate Reshala",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Glukhar",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Killa",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Shturman",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Knight",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Big Pipe",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Birdeye",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Sanitar",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Tagilla",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 5 Raiders",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 5 Rogues",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Priest",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Holiday Beyond the Means",
+   "wiki": "Holiday_Beyond_the_Means",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "Christmas Dinner"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 10 PMC operatives while dressed as Ded Moroz or Santa (hat and beard)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Home Comfort",
+   "wiki": "Home_Comfort",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "To the Tree!"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 7 found in raid Christmas tree ornament (Red)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 5 found in raid Christmas tree ornament (Silver)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 3 found in raid Christmas tree ornament (Violet)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Hustle (2023)",
+   "wiki": "Hustle_(2023)",
+   "trader": "Peacekeeper",
+   "maps": [
+    "customs",
+    "woods",
+    "shoreline",
+    "interchange",
+    "reserve"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Bosses & Rogues Wander",
+    "date": "3 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate and eliminate Reshala",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Glukhar",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Killa",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Shturman",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Sanitar",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Tagilla",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from the location.",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Hustle (2024)",
+   "wiki": "Hustle_(2024)",
+   "trader": "Jaeger",
+   "maps": [
+    "reserve"
+   ],
+   "requires": [
+    "Acquaintance"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Hustle",
+    "date": "31 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and eliminate Reshala on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Glukhar on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Killa on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Shturman on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Knight on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Big Pipe on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Birdeye on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Sanitar on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Tagilla on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Kaban on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Kollontay on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "If I Can't Have It",
+   "wiki": "If_I_Can't_Have_It",
+   "trader": "Mechanic",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "Patch the Vulnerability"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Blackout",
+    "date": "14 July 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 30 targets in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Illegal Logging",
+   "wiki": "Illegal_Logging",
+   "trader": "Jaeger",
+   "maps": [
+    "customs",
+    "woods",
+    "shoreline",
+    "lighthouse"
+   ],
+   "requires": [
+    "Chilly"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 5 targets in the forest area in the time period of 22:00-10:00 on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Eliminate any 5 targets in the forest area in the time period of 22:00-10:00 on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate any 5 targets in the forest area in the time period of 22:00-10:00 on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Eliminate any 5 targets in the forest area in the time period of 22:00-10:00 on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Import Control",
+   "wiki": "Import_Control",
+   "trader": "Mechanic",
+   "maps": [
+    "factory"
+   ],
+   "requires": [
+    "Saving the Mole"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Arms Race",
+    "date": "16 July 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 10 Scavs on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    },
+    {
+     "description": "Hand over 5 found in raid western Scav weapons with very low durability",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Important Patient",
+   "wiki": "Important_Patient",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Bandages Event",
+    "date": "7 April 2023"
+   },
+   "objectives": [
+    {
+     "description": "Hand over Aseptic bandages",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over Army bandages",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "In and Out",
+   "wiki": "In_and_Out",
+   "trader": "Prapor",
+   "maps": [
+    "shoreline",
+    "woods",
+    "reserve",
+    "customs"
+   ],
+   "requires": [
+    "Into the Inferno"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Mortar Strike",
+    "date": "26 September 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 2 found in raid Radar station spare parts",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate any 10 targets on any location with mortar strikes (Shoreline, Woods, Reserve, Customs)",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline",
+      "woods",
+      "reserve",
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Into the Inferno",
+   "wiki": "Into_the_Inferno",
+   "trader": "Prapor",
+   "maps": [
+    "shoreline",
+    "woods",
+    "reserve",
+    "customs"
+   ],
+   "requires": [
+    "Background Check"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Mortar Strike",
+    "date": "26 September 2024"
+   },
+   "objectives": [
+    {
+     "description": "Visit an active mortar strike area on any specified location (Shoreline, Woods, Reserve, Customs)",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline",
+      "woods",
+      "reserve",
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Key Component",
+   "wiki": "Key_Component",
+   "trader": "Therapist",
+   "maps": [
+    "lighthouse",
+    "the-lab"
+   ],
+   "requires": [
+    "Pursuit of Power"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the decommissioned stimulants on Lighthouse or The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse",
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Hand over the stimulants",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Key to Every Door",
+   "wiki": "Key_to_Every_Door",
+   "trader": "Skier",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "Wrench and Waterboarding"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Blackout",
+    "date": "14 July 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate the emergency access code in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Check if the emergency access code works",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Khorovod",
+   "wiki": "Khorovod",
+   "trader": "Prapor",
+   "maps": [
+    "shoreline",
+    "lighthouse",
+    "reserve",
+    "woods",
+    "customs",
+    "interchange"
+   ],
+   "requires": [
+    "Cheer Up"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Reach Interchange in the Khorovod mode",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Knuckle Sandwich",
+   "wiki": "Knuckle_Sandwich",
+   "trader": "Prapor",
+   "maps": [
+    "woods"
+   ],
+   "requires": [
+    "Come by the Fire"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Stash a TP-200 TNT brick at the first spot from Skier's route",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Stash a TP-200 TNT brick at the second spot from Skier's route",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Stash a TP-200 TNT brick at the third spot from Skier's route",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Stash a TP-200 TNT brick at the fourth spot from Skier's route",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate any 15 targets while wearing a Ushanka ear flap hat on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Kolotun",
+   "wiki": "Kolotun",
+   "trader": "Jaeger",
+   "maps": [
+    "streets-of-tarkov",
+    "ground-zero",
+    "interchange",
+    "customs",
+    "woods",
+    "reserve",
+    "lighthouse",
+    "shoreline",
+    "factory"
+   ],
+   "requires": [
+    "Clearing the Way"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Obtain the Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Find a way to make yourself warm without heat or shelter",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from Streets of Tarkov with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Survive and extract from Ground Zero with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    },
+    {
+     "description": "Survive and extract from Interchange with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Survive and extract from Customs with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Survive and extract from Woods with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Survive and extract from Reserve with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Survive and extract from Lighthouse with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Survive and extract from Shoreline with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Survive and extract from Factory with a Frostbite status effect",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Last Spurt - Pioneer",
+   "wiki": "Last_Spurt_-_Pioneer",
+   "trader": "Mechanic",
+   "maps": [
+    "reserve"
+   ],
+   "requires": [
+    "Game Review - Part 2"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the beta version game disk",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and obtain the second game disk on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Letters",
+   "wiki": "Letters",
+   "trader": "Mechanic",
+   "maps": [
+    "customs"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Sanitar Event",
+    "date": "11 November 2022"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate Sanitar while using assault rifles",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using assault carbines",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using machine guns",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using SMGs",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using shotguns",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using marksman rifles",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using bolt-action rifles",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using grenade launchers",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using pistols or revolvers",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using melee weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate Sanitar while using throwable weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Liaison",
+   "wiki": "Liaison",
+   "trader": "Peacekeeper",
+   "maps": [
+    "customs"
+   ],
+   "requires": [
+    "A New Hope"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate the specified zone on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Stash a Physical Bitcoin in the locker inside the worker's shack",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Launch a signal flare at the weather station",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Lose the Tail",
+   "wiki": "Lose_the_Tail",
+   "trader": "Prapor",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "All-Inclusive Support"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 of Glukhar's guards on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Locate and neutralize Glukhar on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Martial arts course",
+   "wiki": "Martial_arts_course",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Melee Event",
+    "date": "20 December 2022"
+   },
+   "objectives": [
+    {
+     "description": "Score a melee kill on Tagilla",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Kill 15 PMC operatives with a melee weapon",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Matter of Technique",
+   "wiki": "Matter_of_Technique",
+   "trader": "Mechanic",
+   "maps": [
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "The Root Cause"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate the required computer at TerraGroup's Cardinal office on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Install the flash drive at the computer to download the files",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Mayday",
+   "wiki": "Mayday",
+   "trader": "Peacekeeper",
+   "maps": [],
+   "requires": [
+    "Alloy"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Full Speed Ahead",
+    "date": "15 May 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 14 Rogues",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the found Rogue intel",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Missing in Action",
+   "wiki": "Missing_in_Action",
+   "trader": "Prapor",
+   "maps": [
+    "woods",
+    "reserve",
+    "interchange"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Stash a Pack of Arseniy buckwheat at the Scav house on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Stash a Bottle of Tarkovskaya vodka at the Scav house on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Stash an Iskra ration pack at the Scav house on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Stash a Pack of Arseniy buckwheat at the guard barrack on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Stash a Bottle of Tarkovskaya vodka at the guard barrack on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Stash an Iskra ration pack at the guard barrack on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Stash a Pack of Arseniy buckwheat at the Path to River shack on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Stash a Bottle of Tarkovskaya vodka at the Path to River shack on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Stash an Iskra ration pack at the Path to River shack on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Morituri te salutant",
+   "wiki": "Morituri_te_salutant",
+   "trader": "Ref",
+   "maps": [],
+   "requires": [
+    "Taking What's Mine"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Casus belli",
+    "date": "9 April 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the case with new Arena reward templates on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Investigate the stash with new Arena rewards on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 10 PMC operatives while wearing a painted CQCM mask (El Dia es Muertos, Scars, or Target)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "My Blood Type Mark is on the Sleeve",
+   "wiki": "My_Blood_Type_Mark_is_on_the_Sleeve",
+   "trader": "Therapist",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "Key to Every Door"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Blackout",
+    "date": "14 July 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the TG-y blood sample from the experiment room in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Locate and obtain the TG-y blood sample from the second floor laboratory block in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Locate and obtain the documents from Sanitar's room in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Night of The Cult",
+   "wiki": "Night_of_The_Cult",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Night of The Cult",
+    "date": "11 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 hooded night people",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "No Gifts for You",
+   "wiki": "No_Gifts_for_You",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [
+    "Disrupting the Party"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 3 found in raid Santa bags to Jaeger",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "No Peeking!",
+   "wiki": "No_Peeking!",
+   "trader": "Peacekeeper",
+   "maps": [
+    "ground-zero"
+   ],
+   "requires": [
+    "Getting to the Core"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 PMC operatives at the TerraGroup HQ on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "No Smoke Without Fire",
+   "wiki": "No_Smoke_Without_Fire",
+   "trader": "Peacekeeper",
+   "maps": [
+    "shoreline",
+    "lighthouse",
+    "reserve"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Full Speed Ahead",
+    "date": "15 May 2026"
+   },
+   "objectives": [
+    {
+     "description": "Survive and extract from Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Survive and extract from Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Survive and extract from Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Rogues on any location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Not a Step Back!",
+   "wiki": "Not_a_Step_Back!",
+   "trader": "Prapor",
+   "maps": [
+    "reserve"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 35 infected from over 70 meters away on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Number Temporarily Unavailable",
+   "wiki": "Number_Temporarily_Unavailable",
+   "trader": "Prapor",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Fog of War"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Stash 3 Electronic components at Prapor's new camp on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Stash a Military cable at Prapor's new camp on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Stash 3 Capacitors at Prapor's new camp on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Obstacle Course",
+   "wiki": "Obstacle_Course",
+   "trader": "Skier",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Seeking Information"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate Peacekeeper's people on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Obstruction Destruction",
+   "wiki": "Obstruction_Destruction",
+   "trader": "Peacekeeper",
+   "maps": [
+    "customs"
+   ],
+   "requires": [
+    "Seeking Information"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate Skier's people on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Ours by Right",
+   "wiki": "Ours_by_Right",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "In and Out"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Mortar Strike",
+    "date": "26 September 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 2 found in raid GARY ZONT portable electronic warfare devices",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 10 Rogues",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and neutralize Big Pipe",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    },
+    {
+     "description": "Locate and neutralize Birdeye",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    },
+    {
+     "description": "Locate and neutralize Knight",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Parasites",
+   "wiki": "Parasites",
+   "trader": "Fence",
+   "maps": [
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Poisoning"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 15 Scavs at the city clinic on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Party Preparations",
+   "wiki": "Party_Preparations",
+   "trader": "Ragman",
+   "maps": [],
+   "requires": [
+    "Only Business"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 5 found in raid Santa hats to Ragman",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 5 found in raid Ded Moroz hats to Ragman",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 5 found in raid Fake white beards to Ragman",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Patch the Vulnerability",
+   "wiki": "Patch_the_Vulnerability",
+   "trader": "Mechanic",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "My Blood Type Mark is on the Sleeve"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Blackout",
+    "date": "14 July 2026"
+   },
+   "objectives": [
+    {
+     "description": "Plant a signal jammer in the system admin's office in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Plant a signal jammer in the garage gate control room in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Plant a signal jammer in the central security monitoring room in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Black Division operatives",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Photo Hunt",
+   "wiki": "Photo_Hunt",
+   "trader": "Skier",
+   "maps": [
+    "ground-zero"
+   ],
+   "requires": [
+    "Take Two"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Stash a WI-FI Camera at the TerraGroup HQ parking doorway on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    },
+    {
+     "description": "Stash a WI-FI Camera at the TerraGroup HQ barricaded stairway on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    },
+    {
+     "description": "Stash a WI-FI Camera at the TerraGroup HQ office #3 bookshelf on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    },
+    {
+     "description": "Stash a WI-FI Camera at the TerraGroup HQ office #4 corner window on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Poisoning",
+   "wiki": "Poisoning",
+   "trader": "Therapist",
+   "maps": [
+    "customs"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate the poisoned area on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Install a gas analyzer",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Preemptive Strike",
+   "wiki": "Preemptive_Strike",
+   "trader": "Jaeger",
+   "maps": [
+    "shoreline",
+    "customs",
+    "woods"
+   ],
+   "requires": [
+    "An Alternative"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Art of Explosion",
+    "date": "29 April 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 12 Scavs at Skier's charity checkpoints",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Preliminary Survey",
+   "wiki": "Preliminary_Survey",
+   "trader": "Ref",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Preliminary Survey",
+    "date": "1 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Locate the testing area blueprint flash drive in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Obtain the testing area blueprint flash drive in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Preserve a Valuable Piece",
+   "wiki": "Preserve_a_Valuable_Piece",
+   "trader": "Lightkeeper",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Callsign Malachite"
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 7 PMC operatives on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Pressured by Circumstances",
+   "wiki": "Pressured_by_Circumstances",
+   "trader": "Mechanic",
+   "maps": [
+    "factory"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 25 infected while using pistols or revolvers on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Progression Difficulties - Part 1",
+   "wiki": "Progression_Difficulties_-_Part_1",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Game Review - Part 1"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the drive with the game",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Progression Difficulties - Part 2",
+   "wiki": "Progression_Difficulties_-_Part_2",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Progression Difficulties - Part 1"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Targrad Tales",
+    "date": "20 August 2025"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the item: Decrypted intelligence folder",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Project of the Century (Consequences)",
+   "wiki": "Project_of_the_Century_(Consequences)",
+   "trader": "Ref",
+   "maps": [
+    "customs",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Project of the Century (Finale)"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Tarkov Hospitality",
+    "date": "5 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate PMC operatives at the smuggler's camp while wearing an ARENA armband on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate PMC operatives at the dorms while wearing an ARENA armband on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate PMC operatives at the EMERCOM camp while wearing an ARENA armband on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Project of the Century (Finale)",
+   "wiki": "Project_of_the_Century_(Finale)",
+   "trader": "Ref",
+   "maps": [
+    "customs",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Dish Served Cold"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Tarkov Hospitality",
+    "date": "5 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 2 PMC operatives at the EMERCOM camp while wearing an ARENA armband on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Eliminate 2 PMC operatives at the smuggler's camp while wearing an ARENA armband on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate 2 PMC operatives at the dorms while wearing an ARENA armband on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Protection of Interests",
+   "wiki": "Protection_of_Interests",
+   "trader": "Prapor",
+   "maps": [
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Caught Red-Handed"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Arms Race",
+    "date": "16 July 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 3 PMC operatives on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Do not kill Gus or Basmach while the quest is active",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Provide Cover",
+   "wiki": "Provide_Cover",
+   "trader": "Prapor",
+   "maps": [
+    "woods",
+    "shoreline"
+   ],
+   "requires": [
+    "Ours by Right"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Mortar Strike",
+    "date": "26 September 2024"
+   },
+   "objectives": [
+    {
+     "description": "Stash the Radar station spare parts inside the old sawmill hangar on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Stash the GARY ZONT portable electronic warfare device inside the weather station tower on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Pursuit of Power",
+   "wiki": "Pursuit_of_Power",
+   "trader": "Therapist",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Virtue"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate Sanitar's letter on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hand over the letter",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Radical Treatment",
+   "wiki": "Radical_Treatment",
+   "trader": "Therapist",
+   "maps": [
+    "lighthouse",
+    "shoreline",
+    "woods",
+    "customs",
+    "factory",
+    "the-lab"
+   ],
+   "requires": [
+    "Darkest Hour Is Just Before Dawn"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Spread the vaccine on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    },
+    {
+     "description": "Spread the vaccine on The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Radio Club",
+   "wiki": "Radio_Club",
+   "trader": "Skier",
+   "maps": [
+    "woods"
+   ],
+   "requires": [
+    "Obstacle Course"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 8 Scavs on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Install a Radio repeater at the mountain crate on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Install a Radio repeater at the mountain ravine stash on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Install a Radio repeater at the mountain bunker on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Redemption",
+   "wiki": "Redemption",
+   "trader": "Fence",
+   "maps": [
+    "customs",
+    "shoreline"
+   ],
+   "requires": [
+    "Atonement"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Help Skier make atonement",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and obtain The Unheard's phone on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Hand over the phone",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Help Peacekeeper make atonement",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and obtain The Unheard's laptop on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Hand over the laptop",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Reduce the Distance",
+   "wiki": "Reduce_the_Distance",
+   "trader": "Jaeger",
+   "maps": [
+    "interchange"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 20 infected while using melee weapons on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Remedy",
+   "wiki": "Remedy",
+   "trader": "Therapist",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Healer"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the cure",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the cure",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Restocking Supplies",
+   "wiki": "Restocking_Supplies",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Thirty Pieces of Silver"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Smugglers 2026",
+    "date": "12 March 2026"
+   },
+   "objectives": [
+    {
+     "description": "Obtain and hand over 10 locked smugglers' weapon cases",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Risks of Small Business",
+   "wiki": "Risks_of_Small_Business",
+   "trader": "Peacekeeper",
+   "maps": [
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Caught Red-Handed"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Arms Race",
+    "date": "16 July 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and eliminate Basmach on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Locate and eliminate Gus on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Root of All Evil",
+   "wiki": "Root_of_All_Evil",
+   "trader": "Ragman",
+   "maps": [],
+   "requires": [
+    "Restocking Supplies"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Smugglers 2026",
+    "date": "12 March 2026"
+   },
+   "objectives": [
+    {
+     "description": "Stash 10 contraband boxes near the green shipping container at the sawmill on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Run Aground",
+   "wiki": "Run_Aground",
+   "trader": "Skier",
+   "maps": [
+    "customs"
+   ],
+   "requires": [
+    "Short on Hands"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Casus belli",
+    "date": "9 April 2026"
+   },
+   "objectives": [
+    {
+     "description": "Stash 2 6L18 magazines in the specified spot on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Do not assist Ref with eliminating pillagers and stashing the masks",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    },
+    {
+     "description": "Stash 2 5.45x39mm PS gs ammo packs (120 pcs) in the specified spot on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Stash 2 RGD-5 hand grenades in the specified spot on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Sample IV - A New Hope",
+   "wiki": "Sample_IV_-_A_New_Hope",
+   "trader": "Therapist",
+   "maps": [
+    "the-lab",
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Gloves Off"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the vaccine vial in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Use the transit from The Lab to Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab",
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Stash the vaccine under Kaban's office on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Scope the Clearing",
+   "wiki": "Scope_the_Clearing",
+   "trader": "Skier",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "A Familiar Face..."
+   ],
+   "kappaRequired": false,
+   "active": true,
+   "event": {
+    "name": "Shifting Balance",
+    "date": "8 September 2026"
+   },
+   "objectives": [
+    {
+     "description": "Plant the first Wi-Fi Camera at the smuggler train platform on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Plant the second Wi-Fi Camera at the smuggler train platform on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Plant the third Wi-Fi Camera at the Woods transit on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Secret Benefactor",
+   "wiki": "Secret_Benefactor",
+   "trader": "Therapist",
+   "maps": [
+    "customs",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Fight Back"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Art of Explosion",
+    "date": "29 April 2025"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the new charity recruiters' notes",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Scout the Scav checkpoints on Customs, Shoreline or Woods",
+     "optional": true,
+     "sub": true,
+     "maps": [
+      "customs",
+      "shoreline",
+      "woods"
+     ]
+    },
+    {
+     "description": "Hand over the found information",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Seeking Information",
+   "wiki": "Seeking_Information",
+   "trader": "Mechanic",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Forgotten Acquaintance"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the hard drive inside the cottage hideout on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Obtain the USEC cottage room key",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    },
+    {
+     "description": "Hand over the hard drive",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Self-Employed",
+   "wiki": "Self-Employed",
+   "trader": "BTR Driver",
+   "maps": [
+    "woods"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 Scavs at the train depot on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Do not kill any PMC operatives at the train depot",
+     "optional": true,
+     "sub": true,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Shell Game",
+   "wiki": "Shell_Game",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "Chop the Thieving Hand"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Smugglers 2024",
+    "date": "6 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 15 of Skier's contraband from the locked cases",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Short on Hands",
+   "wiki": "Short_on_Hands",
+   "trader": "Skier",
+   "maps": [
+    "customs",
+    "interchange",
+    "lighthouse",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Casus belli",
+    "date": "9 April 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 5 PMC operatives on Woods, Customs, Interchange, Lighthouse, or Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods",
+      "customs",
+      "interchange",
+      "lighthouse",
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Sightseeing",
+   "wiki": "Sightseeing",
+   "trader": "Skier",
+   "maps": [
+    "ground-zero",
+    "streets-of-tarkov",
+    "the-lab",
+    "interchange",
+    "customs",
+    "factory",
+    "woods",
+    "reserve",
+    "lighthouse"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Marathon",
+    "date": "20 August 2024"
+   },
+   "objectives": [
+    {
+     "description": "Mark the passage to Streets of Tarkov with an MS2000 Marker on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov",
+      "ground-zero"
+     ]
+    },
+    {
+     "description": "Mark the passage to Interchange with an MS2000 Marker on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange",
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Mark the passage to The Lab with an MS2000 Marker on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab",
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Mark the passage to Streets of Tarkov with an MS2000 Marker in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov",
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Mark the passage to Customs with an MS2000 Marker on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs",
+      "interchange"
+     ]
+    },
+    {
+     "description": "Mark the passage to Factory with an MS2000 Marker on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory",
+      "customs"
+     ]
+    },
+    {
+     "description": "Mark the passage to Woods with an MS2000 Marker on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods",
+      "factory"
+     ]
+    },
+    {
+     "description": "Mark the passage to Reserve with an MS2000 Marker on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve",
+      "woods"
+     ]
+    },
+    {
+     "description": "Mark the passage to Lighthouse with an MS2000 Marker on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse",
+      "reserve"
+     ]
+    },
+    {
+     "description": "Mark the passage to Shoreline with an MS2000 Marker on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline",
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Skiing with Skier",
+   "wiki": "Skiing_with_Skier",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "Knuckle Sandwich"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate PMC operatives in Ushanka ear flap hats while wearing a Pompon hat",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Spread the Damage",
+   "wiki": "Spread_the_Damage",
+   "trader": "Prapor",
+   "maps": [
+    "ground-zero"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 35 infected while using grenades or grenade launchers on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Spring Never Changes",
+   "wiki": "Spring_Never_Changes",
+   "trader": "Prapor",
+   "maps": [
+    "ground-zero",
+    "customs",
+    "woods",
+    "shoreline",
+    "interchange",
+    "reserve",
+    "lighthouse",
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Evil Spirits"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Winter Tales",
+    "date": "28 March 2024"
+   },
+   "objectives": [
+    {
+     "description": "Light up the bonfire on any location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Spring!",
+   "wiki": "Spring!",
+   "trader": "Prapor",
+   "maps": [
+    "ground-zero",
+    "customs",
+    "woods",
+    "shoreline",
+    "interchange",
+    "reserve",
+    "lighthouse",
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "Fishing With Shishiga"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Winter Tales",
+    "date": "28 March 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eat a can of squash spread",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 6 spirits of winter in one raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Drink a bottle of Fierce Hatchling moonshine",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Staff Shortage",
+   "wiki": "Staff_Shortage",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "Preemptive Strike"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Art of Explosion",
+    "date": "29 April 2025"
+   },
+   "objectives": [
+    {
+     "description": "Locate and neutralize Partisan",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Eliminate 10 PMC operatives",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Stay Frosty",
+   "wiki": "Stay_Frosty",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "Knuckle Sandwich"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Kolotun",
+    "date": "24 December 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate PMC operatives in Pompon hats while wearing a Ushanka ear flap hat",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Staying Light",
+   "wiki": "Staying_Light",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Softcore",
+    "date": "8 October 2025"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 100 targets",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Stealing the Stolen",
+   "wiki": "Stealing_the_Stolen",
+   "trader": "Peacekeeper",
+   "maps": [
+    "woods",
+    "customs",
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "No Smoke Without Fire"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Full Speed Ahead",
+    "date": "15 May 2026"
+   },
+   "objectives": [
+    {
+     "description": "Stash 2 Radar station spare parts at the weather station on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Stash 2 Radar station spare parts in the specified bunkhouse on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Stash 2 Radar station spare parts in the specified bunkhouse on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Stop the Fight!",
+   "wiki": "Stop_the_Fight!",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [
+    "To the Tree!"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 12 PMC operatives who are dressed in Santa or Ded Moroz hats",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Straw",
+   "wiki": "Straw",
+   "trader": "Fence",
+   "maps": [],
+   "requires": [
+    "Healer"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Complete the task \"Remedy\"",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Supply and Demand",
+   "wiki": "Supply_and_Demand",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Customer Communication"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Supply and Demand",
+    "date": "2 August 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate PMCs with your favorite weapon",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Take Two",
+   "wiki": "Take_Two",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "Break Through"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over Documents with decrypted data",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Taking What's Mine",
+   "wiki": "Taking_What's_Mine",
+   "trader": "Ref",
+   "maps": [
+    "customs",
+    "interchange",
+    "lighthouse",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Backup Plan"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Casus belli",
+    "date": "9 April 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 10 pillagers",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Do not assist Skier with preparing the ambush on Customs",
+     "optional": true,
+     "sub": true,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Stash 4 painted CQCM masks in the specified spot on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "That’s a Great Plan, Walter",
+   "wiki": "That%E2%80%99s_a_Great_Plan%2C_Walter",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Smugglers 2024",
+    "date": "6 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and hand over 3 locked cases with cargo",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The Bosses gathering",
+   "wiki": "The_Bosses_gathering",
+   "trader": "Prapor",
+   "maps": [
+    "reserve"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "June 2021 Pre-Wipe Event",
+    "date": "20 June 2021"
+   },
+   "objectives": [
+    {
+     "description": "Observe a boss meeting and extract from location with \"Survived\" status\"",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The Graven Image",
+   "wiki": "The_Graven_Image",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [
+    "Night of The Cult"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Night of The Cult",
+    "date": "11 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and neutralize the Oni",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and neutralize the Harbinger",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and neutralize the Ghost",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The Price of Celebration",
+   "wiki": "The_Price_of_Celebration",
+   "trader": "Skier",
+   "maps": [
+    "shoreline",
+    "lighthouse",
+    "reserve",
+    "woods",
+    "customs",
+    "interchange"
+   ],
+   "requires": [
+    "Holiday Beyond the Means"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 10 PMC operatives who are wearing the Christmas armband",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The Punisher - Harvest",
+   "wiki": "The_Punisher_-_Harvest",
+   "trader": "Peacekeeper",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Ammo Shortage",
+    "date": "25 November 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 50 PMC operatives",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 50 found in raid level 25+ dogtags",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The Root Cause",
+   "wiki": "The_Root_Cause",
+   "trader": "Therapist",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "Burn It Down"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Locate and obtain the virus sample in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Hand over the found item",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The Tarkov Mystery",
+   "wiki": "The_Tarkov_Mystery",
+   "trader": "Skier",
+   "maps": [],
+   "requires": [
+    "Burning Rubber"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Find the encrypted flash drive in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the encrypted flash drive to Skier",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 1",
+   "wiki": "The_TerraGroup_Trail_-_Part_1",
+   "trader": "Fence",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "Debut"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate Fence's men who went missing on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 10",
+   "wiki": "The_TerraGroup_Trail_-_Part_10",
+   "trader": "Peacekeeper",
+   "maps": [
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 9"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 30 targets while using VSS Vintorez 9x39 special sniper rifle in the car dealership area on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Plant Sanitar's bag on the second floor of the car dealership near Kaban's office",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 11",
+   "wiki": "The_TerraGroup_Trail_-_Part_11",
+   "trader": "Mechanic",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 6"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Plant a radio repeater inside the Mi-8 helicopter at the water treatment plant on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Plant a radio repeater inside the abandoned USEC cottage on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Plant a radio repeater on the hill in front of the Lighthouse island",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Plant a radio repeater on the roof of the landing stage on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 12",
+   "wiki": "The_TerraGroup_Trail_-_Part_12",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "The TerraGroup Trail - Part 11"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Hand over a Piece of plexiglass",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over an Insulating tape",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over a Military circuit board",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over a Military COFDM Wireless Signal Transmitter",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 13",
+   "wiki": "The_TerraGroup_Trail_-_Part_13",
+   "trader": "Mechanic",
+   "maps": [
+    "customs",
+    "lighthouse"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 12"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Obtain the V4 Flash Drive on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Reflash the Radio transmitter",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the V4 Flash Drive to Mechanic",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Visit the lighthouse building",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 14",
+   "wiki": "The_TerraGroup_Trail_-_Part_14",
+   "trader": "Lightkeeper",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 13"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Obtain Reagent Omega from the testing area in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Obtain Reagent Beta from the laboratory zone in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Obtain Reagent Alpha from the laboratory testing area in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Hand over Reagent Omega",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over Reagent Beta",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over Reagent Alpha",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 15",
+   "wiki": "The_TerraGroup_Trail_-_Part_15",
+   "trader": "Fence",
+   "maps": [
+    "woods",
+    "the-lab",
+    "lighthouse"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 10",
+    "The TerraGroup Trail - Part 14"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Obtain the first part of the encoded intel on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Obtain the second part of the encoded intel on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Transfer the first part of the data from the manager's terminal in The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    },
+    {
+     "description": "Transfer the second part of the data from the USEC terminal on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 16",
+   "wiki": "The_TerraGroup_Trail_-_Part_16",
+   "trader": "Therapist",
+   "maps": [
+    "shoreline",
+    "lighthouse"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 15"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 10 found in raid \"Obdolbos of Truth\" injectors",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 17",
+   "wiki": "The_TerraGroup_Trail_-_Part_17",
+   "trader": "Mechanic",
+   "maps": [
+    "reserve"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 15"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Place a WI-FI Camera to watch the sliding gate in the supply warehouse on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 18",
+   "wiki": "The_TerraGroup_Trail_-_Part_18",
+   "trader": "Prapor",
+   "maps": [
+    "reserve",
+    "the-lab"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 15"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 25 Raiders while equipped with RUAF uniform and weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 19",
+   "wiki": "The_TerraGroup_Trail_-_Part_19",
+   "trader": "Fence",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 16",
+    "The TerraGroup Trail - Part 17",
+    "The TerraGroup Trail - Part 18"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate any 7 targets during night time on Shoreline (in one raid)",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Send a signal with a flare from the top of the small lighthouse on the coast to the ship waiting in the bay (in one raid)",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 2",
+   "wiki": "The_TerraGroup_Trail_-_Part_2",
+   "trader": "Therapist",
+   "maps": [
+    "shoreline",
+    "lighthouse"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 1"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 2 weird Scavs",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Find the source of their abnormal behavior",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the found evidence",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 3",
+   "wiki": "The_TerraGroup_Trail_-_Part_3",
+   "trader": "Prapor",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 2"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Obtain the mysterious laptop at the water treatment plant",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over the laptop",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 4",
+   "wiki": "The_TerraGroup_Trail_-_Part_4",
+   "trader": "Prapor",
+   "maps": [
+    "shoreline"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 3"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate the place of Rogues' meeting spot on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Disrupt the deal",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 5",
+   "wiki": "The_TerraGroup_Trail_-_Part_5",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "The TerraGroup Trail - Part 4"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Ask Mechanic to decode the laptop",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 6",
+   "wiki": "The_TerraGroup_Trail_-_Part_6",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "The TerraGroup Trail - Part 5"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Hand over 5 Physical Bitcoins",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 7",
+   "wiki": "The_TerraGroup_Trail_-_Part_7",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [
+    "The TerraGroup Trail - Part 6"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Deal with Peacekeeper",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 8",
+   "wiki": "The_TerraGroup_Trail_-_Part_8",
+   "trader": "Peacekeeper",
+   "maps": [
+    "interchange",
+    "shoreline",
+    "factory",
+    "woods",
+    "customs",
+    "reserve",
+    "lighthouse",
+    "streets-of-tarkov"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 7"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 10 Scavs while equipped with RUAF gear and weapons on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Scavs while equipped with RUAF gear and weapons on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Scavs while equipped with RUAF gear and weapons on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Scavs while equipped with RUAF gear and weapons on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Scavs while equipped with RUAF gear and weapons on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Scavs while equipped with RUAF gear and weapons on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Scavs while equipped with RUAF gear and weapons on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Eliminate 10 Scavs while equipped with RUAF gear and weapons on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "The TerraGroup Trail - Part 9",
+   "wiki": "The_TerraGroup_Trail_-_Part_9",
+   "trader": "Peacekeeper",
+   "maps": [
+    "factory",
+    "customs",
+    "woods",
+    "interchange",
+    "reserve"
+   ],
+   "requires": [
+    "The TerraGroup Trail - Part 8"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The TerraGroup Trail",
+    "date": "28 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Stash 2 Bottles of Dan Jackiel whiskey in the Revis store on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Stash a SP-8 Survival Machete inside the pumping station on Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    },
+    {
+     "description": "Stash a Desert Tech MDR 7.62x51 assault rifle in dorm room 302 on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Stash 2 EOTech HHS-1 hybrid sights in the sawmill guard post on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Stash L3Harris GPNVG-18 night vision goggles in the third structure of the railroad warehouse on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Thirty Pieces of Silver",
+   "wiki": "Thirty_Pieces_of_Silver",
+   "trader": "Peacekeeper",
+   "maps": [],
+   "requires": [
+    "Accept Delivery"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Smugglers 2026",
+    "date": "12 March 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 25 smugglers",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Obtain and hand over 3 contraband boxes",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Obtain and hand over 3 locked smugglers' weapon cases",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "This Is My Party",
+   "wiki": "This_Is_My_Party",
+   "trader": "Prapor",
+   "maps": [
+    "shoreline",
+    "lighthouse",
+    "reserve",
+    "woods",
+    "customs",
+    "interchange"
+   ],
+   "requires": [
+    "Holiday Beyond the Means"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Khorovod",
+    "date": "26 December 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 10 PMC operatives without the Christmas armband in the Khorovod mode",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Time-Tested",
+   "wiki": "Time-Tested",
+   "trader": "Prapor",
+   "maps": [],
+   "requires": [
+    "Protection of Interests"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Arms Race",
+    "date": "16 July 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate as many targets as possible while using Russian weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "To the Tree!",
+   "wiki": "To_the_Tree!",
+   "trader": "Mechanic",
+   "maps": [],
+   "requires": [
+    "Gunsmith - MP-133"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Christmas Event 2021",
+    "date": "25 December 2021"
+   },
+   "objectives": [
+    {
+     "description": "Locate and visit the Christmas tree on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Reserve",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "reserve"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Interchange",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "interchange"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Locate and visit the Christmas tree on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Tourists",
+   "wiki": "Tourists",
+   "trader": "Prapor",
+   "maps": [
+    "factory"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Bosses & Rogues Wander",
+    "date": "3 July 2023"
+   },
+   "objectives": [
+    {
+     "description": "Locate and eliminate Knight in a single raid.",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Big Pipe in a single raid.",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Locate and eliminate Birdeye in a single raid.",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Survive and extract from the location",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Trade Embargo",
+   "wiki": "Trade_Embargo",
+   "trader": "Fence",
+   "maps": [],
+   "requires": [
+    "Ceasefire - Part 2"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Sell 15 barter items to Fence",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Trade Embargo - Last Chance",
+   "wiki": "Trade_Embargo_-_Last_Chance",
+   "trader": "Fence",
+   "maps": [],
+   "requires": [
+    "Trade Embargo"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Sell 50 barter items to Fence",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "U Turn",
+   "wiki": "U_Turn",
+   "trader": "Peacekeeper",
+   "maps": [],
+   "requires": [
+    "The Tarkov Mystery"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "The Tarkov Mystery",
+    "date": "15 May 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the decrypted flash drive",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Until Dawn",
+   "wiki": "Until_Dawn",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [
+    "The Graven Image"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Night of The Cult",
+    "date": "11 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 15 hooded night people on Ground Zero",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "ground-zero"
+     ]
+    },
+    {
+     "description": "Eliminate 15 hooded night people on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    },
+    {
+     "description": "Eliminate 15 hooded night people on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate 15 hooded night people on Streets of Tarkov",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "streets-of-tarkov"
+     ]
+    },
+    {
+     "description": "Eliminate 15 hooded night people on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Eliminate 15 hooded night people on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate 15 hooded night people on night-time Factory",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "factory"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Virtue",
+   "wiki": "Virtue",
+   "trader": "Therapist",
+   "maps": [],
+   "requires": [
+    "Remedy"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Unknown Toxin Poisoning",
+    "date": "15 December 2023"
+   },
+   "objectives": [
+    {
+     "description": "Hand over medical tools",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Watch the Watcher",
+   "wiki": "Watch_the_Watcher",
+   "trader": "Fence",
+   "maps": [
+    "lighthouse"
+   ],
+   "requires": [
+    "Don’t Believe Your Eyes"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Halloween 2024",
+    "date": "31 October 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 55 infected on Lighthouse",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "lighthouse"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Western Quality Standards",
+   "wiki": "Western_Quality_Standards",
+   "trader": "Peacekeeper",
+   "maps": [],
+   "requires": [
+    "Risks of Small Business"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Arms Race",
+    "date": "16 July 2024"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate as many targets as possible while using Western weapons",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "What’s Your Evidence?",
+   "wiki": "What%E2%80%99s_Your_Evidence%3F",
+   "trader": "Peacekeeper",
+   "maps": [],
+   "requires": [
+    "Import Control"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Arms Race",
+    "date": "16 July 2024"
+   },
+   "objectives": [
+    {
+     "description": "Hand over the 10 western Scav weapons with very low durability",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Wild Wild Woods",
+   "wiki": "Wild_Wild_Woods",
+   "trader": "Jaeger",
+   "maps": [],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Wild Wild Woods",
+    "date": "25 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Find 12 Silver Badges in raid",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    },
+    {
+     "description": "Hand over 12 found in raid Silver Badges",
+     "optional": false,
+     "sub": false,
+     "maps": []
+    }
+   ]
+  },
+  {
+   "enName": "Wolf's Grip (Consequences)",
+   "wiki": "Wolf's_Grip_(Consequences)",
+   "trader": "Jaeger",
+   "maps": [
+    "customs",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Wolf's Grip (Finale)"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Tarkov Hospitality",
+    "date": "5 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate PMC operatives at the dorms while wearing a Green armband on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    },
+    {
+     "description": "Eliminate PMC operatives at the smuggler's camp while wearing a Green armband on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate PMC operatives at the EMERCOM camp while wearing a Green armband on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Wolf's Grip (Finale)",
+   "wiki": "Wolf's_Grip_(Finale)",
+   "trader": "Jaeger",
+   "maps": [
+    "customs",
+    "shoreline",
+    "woods"
+   ],
+   "requires": [
+    "Dish Served Cold"
+   ],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Tarkov Hospitality",
+    "date": "5 June 2026"
+   },
+   "objectives": [
+    {
+     "description": "Eliminate 2 PMC operatives at the EMERCOM camp while wearing a Green armband on Woods",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "woods"
+     ]
+    },
+    {
+     "description": "Eliminate 2 PMC operatives at the smuggler's camp while wearing a Green armband on Shoreline",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "shoreline"
+     ]
+    },
+    {
+     "description": "Eliminate 2 PMC operatives at the dorms while wearing a Green armband on Customs",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "customs"
+     ]
+    }
+   ]
+  },
+  {
+   "enName": "Wrench and Waterboarding",
+   "wiki": "Wrench_and_Waterboarding",
+   "trader": "Skier",
+   "maps": [
+    "the-lab"
+   ],
+   "requires": [],
+   "kappaRequired": false,
+   "active": false,
+   "event": {
+    "name": "Blackout",
+    "date": "14 July 2026"
+   },
+   "objectives": [
+    {
+     "description": "Visit The Lab",
+     "optional": false,
+     "sub": false,
+     "maps": [
+      "the-lab"
+     ]
+    }
+   ]
+  }
+ ]
+}

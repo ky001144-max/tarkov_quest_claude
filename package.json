@@ -1,0 +1,51 @@
+{
+  "name": "eft-where-am-i-ko",
+  "productName": "EFT Where Am I KO",
+  "version": "1.0.0",
+  "description": "타르코프 위치 확인 + 맵별 퀘스트 트래커 (tarkov.dev 데이터 기반)",
+  "main": "main.js",
+  "author": "ky001",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable",
+    "dist:dir": "electron-builder --win dir"
+  },
+  "build": {
+    "appId": "kr.eft.whereami.quest",
+    "productName": "EFT Where Am I KO",
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**",
+      "renderer/**",
+      "assets/**",
+      "node_modules/leaflet/dist/**"
+    ],
+    "electronLanguages": [
+      "ko",
+      "en-US"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "EFT-Where-Am-I-KO-${version}.exe"
+    }
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
+  },
+  "allowScripts": {
+    "electron@44.4.5": true,
+    "electron-winstaller@5.4.0": true
+  }
+}

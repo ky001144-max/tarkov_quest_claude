@@ -1,0 +1,222 @@
+{
+ "_comment": "tarkov.dev 데이터에 아직 없는 퀘스트 (출처: escapefromtarkov.fandom.com 위키). tarkov.dev에 같은 영문 이름의 퀘스트가 생기면 자동으로 무시된다. maps는 tarkov.dev 맵 normalizedName.",
+ "tasks": [
+  {
+   "enName": "Invasive Therapy",
+   "name": "침습 치료",
+   "trader": "therapist",
+   "wiki": "Invasive_Therapy",
+   "objectives": [
+    { "type": "giveItem", "description": "레이드에서 획득한 [P22 (Product 22) 전투자극제 주사기] 건네주기", "count": 5 },
+    { "type": "findItem", "description": "레이드에서 [P22 (Product 22) 전투자극제 주사기] 찾기", "count": 5, "optional": true },
+    { "type": "giveItem", "description": "레이드에서 획득한 [xTG-12 해독제 주사기] 건네주기", "count": 5 },
+    { "type": "findItem", "description": "레이드에서 [xTG-12 해독제 주사기] 찾기", "count": 5, "optional": true },
+    { "type": "plantItem", "description": "등대(Lighthouse)의 위쪽 로그 샬레 의무실에 Obdolbos 칵테일 주사기 숨기기", "maps": ["lighthouse"] },
+    { "type": "plantItem", "description": "등대(Lighthouse)의 위쪽 로그 샬레 객실 홀 보급품 사이에 Obdolbos 칵테일 주사기 숨기기", "maps": ["lighthouse"] },
+    { "type": "plantItem", "description": "등대(Lighthouse)의 아래쪽 로그 샬레 탄약 보관소에 Obdolbos 칵테일 주사기 숨기기", "maps": ["lighthouse"] }
+   ]
+  },
+  {
+   "enName": "Stimulating Demand",
+   "name": "수요 자극",
+   "trader": "skier",
+   "wiki": "Stimulating_Demand",
+   "kappaRequired": true,
+   "objectives": [
+    { "type": "shoot", "description": "등대(Lighthouse)에서 7.62x54R 구경 무기로 로그 또는 굿즈(The Goons) 사살하기", "count": 5, "maps": ["lighthouse"] },
+    { "type": "findQuestItem", "description": "등대(Lighthouse)의 로그 샬레에서 화물 꾸러미(로그용 보급품 상자)를 찾아 획득하기", "maps": ["lighthouse"], "questItem": "로그용 보급품 상자" },
+    { "type": "giveQuestItem", "description": "꾸러미 건네주기", "questItem": "로그용 보급품 상자" }
+   ]
+  },
+  {
+   "enName": "To the Light - Trust but Verify",
+   "name": "빛을 향해 - 믿되 검증하라",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_Trust_but_Verify",
+   "objectives": [
+    { "type": "plantQuestItem", "description": "연구소(The Lab)의 무기 시험장 근처 서버실에 허위 데이터가 담긴 하드 드라이브 숨기기 (한 레이드 안에서)", "maps": ["the-lab"], "questItem": "허위 데이터가 담긴 하드 드라이브" },
+    { "type": "extract", "description": "그 뒤 환기구(Ventilation Shaft)로 탈출하기", "optional": true, "maps": ["the-lab"] },
+    { "type": "extract", "description": "연구소(The Lab)에서 환기구(Ventilation Shaft)로 탈출하기 (한 레이드 안에서)", "maps": ["the-lab"] }
+   ]
+  },
+  {
+   "enName": "To the Light - False Call",
+   "name": "빛을 향해 - 거짓 호출",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_False_Call",
+   "requires": ["To the Light - Trust but Verify"],
+   "objectives": [
+    { "type": "shoot", "description": "세관(Customs)에서 21:00~06:00 사이에 스캐브 사살하기 (한 레이드 안에서)", "count": 5, "maps": ["customs"] },
+    { "type": "shoot", "description": "세관(Customs)에서 21:00~06:00 사이에 PMC 사살하기 (한 레이드 안에서)", "count": 1, "maps": ["customs"] },
+    { "type": "plantItem", "description": "세관(Customs)의 다리 근처 편의점 에어컨 실외기에 Wi-Fi 카메라 숨기기 (한 레이드 안에서)", "maps": ["customs"] },
+    { "type": "useItem", "description": "세관(Customs)의 해안선(Shoreline) 이동 지점에서 노란색 신호탄 쏘기 (한 레이드 안에서)", "maps": ["customs"] }
+   ]
+  },
+  {
+   "enName": "To the Light - Someone Called?",
+   "name": "빛을 향해 - 누가 불렀나?",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_Someone_Called%3F",
+   "requires": ["To the Light - False Call"],
+   "objectives": [
+    { "type": "taskStatus", "description": "은신처로 돌아가기" }
+   ]
+  },
+  {
+   "enName": "To the Light - Clip Their Wings",
+   "name": "빛을 향해 - 날개 꺾기",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_Clip_Their_Wings",
+   "requires": ["To the Light - False Call"],
+   "objectives": [
+    { "type": "plantItem", "description": "삼림(Woods)의 산 위 기상 관측소에 신호 교란기 설치하기 (한 레이드 안에서)", "maps": ["woods"] },
+    { "type": "plantItem", "description": "삼림(Woods)의 제재소 경비실에 신호 교란기 설치하기 (한 레이드 안에서)", "maps": ["woods"] },
+    { "type": "transit", "description": "삼림(Woods)에서 세관(Customs)으로 이동 지점 이용하기 (한 레이드 안에서)", "maps": ["woods"] },
+    { "type": "plantItem", "description": "세관(Customs)의 도로변 공사 현장 2층에 신호 교란기 설치하기 (한 레이드 안에서)", "maps": ["customs"] },
+    { "type": "transit", "description": "세관(Customs)에서 해안선(Shoreline)으로 이동 지점 이용하기 (한 레이드 안에서)", "maps": ["customs"] },
+    { "type": "plantItem", "description": "해안선(Shoreline)의 휴양소 관리동 2층 기록 보관실에 신호 교란기 설치하기 (한 레이드 안에서)", "maps": ["shoreline"] }
+   ]
+  },
+  {
+   "enName": "To the Light - Fallen Bird",
+   "name": "빛을 향해 - 추락한 새",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_Fallen_Bird",
+   "requires": ["To the Light - Clip Their Wings"],
+   "objectives": [
+    { "type": "taskStatus", "description": "은신처로 돌아가기" }
+   ]
+  },
+  {
+   "enName": "To the Light - Dangerous Ambitions",
+   "name": "빛을 향해 - 위험한 야망",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_Dangerous_Ambitions",
+   "requires": ["To the Light - Fallen Bird"],
+   "objectives": [
+    { "type": "giveQuestItem", "description": "피스키퍼에게 등대지기의 부적 건네주기", "questItem": "등대지기의 부적" }
+   ]
+  },
+  {
+   "enName": "To the Light - Bite the Dust",
+   "name": "빛을 향해 - 최후",
+   "trader": "peacekeeper",
+   "wiki": "To_the_Light_-_Bite_the_Dust",
+   "requires": ["To the Light - Fallen Bird"],
+   "objectives": [
+    { "type": "giveQuestItem", "description": "방해 공작의 배후를 가리키는 증거 건네주기", "questItem": "등대지기의 부적" }
+   ]
+  },
+  {
+   "enName": "To the Light - A Time to Throw Stones",
+   "name": "빛을 향해 - 돌을 던질 때",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_A_Time_to_Throw_Stones",
+   "requires": ["To the Light - Bite the Dust"],
+   "objectives": [
+    { "type": "shoot", "description": "연구소(The Lab)에서 PMC 사살하기 (한 레이드 안에서)", "count": 2, "maps": ["the-lab"] }
+   ]
+  },
+  {
+   "enName": "To the Light - A Time to Gather Stones",
+   "name": "빛을 향해 - 돌을 거둘 때",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_A_Time_to_Gather_Stones",
+   "requires": ["To the Light - A Time to Throw Stones"],
+   "objectives": [
+    { "type": "giveItem", "description": "레이드에서 획득한 PMC 인식표 (레벨 30 이상) 건네주기", "count": 3 }
+   ]
+  },
+  {
+   "enName": "To the Light - The Other Side",
+   "name": "빛을 향해 - 반대편",
+   "trader": "mechanic",
+   "wiki": "To_the_Light_-_The_Other_Side",
+   "requires": ["To the Light - A Time to Gather Stones"],
+   "objectives": [
+    { "type": "plantItem", "description": "리저브(Reserve)의 아무 마크드 룸에 테라그룹 \"Blue Folders\" 자료 숨기기", "maps": ["reserve"] },
+    { "type": "plantItem", "description": "타르코프 시내(Streets of Tarkov)의 아무 마크드 룸에 테라그룹 \"Blue Folders\" 자료 숨기기", "maps": ["streets-of-tarkov"] },
+    { "type": "plantItem", "description": "세관(Customs)의 아무 마크드 룸에 테라그룹 \"Blue Folders\" 자료 숨기기", "maps": ["customs"] }
+   ]
+  },
+  {
+   "enName": "Can't Drink Away Skill",
+   "name": "실력은 술로 못 지운다",
+   "trader": "ragman",
+   "wiki": "Can%27t_Drink_Away_Skill",
+   "requires": ["Is This a Reference?"],
+   "objectives": [
+    { "type": "findItem", "description": "레이드에서 [금목걸이] 찾기", "count": 10 },
+    { "type": "giveItem", "description": "[금목걸이] 건네주기", "count": 10 },
+    { "type": "findItem", "description": "레이드에서 [황금 수탉 조각상] 찾기", "count": 5 },
+    { "type": "giveItem", "description": "[황금 수탉 조각상] 건네주기", "count": 5 },
+    { "type": "findItem", "description": "레이드에서 [황금 1GPhone 스마트폰] 찾기", "count": 5 },
+    { "type": "giveItem", "description": "[황금 1GPhone 스마트폰] 건네주기", "count": 5 },
+    { "type": "findItem", "description": "레이드에서 [평범한 지갑] 찾기", "count": 10 },
+    { "type": "giveItem", "description": "[평범한 지갑] 건네주기", "count": 10 },
+    { "type": "findItem", "description": "레이드에서 [WZ 지갑] 찾기", "count": 5 },
+    { "type": "giveItem", "description": "[WZ 지갑] 건네주기", "count": 5 }
+   ]
+  },
+  {
+   "enName": "Pay the Fare!",
+   "name": "요금을 내라!",
+   "trader": "ragman",
+   "wiki": "Pay_the_Fare!",
+   "objectives": [
+    { "type": "findItem", "description": "레이드에서 [파이프 렌치] 찾기" },
+    { "type": "giveItem", "description": "[파이프 렌치] 건네주기" },
+    { "type": "findItem", "description": "레이드에서 [라쳇 렌치] 찾기" },
+    { "type": "giveItem", "description": "[라쳇 렌치] 건네주기" },
+    { "type": "findItem", "description": "레이드에서 [전동 드릴] 찾기" },
+    { "type": "giveItem", "description": "[전동 드릴] 건네주기" }
+   ]
+  },
+  {
+   "enName": "Akimbo",
+   "name": "아킴보",
+   "trader": "ragman",
+   "wiki": "Akimbo",
+   "objectives": [
+    { "type": "shoot", "description": "등대(Lighthouse)에서 7.62x39 구경 무기로 흉부 또는 복부를 맞혀 아무 대상이나 사살하기 (한 레이드 안에서)", "count": 3, "maps": ["lighthouse"] },
+    { "type": "shoot", "description": "등대(Lighthouse)에서 7.62x51 구경 무기로 흉부 또는 복부를 맞혀 아무 대상이나 사살하기 (한 레이드 안에서)", "count": 3, "maps": ["lighthouse"] }
+   ]
+  },
+  {
+   "enName": "Sisyphus",
+   "name": "시시포스",
+   "trader": "ragman",
+   "wiki": "Sisyphus",
+   "objectives": [
+    { "type": "findQuestItem", "description": "삼림(Woods)의 ZB-014 벙커에서 첫 번째 밀수업자 케이스를 찾아 획득하기", "maps": ["woods"], "questItem": "밀수업자용 물품 케이스 1" },
+    { "type": "plantQuestItem", "description": "리저브(Reserve)의 삼림(Woods) 이동 지점 근처 경비 초소에 첫 번째 케이스 숨기기", "maps": ["reserve"], "questItem": "밀수업자용 물품 케이스 1" },
+    { "type": "findQuestItem", "description": "삼림(Woods)의 USEC 검문소 판잣집 뒤에서 두 번째 밀수업자 케이스를 찾아 획득하기", "maps": ["woods"], "questItem": "밀수업자용 물품 케이스 2" },
+    { "type": "plantQuestItem", "description": "등대(Lighthouse)의 기차 승강장에 있는 우랄 트럭 실린 화차에 두 번째 케이스 숨기기", "maps": ["lighthouse"], "questItem": "밀수업자용 물품 케이스 2" },
+    { "type": "extract", "description": "등대(Lighthouse) 또는 리저브(Reserve)에서 장갑 열차로 탈출하기 (숨기기 목표를 모두 마치면 나타남)", "maps": ["lighthouse", "reserve"] }
+   ]
+  },
+  {
+   "enName": "Honest Review",
+   "name": "솔직한 후기",
+   "trader": "btr-driver",
+   "wiki": "Honest_Review",
+   "objectives": [
+    { "type": "visit", "description": "등대(Lighthouse)의 마을 교차로 정류장 정찰하기", "maps": ["lighthouse"] },
+    { "type": "visit", "description": "등대(Lighthouse)의 큰길 UN 검문소 정류장 정찰하기", "maps": ["lighthouse"] },
+    { "type": "visit", "description": "등대(Lighthouse)의 정수장 두 본관 사이 주차장 정류장 정찰하기", "maps": ["lighthouse"] },
+    { "type": "taskStatus", "description": "BTR 운전사에게 의견 전하기" }
+   ]
+  },
+  {
+   "enName": "I'm Something of a BTR Myself",
+   "name": "나도 나름 BTR이지",
+   "trader": "btr-driver",
+   "wiki": "I%27m_Something_of_a_BTR_Myself",
+   "requires": ["Honest Review"],
+   "objectives": [
+    { "type": "shoot", "description": "등대(Lighthouse)에서 7.62x54R 구경 무기로 스캐브 사살하기", "count": 15, "maps": ["lighthouse"] },
+    { "type": "taskStatus", "description": "BTR 운전사에게 보고하기" }
+   ]
+  }
+ ]
+}

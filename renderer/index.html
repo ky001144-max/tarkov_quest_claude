@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; img-src 'self' data: https://assets.tarkov.dev; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'">
+    <title>EFT Where Am I KO</title>
+    <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+    <aside id="sidebar">
+        <header class="side-header">
+            <div class="brand">
+                <span class="brand-mark">◎</span>
+                <div>
+                    <div class="brand-title">EFT Where Am I</div>
+                    <div class="brand-sub">한국어 · 퀘스트 트래커</div>
+                </div>
+            </div>
+            <button id="btnSettings" class="icon-btn" title="설정">⚙</button>
+        </header>
+
+        <div class="map-row">
+            <select id="mapSelect" title="맵 선택"></select>
+            <select id="modeSelect" title="게임 모드">
+                <option value="regular">PvP</option>
+                <option value="pve">PvE</option>
+            </select>
+        </div>
+
+        <section class="card location-card">
+            <div class="location-top">
+                <button id="btnLocate" class="primary-btn">📍 내 위치 확인</button>
+                <label class="switch" title="게임에서 스크린샷(PrtSc)을 찍으면 자동으로 위치를 표시합니다">
+                    <input type="checkbox" id="quickAutoScreenshot"><span>자동</span>
+                </label>
+            </div>
+            <div id="locationStatus" class="muted small">스크린샷을 찍으면 위치가 표시됩니다.</div>
+        </section>
+
+        <div class="section-head">
+            <h2>등록된 퀘스트 <span id="registeredCount" class="count">0</span></h2>
+            <div class="section-actions">
+                <button id="btnClearAll" class="ghost-btn small" title="이 맵의 등록 퀘스트 모두 해제">전체 해제</button>
+                <button id="btnOpenPicker" class="accent-btn">＋ 퀘스트 등록</button>
+            </div>
+        </div>
+        <div id="questList" class="quest-list"></div>
+
+        <footer class="side-footer muted small">
+            <span id="dataStatus">데이터 불러오는 중…</span>
+        </footer>
+    </aside>
+    <div id="resizer" title="드래그하여 너비 조절"></div>
+
+    <main id="mapWrap">
+        <div id="map"></div>
+        <div id="mapLoading" class="map-loading">지도 불러오는 중…</div>
+        <div class="map-controls">
+            <div id="levelControl" class="control-box"></div>
+            <div class="control-box row">
+                <div id="styleControl" class="seg"></div>
+                <label class="switch small-switch"><input type="checkbox" id="toggleExtracts"><span>탈출구</span></label>
+            </div>
+        </div>
+        <button id="btnToggleSidebar" class="sidebar-toggle" title="패널 접기/펼치기">⟨</button>
+        <div id="coordReadout" class="coord-readout"></div>
+        <div id="toast" class="toast"></div>
+    </main>
+</div>
+
+<!-- 퀘스트 등록 모달 -->
+<div id="pickerModal" class="modal hidden">
+    <div class="modal-box picker">
+        <div class="modal-head">
+            <h3>퀘스트 등록 — <span id="pickerMapName"></span></h3>
+            <button class="icon-btn" data-close>✕</button>
+        </div>
+        <div class="picker-tabs">
+            <div class="seg">
+                <button data-picker-tab="normal" class="active">일반 퀘스트</button>
+                <button data-picker-tab="event">이벤트 퀘스트 <span id="pickerEventActive" class="tab-count"></span></button>
+            </div>
+            <span class="muted small event-only">이벤트 기간에만 받을 수 있는 퀘스트입니다 (타르코프 위키 기준)</span>
+        </div>
+        <div class="picker-filters">
+            <input id="pickerSearch" type="search" placeholder="퀘스트 이름 · 목표 내용 검색">
+            <select id="pickerEvent" class="event-only"><option value="">전체 이벤트</option></select>
+            <label class="check event-only"><input type="checkbox" id="pickerEnded"> 종료된 이벤트 포함</label>
+            <select id="pickerTrader"><option value="">전체 상인</option></select>
+            <label class="check normal-only"><input type="checkbox" id="pickerKappa"> 카파 필요만</label>
+            <label class="check"><input type="checkbox" id="pickerAnyMap"> 맵 무관 퀘스트 포함</label>
+        </div>
+        <div class="picker-bulk">
+            <button id="pickerSelectVisible" class="ghost-btn small">보이는 항목 모두 선택</button>
+            <button id="pickerClearVisible" class="ghost-btn small">보이는 항목 선택 해제</button>
+            <span id="pickerVisibleCount" class="muted small"></span>
+        </div>
+        <div id="pickerList" class="picker-list"></div>
+        <div class="modal-foot">
+            <span id="pickerSelectedCount" class="muted"></span>
+            <div>
+                <button class="ghost-btn" data-close>취소</button>
+                <button id="pickerApply" class="accent-btn">등록</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 설정 모달 -->
+<div id="settingsModal" class="modal hidden">
+    <div class="modal-box settings">
+        <div class="modal-head">
+            <h3>설정</h3>
+            <button class="icon-btn" data-close>✕</button>
+        </div>
+        <div class="settings-body">
+            <h4>경로</h4>
+            <label class="field">스크린샷 폴더
+                <div class="path-row"><input id="setScreenshotPath" type="text" readonly><button class="ghost-btn" data-pick="screenshotPath">찾기</button></div>
+            </label>
+            <label class="field">게임 로그 폴더 (자동 맵 전환용)
+                <div class="path-row"><input id="setLogPath" type="text" readonly><button class="ghost-btn" data-pick="logPath">찾기</button></div>
+            </label>
+            <button id="btnDetectPaths" class="ghost-btn small">경로 자동 탐지</button>
+
+            <h4>위치 확인</h4>
+            <label class="check"><input type="checkbox" data-setting="autoScreenshot"> 스크린샷 자동 감지 (찍으면 바로 위치 표시)</label>
+            <label class="check"><input type="checkbox" data-setting="autoFloor"> 높이에 따라 층 자동 전환</label>
+            <label class="check"><input type="checkbox" data-setting="autoPan"> 위치 마커 따라가기 (자동 패닝)</label>
+            <label class="field">데드존 비율 <span id="deadZoneValue"></span>
+                <input type="range" min="50" max="99" data-setting="deadZonePercent">
+                <span class="muted small">50%에 가까울수록 중앙 근처에서, 99%에 가까울수록 화면 가장자리에서 지도가 이동합니다.</span>
+            </label>
+
+            <h4>게임 연동</h4>
+            <label class="check"><input type="checkbox" data-setting="autoMap"> 레이드 시작 시 해당 맵으로 자동 전환 (로그 감시)</label>
+            <label class="check"><input type="checkbox" data-setting="autoCleanup"> 레이드 종료 시 스크린샷 자동 삭제</label>
+
+            <h4>성능</h4>
+            <label class="check"><input type="checkbox" data-setting="hardwareAcceleration"> GPU 가속 사용 (재시작 후 적용)</label>
+            <span class="muted small">꺼 두면 메모리를 덜 쓰고 게임과 GPU를 나눠 쓰지 않습니다. 지도 이동이 버벅이면 켜세요.</span>
+
+            <h4>데이터</h4>
+            <button id="btnRefreshData" class="ghost-btn">tarkov.dev 데이터 새로 받기</button>
+            <p class="muted small">퀘스트/맵 데이터: tarkov.dev (the-hideout/tarkov-data-manager). 6시간마다 자동 갱신되며, 오프라인일 때는 마지막으로 받은 데이터를 사용합니다.</p>
+            <p class="muted small">단축키: F5 새로고침 · F12 개발자 도구</p>
+        </div>
+    </div>
+</div>
+
+<script src="../node_modules/leaflet/dist/leaflet.js"></script>
+<script src="map.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
