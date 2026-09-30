@@ -5,12 +5,12 @@
 const fs = require('fs');
 const path = require('path');
 const { wikiUrl, parseWikiResponse, applyWikiExtracts } = require('./wiki-extracts');
-const { fetchWikiEvents } = require('./wiki-events');
+const { fetchWikiEvents, EVENTS_VERSION } = require('./wiki-events');
 
 const JSON_API = 'https://json.tarkov.dev';
 const MAX_AGE_MS = 6 * 3600 * 1000;
 // 가공 결과 형식이 바뀌면 올린다 (이전 캐시 무효화)
-const BUILD_VERSION = 6;
+const BUILD_VERSION = 7;
 // 위키 이벤트 퀘스트는 자주 바뀌지 않아 하루에 한 번만 새로 받는다
 const EVENTS_MAX_AGE_MS = 24 * 3600 * 1000;
 const HANGUL = /[가-힣]/;
@@ -32,6 +32,7 @@ class DataService {
         this.wikiExtractsPath = path.join(path.dirname(bundledMapsPath), 'wiki_extracts.json');
         this.eventTasksPath = path.join(path.dirname(bundledMapsPath), 'event_tasks.json');
         this.eventKoPath = path.join(path.dirname(bundledMapsPath), 'event_ko.json');
+        this.eventLocationsPath = path.join(path.dirname(bundledMapsPath), 'event_locations.json');
         fs.mkdirSync(cacheDir, { recursive: true });
     }
 
@@ -105,7 +106,11 @@ class DataService {
     // 위키 이벤트 퀘스트 (가공 결과를 캐시하고, 받지 못하면 이전 캐시 → 동봉한 스냅샷 순으로 쓴다)
     async getWikiEvents(force) {
         const file = this.cacheFile('wiki-events.json');
-        const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
+        const readJson = (p) => {
+            const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+            if (data.v !== EVENTS_VERSION) throw new Error('old events');
+            return data;
+        };
         if (!force) {
             try {
                 if (Date.now() - fs.statSync(file).mtimeMs < EVENTS_MAX_AGE_MS) return readJson(file);
@@ -122,6 +127,14 @@ class DataService {
                 } catch { /* 다음 후보 */ }
             }
             return { quests: [] };
+        }
+    }
+
+    loadEventLocations() {
+        try {
+            return JSON.parse(fs.readFileSync(this.eventLocationsPath, 'utf8')).quests || {};
+        } catch {
+            return {};
         }
     }
 
@@ -333,7 +346,7 @@ class DataService {
                 count: o.count || 0,
                 optional: !!o.optional,
                 maps: (o.maps || []).map((m) => mapIdByNormalized[m]).filter(Boolean),
-                zones: [],
+                zones: o.zones || [],
                 locations: [],
                 questItem: o.questItem ? { name: o.questItem, icon: '' } : null,
             }));
@@ -349,7 +362,7 @@ class DataService {
                 kappaRequired: !!x.kappaRequired,
                 lightkeeperRequired: !!x.lightkeeperRequired,
                 requires: x.requires || [],
-                mapIds: [...new Set([...objectives.flatMap((o) => o.maps), ...taskMaps])],
+                mapIds: [...new Set([...objectives.flatMap((o) => [...o.maps, ...o.zones.map((z) => z.map)]), ...taskMaps])],
                 objectives,
                 link: `https://escapefromtarkov.fandom.com/wiki/${x.wiki}`,
                 ...extra,
@@ -363,6 +376,11 @@ class DataService {
         // 이벤트 퀘스트 (이벤트 기간에만 받을 수 있어 event 정보로 따로 구분한다)
         const eventKo = this.loadEventKo();
         const koOf = (dict, en) => eventKo[dict]?.[en] || en;
+        // 위키 가이드 지도 기준 대략 위치 (윤곽 없이 번호 마커만 표시)
+        const eventLocations = this.loadEventLocations();
+        const zonesOf = (enName, description) => (eventLocations[enName] || [])
+            .filter((l) => mapIdByNormalized[l.map] && description.toLowerCase().includes(l.match.toLowerCase()))
+            .flatMap((l) => l.positions.map((p) => ({ map: mapIdByNormalized[l.map], position: p, outline: [], approx: true })));
         const traderKeyByWikiName = (name) => traderList.find((t) => normName(t.normalizedName) === normName(name))?.normalizedName || name;
         for (const q of wikiEvents.quests || []) {
             const event = {
@@ -386,7 +404,9 @@ class DataService {
                 requires: q.requires,
                 kappaRequired: q.kappaRequired,
                 maps: q.maps,
-                objectives: q.objectives.map((o) => ({ description: koOf('text', o.description), optional: o.optional, maps: o.maps })),
+                objectives: q.objectives.map((o) => ({
+                    description: koOf('text', o.description), optional: o.optional, maps: o.maps, zones: zonesOf(q.enName, o.description),
+                })),
             }, 'event', { event });
         }
         for (const t of added) {

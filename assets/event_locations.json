@@ -1,0 +1,32 @@
+{
+ "_comment": "이벤트 퀘스트 목표 위치 (tarkov.dev에 없는 퀘스트용). 위키 퀘스트 문서의 가이드 지도 이미지에 표시된 위치를 탈출구 기준으로 게임 좌표로 옮긴 대략 위치. match 는 위키 영문 목표 문장에 들어 있는 글자(대소문자 무시), map 은 tarkov.dev 맵 normalizedName.",
+ "quests": {
+  "Number Temporarily Unavailable": [
+   { "match": "Prapor's new camp", "map": "lighthouse", "positions": [{ "x": -81.9, "y": 6.8, "z": 456.9 }] }
+  ],
+  "Scope the Clearing": [
+   { "match": "smuggler train platform", "map": "lighthouse", "positions": [{ "x": 6.9, "y": 13.3, "z": -892.5 }, { "x": 4.4, "y": 13.3, "z": -851.6 }] },
+   { "match": "Woods transit", "map": "lighthouse", "positions": [{ "x": 99.0, "y": 6.8, "z": -934.3 }] }
+  ],
+  "Ease the Move": [
+   { "match": "first Rogue stash", "map": "lighthouse", "positions": [{ "x": -46.2, "y": 1.2, "z": -381.0 }, { "x": -170.1, "y": 17.5, "z": -380.8 }, { "x": -320.0, "y": 17.5, "z": -222.6 }] },
+   { "match": "second Rogue stash", "map": "lighthouse", "positions": [{ "x": -433.1, "y": 17.5, "z": -282.0 }, { "x": -447.6, "y": 17.5, "z": -333.2 }] },
+   { "match": "grotto", "map": "lighthouse", "positions": [{ "x": 176.5, "y": 1.2, "z": -481.8 }] }
+  ],
+  "Fog of War": [
+   { "match": "BRDM", "map": "lighthouse", "positions": [{ "x": -72.9, "y": 12.3, "z": -696.8 }] },
+   { "match": "guard tower", "map": "lighthouse", "positions": [{ "x": 12.9, "y": 1.2, "z": -445.5 }] },
+   { "match": "roof", "map": "lighthouse", "positions": [{ "x": 35.1, "y": 1.2, "z": -621.6 }, { "x": -102.5, "y": 12.3, "z": -744.3 }, { "x": -196.1, "y": 12.3, "z": -669.6 }] }
+  ],
+  "All-Inclusive Support": [
+   { "match": "mountain lake cabin", "map": "lighthouse", "positions": [{ "x": -383.8, "y": 27.2, "z": -632.9 }] },
+   { "match": "transit from Lighthouse to Reserve", "map": "lighthouse", "positions": [{ "x": -293.3, "y": 15.3, "z": -780.7 }] }
+  ],
+  "Callsign Malachite": [
+   { "match": "personnel file on Lighthouse", "map": "lighthouse", "positions": [{ "x": -383.8, "y": 27.2, "z": -632.9 }] }
+  ],
+  "A Familiar Face...": [
+   { "match": "Armored Train", "map": "lighthouse", "positions": [{ "x": 6.3, "y": 13.3, "z": -869.5 }] }
+  ]
+ }
+}

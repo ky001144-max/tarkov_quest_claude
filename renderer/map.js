@@ -28,6 +28,12 @@ function getCRS(cfg) {
     });
 }
 
+// 이 거리(미터) 안에 있는 퀘스트 마커는 하나로 합쳐 표시한다
+const MERGE_DISTANCE = 3;
+const MERGE_HEIGHT = 2.5;
+const CHIP_SIZE = 22;
+const CHIP_GAP = 2;
+
 // 게임 좌표 → Leaflet 좌표 (lat = z, lng = x)
 function pos(p) {
     return [p.z, p.x];
@@ -124,6 +130,10 @@ class TarkovMap {
         this.playerMarker = null;
         this.objectiveTargets = {};
         this.svgGroups = [];
+        // 지도를 불러오는 동안 이전 지도의 레이어에 마커를 넣지 않도록 비워 둔다
+        this.extractLayer = null;
+        this.questLayer = null;
+        this.playerLayer = null;
 
         const styles = this.availableStyles(cfg);
         this.style = styles.includes(preferredStyle) ? preferredStyle : styles[0];
@@ -327,63 +337,82 @@ class TarkovMap {
     }
 
     // entries: [{ task, color, number, completed:Set }]
+    // 여러 퀘스트(또는 한 퀘스트의 여러 목표)가 같은 지점을 쓰면 마커가 겹쳐 하나만 보이므로,
+    // 같은 지점의 마커는 하나로 합쳐 퀘스트 번호를 나란히 보여주고 팝업에 목표를 모두 적는다
     setQuestMarkers(entries) {
         if (!this.questLayer) return;
         this.questLayer.clearLayers();
         this.objectiveTargets = {};
         const apiIds = this.mapInfo.apiIds;
+        const spots = [];
+        const addToSpot = (position, top, bottom, item) => {
+            let spot = spots.find((s) => Math.hypot(s.position.x - position.x, s.position.z - position.z) < MERGE_DISTANCE
+                && Math.abs((s.position.y || 0) - (position.y || 0)) < MERGE_HEIGHT);
+            if (!spot) {
+                spot = { position, top, bottom, items: [] };
+                spots.push(spot);
+            }
+            spot.items.push(item);
+        };
         for (const { task, color, number, completed } of entries) {
             for (const obj of task.objectives) {
                 const done = completed.has(obj.id);
-                const popupHtml = (p) => `<div class="popup-task" style="border-color:${color}">${escapeHtml(taskTitle(task))}</div>`
+                const popupHtml = (p, approx) => `<div class="popup-task" style="border-color:${color}">${escapeHtml(taskTitle(task))}</div>`
                     + `<div class="popup-obj">${escapeHtml(obj.description)}</div>`
                     + (obj.questItem ? `<div class="popup-item">퀘스트 아이템: ${escapeHtml(obj.questItem.name)}</div>` : '')
-                    + `<div class="popup-elev">높이: ${p.y.toFixed(1)}</div>`;
-                const targets = [];
+                    + (approx ? '<div class="popup-elev">위키 가이드 지도 기준 대략 위치</div>' : `<div class="popup-elev">높이: ${p.y.toFixed(1)}</div>`);
                 for (const zone of obj.zones) {
                     if (!apiIds.includes(zone.map)) continue;
                     if (!this.bounds.contains(pos(zone.position))) continue;
-                    const levelOpts = { gamePos: zone.position, top: zone.top, bottom: zone.bottom };
-                    const group = L.layerGroup();
                     if (zone.outline.length >= 3) {
                         L.polygon(zone.outline.map(pos), {
-                            color, weight: 2, fillOpacity: 0.15, pane: 'zonePane', interactive: false, ...levelOpts,
+                            color, weight: 2, fillOpacity: 0.15, pane: 'zonePane', interactive: false,
+                            gamePos: zone.position, top: zone.top, bottom: zone.bottom,
                             className: done ? 'done-zone' : '',
-                        }).addTo(group);
+                        }).addTo(this.questLayer);
                     }
-                    const marker = L.marker(pos(zone.position), {
-                        icon: L.divIcon({
-                            className: `quest-marker${done ? ' done' : ''}`,
-                            html: `<span style="background:${color}">${number}</span>`,
-                            iconSize: [22, 22],
-                            iconAnchor: [11, 11],
-                        }),
-                        riseOnHover: true,
-                        ...levelOpts,
-                    }).bindPopup(popupHtml(zone.position));
-                    marker.addTo(group);
-                    group.addTo(this.questLayer);
-                    targets.push({ marker, position: zone.position });
+                    addToSpot(zone.position, zone.top, zone.bottom, {
+                        kind: 'zone', color, number, done, objId: obj.id, popup: popupHtml(zone.position, zone.approx),
+                    });
                 }
                 for (const loc of obj.locations) {
                     if (!apiIds.includes(loc.map)) continue;
                     for (const p of loc.positions) {
                         if (!this.bounds.contains(pos(p))) continue;
-                        const marker = L.marker(pos(p), {
-                            icon: L.divIcon({
-                                className: `quest-item-marker${done ? ' done' : ''}`,
-                                html: `<span style="border-color:${color}">${number}</span>`,
-                                iconSize: [22, 22],
-                                iconAnchor: [11, 11],
-                            }),
-                            riseOnHover: true,
-                            gamePos: p,
-                        }).bindPopup(popupHtml(p));
-                        marker.addTo(this.questLayer);
-                        targets.push({ marker, position: p });
+                        addToSpot(p, undefined, undefined, { kind: 'item', color, number, done, objId: obj.id, popup: popupHtml(p) });
                     }
                 }
-                if (targets.length) this.objectiveTargets[obj.id] = targets;
+            }
+        }
+        for (const spot of spots) {
+            // 번호 칩은 퀘스트·표시 종류마다 하나 (같은 퀘스트의 목표 여러 개는 칩 하나로)
+            const chips = [];
+            for (const it of spot.items) {
+                const chip = chips.find((c) => c.number === it.number && c.kind === it.kind);
+                if (chip) chip.done = chip.done && it.done;
+                else chips.push({ number: it.number, kind: it.kind, color: it.color, done: it.done });
+            }
+            chips.sort((a, b) => a.number - b.number);
+            const width = chips.length * CHIP_SIZE + (chips.length - 1) * CHIP_GAP;
+            const html = chips.map((c) => (c.kind === 'zone'
+                ? `<span class="qm-chip zone${c.done ? ' done' : ''}" style="background:${c.color}">${c.number}</span>`
+                : `<span class="qm-chip item${c.done ? ' done' : ''}" style="border-color:${c.color}">${c.number}</span>`)).join('');
+            const popups = [...new Set(spot.items.map((it) => it.popup))];
+            const marker = L.marker(pos(spot.position), {
+                icon: L.divIcon({
+                    className: `quest-marker${chips.every((c) => c.done) ? ' done' : ''}`,
+                    html: `<div class="qm-chips">${html}</div>`,
+                    iconSize: [width, CHIP_SIZE],
+                    iconAnchor: [width / 2, CHIP_SIZE / 2],
+                }),
+                riseOnHover: true,
+                gamePos: spot.position,
+                top: spot.top,
+                bottom: spot.bottom,
+            }).bindPopup(popups.join('<hr class="popup-sep">'), { maxHeight: 320 });
+            marker.addTo(this.questLayer);
+            for (const objId of new Set(spot.items.map((it) => it.objId))) {
+                (this.objectiveTargets[objId] ||= []).push({ marker, position: spot.position });
             }
         }
         this.refreshMarkerLevels();
@@ -406,18 +435,28 @@ class TarkovMap {
         setTimeout(() => t.marker.openPopup(), 450);
     }
 
+    // 지금 지도 범위 안의 좌표인지 (다른 맵의 스크린샷인지 확인용)
+    containsPosition(p) {
+        return !!this.bounds && this.bounds.contains(pos(p));
+    }
+
     setPlayer(p, { autoFloor, autoPan, deadZonePercent }) {
-        if (!this.map) return;
+        // 지도를 불러오는 중이면 건너뛴다 (불러오기가 끝나면 마지막 위치를 다시 표시한다)
+        if (!this.map || !this.playerLayer) return;
         let addRotation = this.cfg.coordinateRotation || 0;
         if (addRotation === 90 || addRotation === 270) addRotation += 180;
         const rotation = (p.rotation ?? 0) + addRotation;
         const icon = L.divIcon({
             className: 'player-marker',
-            html: `<svg viewBox="0 0 40 40" width="40" height="40" style="transform: rotate(${rotation}deg)">
-                     <path d="M20 2 L31 30 L20 23 L9 30 Z" fill="#22d3ee" stroke="#0b1f24" stroke-width="2" stroke-linejoin="round"/>
+            // 가운데 점이 정확한 위치이고, 부채꼴·화살촉은 바라보는 방향만 나타낸다
+            // (예전 화살표는 끝이 위치보다 18px 앞에 있어 끝을 내 위치로 읽으면 수십 미터 어긋나 보였다)
+            html: `<svg viewBox="0 0 48 48" width="48" height="48" style="transform: rotate(${rotation}deg)">
+                     <path d="M24 24 L9 8 A22 22 0 0 1 39 8 Z" fill="#22d3ee" fill-opacity=".5" stroke="#22d3ee" stroke-width="1"/>
+                     <path d="M24 3 L29.5 12 L24 10 L18.5 12 Z" fill="#22d3ee" stroke="#0b1f24" stroke-width="1.2" stroke-linejoin="round"/>
+                     <circle cx="24" cy="24" r="6" fill="#22d3ee" stroke="#fff" stroke-width="2.5"/>
                    </svg>`,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
+            iconSize: [48, 48],
+            iconAnchor: [24, 24],
         });
         const latlng = pos(p.position);
         if (this.playerMarker) {

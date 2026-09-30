@@ -5,6 +5,8 @@
 const { WIKI_API, WIKI_TITLES, normName, cleanWikitext } = require('./wiki-extracts');
 
 const PAGE_BATCH = 50;
+// 가공 결과 형식·판별 기준이 바뀌면 올린다 (이전 캐시·스냅샷 무효화)
+const EVENTS_VERSION = 2;
 
 // 위키 맵 문서 제목 → tarkov.dev 맵 normalizedName
 const MAP_BY_WIKI_TITLE = {
@@ -53,17 +55,21 @@ const links = (s) => [...String(s || '').matchAll(/\[\[([^\]|#]+)(?:[#|][^\]]*)?
 const mapKeysIn = (s) => [...new Set(links(s).map((l) => MAP_BY_WIKI_TITLE[normName(l)]).filter(Boolean))];
 
 // Events 문서의 "== 이벤트 이름 (날짜) ==" 섹션마다 링크된 퀘스트 → 가장 최근 이벤트
+// "This section describes past events." 안내 틀 위쪽 섹션만 진행 중인 이벤트로 본다
 function parseEvents(text) {
     const byQuest = {};
+    let current = true;
     for (const part of String(text || '').split(/\n(?===[^=])/)) {
         const head = part.match(/^==\s*(.+?)\s*==/);
-        if (!head) continue;
-        const m = head[1].match(/^(.*?)\s*\(([^)]*\d{4})\)\s*$/);
-        const event = { name: (m ? m[1] : head[1]).trim(), date: m ? m[2].trim() : '' };
-        for (const l of links(part)) {
-            const key = normName(l);
-            if (!byQuest[key]) byQuest[key] = event;
+        if (head) {
+            const m = head[1].match(/^(.*?)\s*\(([^)]*\d{4})\)\s*$/);
+            const event = { name: (m ? m[1] : head[1]).trim(), date: m ? m[2].trim() : '', current };
+            for (const l of links(part)) {
+                const key = normName(l);
+                if (!byQuest[key]) byQuest[key] = event;
+            }
         }
+        if (/describes past events/i.test(part)) current = false;
     }
     return byQuest;
 }
@@ -96,7 +102,8 @@ function parseQuest(title, text, events) {
         maps: mapKeysIn(box.location),
         requires: links(box.previous),
         kappaRequired: /yes/i.test(cleanWikitext(box.reqkappa)),
-        active: !/\{\{Historical content/i.test(text),
+        // 지난 이벤트 퀘스트도 위키 문서에 Historical 표시가 빠진 경우가 있어 진행 중인 이벤트 섹션에 있는지도 본다
+        active: !/\{\{Historical content/i.test(text) && !!events[normName(title)]?.current,
         event: events[normName(title)] || null,
         objectives,
     };
@@ -109,9 +116,10 @@ async function fetchWikiEvents() {
     if (!titles.length) throw new Error('이벤트 분류가 비어 있음');
     const [pages, eventsPage] = await Promise.all([fetchPages(titles), fetchPages(['Events'])]);
     const events = parseEvents(eventsPage.Events);
-    const quests = titles.map((t) => parseQuest(t, pages[t] || '', events)).filter(Boolean);
+    // Events 문서의 어느 이벤트에도 없는 문서(테스트용 퀘스트 등)는 이벤트 퀘스트로 보지 않는다
+    const quests = titles.map((t) => parseQuest(t, pages[t] || '', events)).filter((q) => q?.event);
     if (!quests.length) throw new Error('이벤트 퀘스트를 찾지 못함');
-    return { fetchedAt: new Date().toISOString(), quests };
+    return { v: EVENTS_VERSION, fetchedAt: new Date().toISOString(), quests };
 }
 
-module.exports = { fetchWikiEvents };
+module.exports = { fetchWikiEvents, EVENTS_VERSION };

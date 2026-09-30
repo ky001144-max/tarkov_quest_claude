@@ -1,5 +1,6 @@
 {
- "fetchedAt": "2026-09-27T15:26:43.593Z",
+ "v": 2,
+ "fetchedAt": "2026-09-30T13:30:28.228Z",
  "quests": [
   {
    "enName": "A Familiar Face...",
@@ -15,7 +16,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -38,7 +40,8 @@
    "active": false,
    "event": {
     "name": "A Key to Salvation",
-    "date": "24 June 2024"
+    "date": "24 June 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -97,7 +100,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -164,7 +168,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -202,7 +207,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -237,7 +243,8 @@
    "active": false,
    "event": {
     "name": "Smugglers 2026",
-    "date": "12 March 2026"
+    "date": "12 March 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -248,24 +255,6 @@
     },
     {
      "description": "Obtain and hand over the key to the locked case",
-     "optional": false,
-     "sub": false,
-     "maps": []
-    }
-   ]
-  },
-  {
-   "enName": "Action test",
-   "wiki": "Action_test",
-   "trader": "Fence",
-   "maps": [],
-   "requires": [],
-   "kappaRequired": false,
-   "active": false,
-   "event": null,
-   "objectives": [
-    {
-     "description": "Eliminate 3 PMC operatives in a single raid",
      "optional": false,
      "sub": false,
      "maps": []
@@ -288,7 +277,8 @@
    "active": false,
    "event": {
     "name": "Tarkov Hospitality",
-    "date": "5 June 2026"
+    "date": "5 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -327,10 +317,11 @@
     "Debut"
    ],
    "kappaRequired": false,
-   "active": true,
+   "active": false,
    "event": {
     "name": "Afterparty",
-    "date": "8 December 2023"
+    "date": "8 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -409,7 +400,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -454,7 +446,8 @@
    "active": false,
    "event": {
     "name": "Full Speed Ahead",
-    "date": "15 May 2026"
+    "date": "15 May 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -496,7 +489,8 @@
    "active": false,
    "event": {
     "name": "Art of Explosion",
-    "date": "29 April 2025"
+    "date": "29 April 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -529,7 +523,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -581,7 +576,8 @@
    "active": false,
    "event": {
     "name": "Casus belli",
-    "date": "9 April 2026"
+    "date": "9 April 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -631,7 +627,8 @@
    "active": false,
    "event": {
     "name": "Bad Feeling",
-    "date": "26 July 2024"
+    "date": "26 July 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -664,7 +661,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -745,7 +743,8 @@
    "active": false,
    "event": {
     "name": "Mortar Strike",
-    "date": "26 September 2024"
+    "date": "26 September 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -776,7 +775,8 @@
    "active": false,
    "event": {
     "name": "Bloodhounds Reveal",
-    "date": "9 June 2023"
+    "date": "9 June 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -799,7 +799,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -822,7 +823,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -845,7 +847,8 @@
    "active": false,
    "event": {
     "name": "April Fools",
-    "date": "1 April 2026"
+    "date": "1 April 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -876,7 +879,8 @@
    "active": false,
    "event": {
     "name": "Smugglers 2026",
-    "date": "12 March 2026"
+    "date": "12 March 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -913,7 +917,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -938,7 +943,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -979,7 +985,8 @@
    "active": false,
    "event": {
     "name": "Casus belli",
-    "date": "9 April 2026"
+    "date": "9 April 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -1010,7 +1017,8 @@
    "active": false,
    "event": {
     "name": "Arms Race",
-    "date": "16 July 2024"
+    "date": "16 July 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1054,7 +1062,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1088,7 +1097,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1121,7 +1131,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1144,7 +1155,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1177,7 +1189,8 @@
    "active": false,
    "event": {
     "name": "Smugglers 2024",
-    "date": "6 December 2024"
+    "date": "6 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1200,7 +1213,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1260,7 +1274,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1327,7 +1342,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -1350,7 +1366,8 @@
    "active": false,
    "event": {
     "name": "Hardcore Mode",
-    "date": "7 July 2023"
+    "date": "7 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -1371,7 +1388,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -1396,7 +1414,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -1447,7 +1466,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1472,7 +1492,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1504,7 +1525,8 @@
    "active": false,
    "event": {
     "name": "Mortar Strike",
-    "date": "26 September 2024"
+    "date": "26 September 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1544,7 +1566,8 @@
    "active": false,
    "event": {
     "name": "Supply and Demand",
-    "date": "2 August 2024"
+    "date": "2 August 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1599,7 +1622,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -1624,7 +1648,8 @@
    "active": false,
    "event": {
     "name": "Dark Times",
-    "date": "16 December 2024"
+    "date": "16 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1653,7 +1678,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1694,7 +1720,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1755,7 +1782,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1790,7 +1818,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1818,7 +1847,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1877,7 +1907,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -1912,7 +1943,8 @@
    "active": false,
    "event": {
     "name": "Tarkov Hospitality",
-    "date": "5 June 2026"
+    "date": "5 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -1969,7 +2001,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -2014,7 +2047,8 @@
    "active": false,
    "event": {
     "name": "Tarkov Hospitality",
-    "date": "5 June 2026"
+    "date": "5 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -2055,7 +2089,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -2090,7 +2125,8 @@
    "active": false,
    "event": {
     "name": "Down the Rabbit Hole",
-    "date": "2 December 2023"
+    "date": "2 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -2129,7 +2165,8 @@
    "active": false,
    "event": {
     "name": "Down the Rabbit Hole",
-    "date": "2 December 2023"
+    "date": "2 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -2155,7 +2192,8 @@
    "active": false,
    "event": {
     "name": "Down the Rabbit Hole",
-    "date": "2 December 2023"
+    "date": "2 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -2212,7 +2250,8 @@
    "active": false,
    "event": {
     "name": "Down the Rabbit Hole",
-    "date": "2 December 2023"
+    "date": "2 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -2241,7 +2280,8 @@
    "active": false,
    "event": {
     "name": "Down the Rabbit Hole",
-    "date": "2 December 2023"
+    "date": "2 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -2356,7 +2396,8 @@
    "active": false,
    "event": {
     "name": "Down the Rabbit Hole",
-    "date": "2 December 2023"
+    "date": "2 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -2429,7 +2470,8 @@
    "active": false,
    "event": {
     "name": "Duck Hunt - Escape from Duckov Collaboration",
-    "date": "10 February 2026"
+    "date": "10 February 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -2510,7 +2552,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -2553,7 +2596,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -2588,7 +2632,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -2620,7 +2665,8 @@
    "active": false,
    "event": {
     "name": "Winter Tales",
-    "date": "28 March 2024"
+    "date": "28 March 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -2649,7 +2695,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -2675,7 +2722,8 @@
    "active": false,
    "event": {
     "name": "Cultist Hunting",
-    "date": "26 June 2023"
+    "date": "26 June 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -2698,7 +2746,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -2727,7 +2776,8 @@
    "active": false,
    "event": {
     "name": "Art of Explosion",
-    "date": "29 April 2025"
+    "date": "29 April 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -2754,7 +2804,8 @@
    "active": false,
    "event": {
     "name": "Art of Explosion",
-    "date": "29 April 2025"
+    "date": "29 April 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -2797,7 +2848,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -2842,7 +2894,8 @@
    "active": false,
    "event": {
     "name": "Winter Tales",
-    "date": "28 March 2024"
+    "date": "28 March 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -2915,7 +2968,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -2958,7 +3012,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -2986,7 +3041,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3014,7 +3070,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3047,7 +3104,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3084,7 +3142,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3109,7 +3168,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3158,7 +3218,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3191,7 +3252,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3232,7 +3294,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3268,7 +3331,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3311,7 +3375,8 @@
    "active": false,
    "event": {
     "name": "Marathon",
-    "date": "20 August 2024"
+    "date": "20 August 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3408,7 +3473,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3431,7 +3497,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3454,7 +3521,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -3477,7 +3545,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3503,7 +3572,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3528,7 +3598,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3560,7 +3631,8 @@
    "active": false,
    "event": {
     "name": "Winter Tales",
-    "date": "28 March 2024"
+    "date": "28 March 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3583,7 +3655,8 @@
    "active": false,
    "event": {
     "name": "Tarkov Hospitality",
-    "date": "5 June 2026"
+    "date": "5 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -3630,7 +3703,8 @@
    "active": false,
    "event": {
     "name": "Supply and Demand",
-    "date": "2 August 2024"
+    "date": "2 August 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3681,7 +3755,8 @@
    "active": false,
    "event": {
     "name": "Supply and Demand",
-    "date": "2 August 2024"
+    "date": "2 August 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3706,7 +3781,8 @@
    "active": false,
    "event": {
     "name": "Casus belli",
-    "date": "9 April 2026"
+    "date": "9 April 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -3735,7 +3811,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -3758,7 +3835,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -3788,7 +3866,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3851,7 +3930,8 @@
    "active": false,
    "event": {
     "name": "Bosses, take a Hint!",
-    "date": "2 June 2023"
+    "date": "2 June 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -3940,7 +4020,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -3963,7 +4044,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -4002,7 +4084,8 @@
    "active": false,
    "event": {
     "name": "Bosses & Rogues Wander",
-    "date": "3 July 2023"
+    "date": "3 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -4063,7 +4146,8 @@
    "active": false,
    "event": {
     "name": "Hustle",
-    "date": "31 May 2024"
+    "date": "31 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -4170,7 +4254,8 @@
    "active": false,
    "event": {
     "name": "Blackout",
-    "date": "14 July 2026"
+    "date": "14 July 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -4200,7 +4285,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -4251,7 +4337,8 @@
    "active": false,
    "event": {
     "name": "Arms Race",
-    "date": "16 July 2024"
+    "date": "16 July 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -4280,7 +4367,8 @@
    "active": false,
    "event": {
     "name": "Bandages Event",
-    "date": "7 April 2023"
+    "date": "7 April 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -4314,7 +4402,8 @@
    "active": false,
    "event": {
     "name": "Mortar Strike",
-    "date": "26 September 2024"
+    "date": "26 September 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -4353,7 +4442,8 @@
    "active": false,
    "event": {
     "name": "Mortar Strike",
-    "date": "26 September 2024"
+    "date": "26 September 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -4384,7 +4474,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -4418,7 +4509,8 @@
    "active": false,
    "event": {
     "name": "Blackout",
-    "date": "14 July 2026"
+    "date": "14 July 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -4456,7 +4548,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -4483,7 +4576,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -4542,7 +4636,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -4645,7 +4740,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -4682,7 +4778,8 @@
    "active": false,
    "event": {
     "name": "Sanitar Event",
-    "date": "11 November 2022"
+    "date": "11 November 2022",
+    "current": false
    },
    "objectives": [
     {
@@ -4767,7 +4864,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -4812,7 +4910,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -4843,7 +4942,8 @@
    "active": false,
    "event": {
     "name": "Melee Event",
-    "date": "20 December 2022"
+    "date": "20 December 2022",
+    "current": false
    },
    "objectives": [
     {
@@ -4874,7 +4974,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -4905,7 +5006,8 @@
    "active": false,
    "event": {
     "name": "Full Speed Ahead",
-    "date": "15 May 2026"
+    "date": "15 May 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -4936,7 +5038,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -5025,7 +5128,8 @@
    "active": false,
    "event": {
     "name": "Casus belli",
-    "date": "9 April 2026"
+    "date": "9 April 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -5078,7 +5182,8 @@
    "active": false,
    "event": {
     "name": "Blackout",
-    "date": "14 July 2026"
+    "date": "14 July 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -5117,7 +5222,8 @@
    "active": false,
    "event": {
     "name": "Night of The Cult",
-    "date": "11 October 2024"
+    "date": "11 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5140,7 +5246,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -5165,7 +5272,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5192,7 +5300,8 @@
    "active": false,
    "event": {
     "name": "Full Speed Ahead",
-    "date": "15 May 2026"
+    "date": "15 May 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -5241,7 +5350,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5268,7 +5378,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -5311,7 +5422,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5338,7 +5450,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5363,7 +5476,8 @@
    "active": false,
    "event": {
     "name": "Mortar Strike",
-    "date": "26 September 2024"
+    "date": "26 September 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5412,7 +5526,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -5437,7 +5552,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -5474,7 +5590,8 @@
    "active": false,
    "event": {
     "name": "Blackout",
-    "date": "14 July 2026"
+    "date": "14 July 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -5523,7 +5640,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5572,7 +5690,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -5607,7 +5726,8 @@
    "active": false,
    "event": {
     "name": "Art of Explosion",
-    "date": "29 April 2025"
+    "date": "29 April 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -5627,10 +5747,11 @@
    ],
    "requires": [],
    "kappaRequired": false,
-   "active": true,
+   "active": false,
    "event": {
     "name": "Preliminary Survey",
-    "date": "1 September 2026"
+    "date": "1 September 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -5665,7 +5786,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -5692,7 +5814,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5717,7 +5840,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -5740,7 +5864,8 @@
    "active": false,
    "event": {
     "name": "Targrad Tales",
-    "date": "20 August 2025"
+    "date": "20 August 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -5767,7 +5892,8 @@
    "active": false,
    "event": {
     "name": "Tarkov Hospitality",
-    "date": "5 June 2026"
+    "date": "5 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -5812,7 +5938,8 @@
    "active": false,
    "event": {
     "name": "Tarkov Hospitality",
-    "date": "5 June 2026"
+    "date": "5 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -5855,7 +5982,8 @@
    "active": false,
    "event": {
     "name": "Arms Race",
-    "date": "16 July 2024"
+    "date": "16 July 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5889,7 +6017,8 @@
    "active": false,
    "event": {
     "name": "Mortar Strike",
-    "date": "26 September 2024"
+    "date": "26 September 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -5924,7 +6053,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -5962,7 +6092,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6029,7 +6160,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6087,7 +6219,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6146,7 +6279,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6173,7 +6307,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -6202,7 +6337,8 @@
    "active": false,
    "event": {
     "name": "Smugglers 2026",
-    "date": "12 March 2026"
+    "date": "12 March 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -6227,7 +6363,8 @@
    "active": false,
    "event": {
     "name": "Arms Race",
-    "date": "16 July 2024"
+    "date": "16 July 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6260,7 +6397,8 @@
    "active": false,
    "event": {
     "name": "Smugglers 2026",
-    "date": "12 March 2026"
+    "date": "12 March 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -6287,7 +6425,8 @@
    "active": false,
    "event": {
     "name": "Casus belli",
-    "date": "9 April 2026"
+    "date": "9 April 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -6337,7 +6476,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6381,7 +6521,8 @@
    "active": true,
    "event": {
     "name": "Shifting Balance",
-    "date": "8 September 2026"
+    "date": "8 September 2026",
+    "current": true
    },
    "objectives": [
     {
@@ -6426,7 +6567,8 @@
    "active": false,
    "event": {
     "name": "Art of Explosion",
-    "date": "29 April 2025"
+    "date": "29 April 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -6467,7 +6609,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6504,7 +6647,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -6535,7 +6679,8 @@
    "active": false,
    "event": {
     "name": "Smugglers 2024",
-    "date": "6 December 2024"
+    "date": "6 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6562,7 +6707,8 @@
    "active": false,
    "event": {
     "name": "Casus belli",
-    "date": "9 April 2026"
+    "date": "9 April 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -6599,7 +6745,8 @@
    "active": false,
    "event": {
     "name": "Marathon",
-    "date": "20 August 2024"
+    "date": "20 August 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6706,7 +6853,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -6731,7 +6879,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6765,7 +6914,8 @@
    "active": false,
    "event": {
     "name": "Winter Tales",
-    "date": "28 March 2024"
+    "date": "28 March 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6797,7 +6947,8 @@
    "active": false,
    "event": {
     "name": "Winter Tales",
-    "date": "28 March 2024"
+    "date": "28 March 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -6838,7 +6989,8 @@
    "active": false,
    "event": {
     "name": "Art of Explosion",
-    "date": "29 April 2025"
+    "date": "29 April 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -6867,7 +7019,8 @@
    "active": false,
    "event": {
     "name": "Kolotun",
-    "date": "24 December 2025"
+    "date": "24 December 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -6888,7 +7041,8 @@
    "active": false,
    "event": {
     "name": "Softcore",
-    "date": "8 October 2025"
+    "date": "8 October 2025",
+    "current": false
    },
    "objectives": [
     {
@@ -6915,7 +7069,8 @@
    "active": false,
    "event": {
     "name": "Full Speed Ahead",
-    "date": "15 May 2026"
+    "date": "15 May 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -6956,7 +7111,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -6979,7 +7135,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7002,7 +7159,8 @@
    "active": false,
    "event": {
     "name": "Supply and Demand",
-    "date": "2 August 2024"
+    "date": "2 August 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -7025,7 +7183,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -7054,7 +7213,8 @@
    "active": false,
    "event": {
     "name": "Casus belli",
-    "date": "9 April 2026"
+    "date": "9 April 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -7091,7 +7251,8 @@
    "active": false,
    "event": {
     "name": "Smugglers 2024",
-    "date": "6 December 2024"
+    "date": "6 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -7114,7 +7275,8 @@
    "active": false,
    "event": {
     "name": "June 2021 Pre-Wipe Event",
-    "date": "20 June 2021"
+    "date": "20 June 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -7137,7 +7299,8 @@
    "active": false,
    "event": {
     "name": "Night of The Cult",
-    "date": "11 October 2024"
+    "date": "11 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -7179,7 +7342,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -7200,7 +7364,8 @@
    "active": false,
    "event": {
     "name": "Ammo Shortage",
-    "date": "25 November 2023"
+    "date": "25 November 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7231,7 +7396,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -7262,7 +7428,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -7293,7 +7460,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7326,7 +7494,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7359,7 +7528,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7408,7 +7578,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7452,7 +7623,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7497,7 +7669,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7561,7 +7734,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7613,7 +7787,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7638,7 +7813,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7666,7 +7842,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7693,7 +7870,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7733,7 +7911,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7770,7 +7949,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7801,7 +7981,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7838,7 +8019,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7861,7 +8043,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7884,7 +8067,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -7916,7 +8100,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -8003,7 +8188,8 @@
    "active": false,
    "event": {
     "name": "The TerraGroup Trail",
-    "date": "28 July 2023"
+    "date": "28 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -8060,7 +8246,8 @@
    "active": false,
    "event": {
     "name": "Smugglers 2026",
-    "date": "12 March 2026"
+    "date": "12 March 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -8102,7 +8289,8 @@
    "active": false,
    "event": {
     "name": "Khorovod",
-    "date": "26 December 2024"
+    "date": "26 December 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8125,7 +8313,8 @@
    "active": false,
    "event": {
     "name": "Arms Race",
-    "date": "16 July 2024"
+    "date": "16 July 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8148,7 +8337,8 @@
    "active": false,
    "event": {
     "name": "Christmas Event 2021",
-    "date": "25 December 2021"
+    "date": "25 December 2021",
+    "current": false
    },
    "objectives": [
     {
@@ -8213,7 +8403,8 @@
    "active": false,
    "event": {
     "name": "Bosses & Rogues Wander",
-    "date": "3 July 2023"
+    "date": "3 July 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -8254,7 +8445,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8277,7 +8469,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8300,7 +8493,8 @@
    "active": false,
    "event": {
     "name": "The Tarkov Mystery",
-    "date": "15 May 2024"
+    "date": "15 May 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8323,7 +8517,8 @@
    "active": false,
    "event": {
     "name": "Night of The Cult",
-    "date": "11 October 2024"
+    "date": "11 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8396,7 +8591,8 @@
    "active": false,
    "event": {
     "name": "Unknown Toxin Poisoning",
-    "date": "15 December 2023"
+    "date": "15 December 2023",
+    "current": false
    },
    "objectives": [
     {
@@ -8421,7 +8617,8 @@
    "active": false,
    "event": {
     "name": "Halloween 2024",
-    "date": "31 October 2024"
+    "date": "31 October 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8446,7 +8643,8 @@
    "active": false,
    "event": {
     "name": "Arms Race",
-    "date": "16 July 2024"
+    "date": "16 July 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8469,7 +8667,8 @@
    "active": false,
    "event": {
     "name": "Arms Race",
-    "date": "16 July 2024"
+    "date": "16 July 2024",
+    "current": false
    },
    "objectives": [
     {
@@ -8490,7 +8689,8 @@
    "active": false,
    "event": {
     "name": "Wild Wild Woods",
-    "date": "25 June 2026"
+    "date": "25 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -8523,7 +8723,8 @@
    "active": false,
    "event": {
     "name": "Tarkov Hospitality",
-    "date": "5 June 2026"
+    "date": "5 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -8568,7 +8769,8 @@
    "active": false,
    "event": {
     "name": "Tarkov Hospitality",
-    "date": "5 June 2026"
+    "date": "5 June 2026",
+    "current": false
    },
    "objectives": [
     {
@@ -8609,7 +8811,8 @@
    "active": false,
    "event": {
     "name": "Blackout",
-    "date": "14 July 2026"
+    "date": "14 July 2026",
+    "current": false
    },
    "objectives": [
     {

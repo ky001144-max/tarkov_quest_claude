@@ -145,18 +145,22 @@ svg.base-map .overlay-layer.hidden-layer { display: none; }
 .leaflet-marker-pane > .off-level { opacity: .25; z-index: -9999 !important; }
 path.off-level { stroke-opacity: .2; fill-opacity: .02; }
 
-.quest-marker span, .quest-item-marker span {
-    display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+.qm-chips { display: flex; gap: 2px; }
+.qm-chip {
+    display: grid; place-items: center; width: 22px; height: 22px; flex: none; border-radius: 50%; box-sizing: border-box;
     color: #111; font-weight: 800; font-size: 12px; border: 2px solid #111; box-shadow: 0 0 0 1px rgba(255,255,255,.4);
 }
-.quest-item-marker span { border-radius: 4px; background: #111; color: #fff; border-width: 3px; }
-.quest-marker.done, .quest-item-marker.done { opacity: .35; }
-.quest-marker.other-level::after, .quest-item-marker.other-level::after {
+.qm-chip.item { border-radius: 4px; background: #111; color: #fff; border-width: 3px; }
+.qm-chip.done { opacity: .35; }
+.quest-marker.done .qm-chip.done { opacity: 1; }
+.quest-marker.done { opacity: .35; }
+.quest-marker.other-level::after {
     content: attr(data-level); position: absolute; left: 50%; top: 24px; transform: translateX(-50%);
     white-space: nowrap; font-size: 10px; font-weight: 700; color: #fff; background: rgba(17,17,17,.85);
     border: 1px solid rgba(255,255,255,.35); border-radius: 3px; padding: 0 4px; line-height: 14px; pointer-events: none;
 }
-.quest-marker.other-level span, .quest-item-marker.other-level span { border-style: dashed; }
+.quest-marker.other-level .qm-chip { border-style: dashed; }
+hr.popup-sep { border: 0; border-top: 1px solid rgba(128,128,128,.4); margin: 6px 0; }
 path.done-zone { stroke-dasharray: 4 4; fill-opacity: .04; }
 
 .extract-marker { position: relative; }
@@ -167,7 +171,7 @@ path.done-zone { stroke-dasharray: 4 4; fill-opacity: .04; }
 .extract-marker.shared .extract-dot { background: #5ab8f2; } .extract-marker.shared .extract-label { color: #a7dbfb; }
 .extract-marker.transit .extract-dot { background: #c38cf2; } .extract-marker.transit .extract-label { color: #dcbcf8; }
 
-.player-marker svg { filter: drop-shadow(0 0 4px rgba(34,211,238,.8)); transition: transform .2s; }
+.player-marker svg { display: block; filter: drop-shadow(0 0 3px rgba(0,0,0,.9)); }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--card); color: var(--text); border: 1px solid var(--line); }
 .leaflet-popup-content { margin: 10px 12px; font-size: 13px; line-height: 1.45; }
@@ -227,3 +231,6 @@ path.done-zone { stroke-dasharray: 4 4; fill-opacity: .04; }
 .path-row { display: flex; gap: 6px; }
 .path-row input { flex: 1; }
 input[type=range] { accent-color: var(--accent); }
+
+/* 데스크톱(Electron) / 웹(GitHub Pages) 전용 항목 */
+body.web .desktop-only, body:not(.web) .web-only { display: none !important; }

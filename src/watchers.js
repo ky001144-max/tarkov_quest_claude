@@ -5,19 +5,7 @@ const os = require('os');
 const { execFile } = require('child_process');
 const { EventEmitter } = require('events');
 
-// 스크린샷 파일명 예: 2026-01-10[03-59]_-318.44, 24.84, -107.49_0.00000, 0.82497, 0.00000, 0.56518_3.98 (0).png
-const POSITION_REGEX = /_(-?\d+(?:\.\d+)?), (-?\d+(?:\.\d+)?), (-?\d+(?:\.\d+)?)_(-?\d+(?:\.\d+)?), (-?\d+(?:\.\d+)?), (-?\d+(?:\.\d+)?), (-?\d+(?:\.\d+)?)/;
-
-function parseScreenshotName(fileName) {
-    const m = POSITION_REGEX.exec(fileName);
-    if (!m) return null;
-    const [x, y, z, rx, ry, rz, rw] = m.slice(1).map(Number);
-    // TarkovMonitor 와 동일한 방식으로 쿼터니언 → 방향(도)
-    const sinyCosp = 2 * (rw * ry + rx * rz);
-    const cosyCosp = 1 - 2 * (rz * rz + ry * ry);
-    const yaw = (Math.atan2(sinyCosp, cosyCosp) * 180) / Math.PI;
-    return { position: { x, y, z }, rotation: yaw, file: fileName };
-}
+const { parseScreenshotName, MAP_REGEX, TRANSIT_END_REGEX } = require('../renderer/game-files');
 
 function getLatestScreenshot(dir) {
     if (!dir || !fs.existsSync(dir)) return null;
@@ -68,9 +56,6 @@ class ScreenshotWatcher extends EventEmitter {
     }
 }
 
-const MAP_REGEX = /scene preset path:maps\/([^.]+)\.bundle/;
-const TRANSIT_END_REGEX = /\[Transit\] `([a-f0-9]+)` Count:(\d+), EventPlayer:(True|False)/;
-
 class LogWatcher extends EventEmitter {
     constructor() {
         super();
@@ -86,6 +71,8 @@ class LogWatcher extends EventEmitter {
         this.stop();
         if (!base || !fs.existsSync(base)) return false;
         this.base = base;
+        // 시작할 때 이미 있던 로그는 끝부터 읽고(지난 기록 무시), 그 뒤에 새로 생긴 로그는 처음부터 읽는다
+        this.startedAt = Date.now();
         this.findLatestFolder();
         this.timer = setInterval(() => this.tick(), 2000);
         return true;
@@ -134,8 +121,10 @@ class LogWatcher extends EventEmitter {
         }
         if (latest && latest.full !== this.file) {
             this.file = latest.full;
-            // 새 파일은 끝에서부터 읽기 시작 (이전 기록 무시)
-            this.position = fs.statSync(latest.full).size;
+            // 감시 시작 전부터 있던 파일만 끝에서부터 읽는다. 게임을 새로 켜서 생긴 파일을 끝부터 읽으면
+            // 그 사이에 기록된 맵 로딩 줄을 놓쳐 맵이 바뀌지 않고, 스크린샷 위치가 이전 맵에 찍힌다
+            const stat = fs.statSync(latest.full);
+            this.position = stat.birthtimeMs < this.startedAt ? stat.size : 0;
         }
     }
 

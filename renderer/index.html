@@ -124,7 +124,8 @@
             <label class="field">게임 로그 폴더 (자동 맵 전환용)
                 <div class="path-row"><input id="setLogPath" type="text" readonly><button class="ghost-btn" data-pick="logPath">찾기</button></div>
             </label>
-            <button id="btnDetectPaths" class="ghost-btn small">경로 자동 탐지</button>
+            <button id="btnDetectPaths" class="ghost-btn small desktop-only">경로 자동 탐지</button>
+            <p class="muted small web-only">웹 버전은 Chrome·Edge에서 폴더를 연결할 수 있습니다. 스크린샷은 <b>문서\Escape from Tarkov\Screenshots</b>, 로그는 게임 설치 폴더의 <b>Logs</b>를 고르세요. 연결하지 않은 상태에서 "내 위치 확인"을 누르면 폴더 연결 창(Chrome·Edge)이나 스크린샷 파일 선택 창(그 밖의 브라우저)이 열립니다.</p>
 
             <h4>위치 확인</h4>
             <label class="check"><input type="checkbox" data-setting="autoScreenshot"> 스크린샷 자동 감지 (찍으면 바로 위치 표시)</label>
@@ -137,16 +138,18 @@
 
             <h4>게임 연동</h4>
             <label class="check"><input type="checkbox" data-setting="autoMap"> 레이드 시작 시 해당 맵으로 자동 전환 (로그 감시)</label>
-            <label class="check"><input type="checkbox" data-setting="autoCleanup"> 레이드 종료 시 스크린샷 자동 삭제</label>
+            <label class="check desktop-only"><input type="checkbox" data-setting="autoCleanup"> 레이드 종료 시 스크린샷 자동 삭제</label>
 
-            <h4>성능</h4>
-            <label class="check"><input type="checkbox" data-setting="hardwareAcceleration"> GPU 가속 사용 (재시작 후 적용)</label>
-            <span class="muted small">꺼 두면 메모리를 덜 쓰고 게임과 GPU를 나눠 쓰지 않습니다. 지도 이동이 버벅이면 켜세요.</span>
+            <div class="desktop-only">
+                <h4>성능</h4>
+                <label class="check"><input type="checkbox" data-setting="hardwareAcceleration"> GPU 가속 사용 (재시작 후 적용)</label>
+                <span class="muted small">꺼 두면 메모리를 덜 쓰고 게임과 GPU를 나눠 쓰지 않습니다. 지도 이동이 버벅이면 켜세요.</span>
+            </div>
 
             <h4>데이터</h4>
             <button id="btnRefreshData" class="ghost-btn">tarkov.dev 데이터 새로 받기</button>
-            <p class="muted small">퀘스트/맵 데이터: tarkov.dev (the-hideout/tarkov-data-manager). 6시간마다 자동 갱신되며, 오프라인일 때는 마지막으로 받은 데이터를 사용합니다.</p>
-            <p class="muted small">단축키: F5 새로고침 · F12 개발자 도구</p>
+            <p class="muted small">퀘스트/맵 데이터: tarkov.dev (the-hideout/tarkov-data-manager). <span class="desktop-only">6시간마다 자동 갱신되며, 오프라인일 때는 마지막으로 받은 데이터를 사용합니다.</span><span class="web-only">웹 버전 데이터는 GitHub Actions가 6시간마다 새로 만듭니다.</span></p>
+            <p class="muted small desktop-only">단축키: F5 새로고침 · F12 개발자 도구</p>
         </div>
     </div>
 </div>

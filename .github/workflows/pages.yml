@@ -1,0 +1,48 @@
+# 웹 버전을 GitHub Pages 로 배포한다.
+# 코드가 바뀔 때마다, 그리고 tarkov.dev·위키 데이터를 새로 반영하도록 6시간마다 다시 만든다.
+name: Deploy web version
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # 지도 라이브러리(leaflet)만 필요하다. 저장소에 node_modules 가 없을 때만 따로 받는다 (Electron 등은 설치하지 않음)
+      - run: |
+          if [ ! -f node_modules/leaflet/dist/leaflet.js ]; then
+            mkdir -p /tmp/leaflet && npm install --prefix /tmp/leaflet --no-save --ignore-scripts leaflet@1.9.4
+            mkdir -p node_modules && cp -r /tmp/leaflet/node_modules/leaflet node_modules/
+          fi
+      - run: node scripts/build-web.js _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

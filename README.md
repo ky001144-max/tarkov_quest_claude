@@ -6,6 +6,16 @@ tarkov-market.com 대신 [tarkov.dev](https://tarkov.dev) 데이터를 사용하
 
 ## 실행
 
+### 웹 버전 (설치 없이 브라우저에서)
+**https://ky001144-max.github.io/tarkov_quest_claude/**
+
+- GitHub Pages로 배포됩니다. tarkov.dev·위키 데이터는 GitHub Actions가 6시간마다 새로 가공해서 올립니다.
+- 등록한 퀘스트와 설정은 브라우저(localStorage)에 저장됩니다. 다른 브라우저나 PC와는 공유되지 않습니다.
+- **Chrome·Edge**: ⚙ 설정에서 스크린샷 폴더(`문서\Escape from Tarkov\Screenshots`)와 게임 로그 폴더(`Logs`)를 연결하면 데스크톱 버전처럼 스크린샷 자동 위치 표시와 자동 맵 전환이 됩니다. 브라우저를 새로 열면 **내 위치 확인**을 한 번 눌러 폴더 접근을 다시 허용해야 합니다.
+- **그 밖의 브라우저**: 폴더 연결을 지원하지 않아서, **내 위치 확인**을 누르면 스크린샷 파일을 직접 골라 위치를 표시합니다.
+- 웹 버전에는 스크린샷 자동 삭제, 경로 자동 탐지, GPU 가속 설정이 없습니다.
+
+### 데스크톱 버전 (Windows)
 `dist/EFT-Where-Am-I-KO-1.0.0.exe`를 실행하면 됩니다. 설치 없이 바로 실행되는 portable 버전입니다.
 Windows 10/11 x64에서 동작하고, 처음 실행할 때 데이터를 받기 위해 인터넷 연결이 필요합니다.
 
@@ -25,9 +35,10 @@ Windows 10/11 x64에서 동작하고, 처음 실행할 때 데이터를 받기 �
 
 ### 이벤트 퀘스트 (타르코프 위키 기준)
 - 이벤트 기간에만 받을 수 있는 퀘스트(위키 [Event content](https://escapefromtarkov.fandom.com/wiki/Category:Event_content) 분류)는 일반 퀘스트와 따로 관리합니다. 아레나 퀘스트는 제외합니다.
+- 위키 [Events](https://escapefromtarkov.fandom.com/wiki/Events) 문서의 어느 이벤트에도 들어 있지 않은 문서(테스트용 퀘스트 등)는 빼고, Events 문서에서 "지난 이벤트" 구분선 위에 있는 이벤트의 퀘스트만 진행 중으로 봅니다.
 - **＋ 퀘스트 등록** 창의 **이벤트 퀘스트** 탭에서 이벤트별로 묶어서 보여줍니다. 기본으로는 진행 중인 이벤트만 나오고, **종료된 이벤트 포함**을 켜면 지난 이벤트 퀘스트도 볼 수 있습니다. 이벤트를 하나만 골라 볼 수도 있습니다.
 - 등록한 이벤트 퀘스트에는 🎉 이벤트(종료된 이벤트는 점선 🎉 종료 이벤트) 배지가 붙습니다.
-- 목록은 하루에 한 번 위키에서 새로 받습니다. 번역은 `assets/event_ko.json`에 있고, 번역이 없는 새 퀘스트는 영문으로 나옵니다. 위키에는 좌표가 없어서 지도 표시는 되지 않습니다(tarkov.dev에도 있는 퀘스트는 tarkov.dev 좌표를 씁니다).
+- 목록은 하루에 한 번 위키에서 새로 받습니다. 번역은 `assets/event_ko.json`에 있고, 번역이 없는 새 퀘스트는 영문으로 나옵니다. 위키에는 좌표가 없어서, 아이템 숨기기·설치·정찰처럼 정해진 장소가 있는 목표는 `assets/event_locations.json`에 위키 가이드 지도를 보고 옮긴 **대략 위치**를 넣어 두었습니다(지도에 번호 마커로 나오고 📍로 이동 가능). 여기에 없는 이벤트 퀘스트는 지도 표시가 되지 않습니다(tarkov.dev에도 있는 퀘스트는 tarkov.dev 좌표를 씁니다).
 
 ### 원본에서 가져온 기능
 - **내 위치 확인**: 게임에서 스크린샷(PrtSc)을 찍으면 파일 이름에 담긴 좌표를 읽어서 현재 위치와 바라보는 방향을 지도에 표시합니다. **자동**에 체크해 두면 스크린샷을 찍을 때마다 바로 표시됩니다.
@@ -57,19 +68,27 @@ Windows 10/11 x64에서 동작하고, 처음 실행할 때 데이터를 받기 �
 npm install
 npm start          # 개발 실행 (VS Code 터미널이라면 ELECTRON_RUN_AS_NODE 환경변수를 먼저 지우세요)
 npm run dist       # dist/ 에 portable exe 생성
+node scripts/build-web.js   # _site/ 에 웹 버전 생성 (데이터 가공 포함, GitHub Actions 와 같은 과정)
 ```
+
+웹 버전 배포: `main`에 push하면 `.github/workflows/pages.yml`이 웹 버전을 만들어 GitHub Pages에 올립니다(6시간마다 데이터만 새로 만들어 다시 배포). 처음 한 번은 저장소 **Settings → Pages → Build and deployment → Source**를 **GitHub Actions**로 바꿔야 합니다.
 
 | 파일 | 역할 |
 |---|---|
 | `main.js` | Electron 메인 프로세스(창, 설정, IPC) |
 | `src/data.js` | json.tarkov.dev 데이터를 받아 한국어로 가공하고 캐시 |
 | `src/watchers.js` | 스크린샷·게임 로그 감시, 경로 자동 탐지 |
+| `renderer/game-files.js` | 스크린샷 파일 이름·게임 로그 줄 해석 (데스크톱·웹 공용) |
+| `web/web-api.js` | 웹 버전용 `window.api` (설정 localStorage, 폴더 연결은 File System Access API) |
+| `scripts/build-web.js` | 웹 버전(`_site/`) 생성: 화면 코드 복사 + 데이터 가공 |
+| `.github/workflows/pages.yml` | 웹 버전을 GitHub Pages로 배포 (push 때, 6시간마다) |
 | `renderer/map.js` | Leaflet 지도(tarkov.dev 좌표계와 층 처리 방식을 가져옴) |
 | `renderer/app.js` | 퀘스트 등록/목록 UI, 설정, 위치 연동 |
 | `src/wiki-extracts.js` | 위키 맵 문서·인터랙티브 지도에서 탈출구 목록을 읽어 tarkov.dev 탈출구와 합침 |
 | `assets/wiki_extracts.json` | 위키 탈출구 목록 오프라인용 사본 (위키를 받지 못할 때 사용) |
 | `src/wiki-events.js` | 위키 Event content 분류에서 이벤트 퀘스트와 이벤트 이름·기간을 읽음 |
 | `assets/event_tasks.json` | 이벤트 퀘스트 오프라인용 사본 (위키를 받지 못할 때 사용) |
+| `assets/event_locations.json` | 이벤트 퀘스트 목표의 대략 위치 (위키 가이드 지도 기준, 퀘스트 영문 이름 + 목표 문장 일부로 연결) |
 | `assets/event_ko.json` | 이벤트 이름·퀘스트 이름·목표의 한국어 번역 |
 | `assets/maps.json` | tarkov.dev 맵 설정 오프라인용 사본 |
 | `assets/ko_overrides.json` | tarkov.dev 한국어 데이터에 없는 퀘스트 이름·목표·아이템의 보완 번역 (영문 → 한국어) |

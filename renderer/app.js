@@ -168,9 +168,11 @@ function renderStyleControl() {
 function refreshQuestMarkers() {
     if (!state.tarkovMap.map) return;
     const completed = new Set(Object.keys(state.settings.completedObjectives || {}));
+    // 왼쪽 목록과 같은 번호·색을 쓰도록, 지금 데이터에 없는 퀘스트(모드 전환 등)를 먼저 빼고 번호를 매긴다
     const entries = registeredIds()
-        .map((id, i) => ({ task: taskById(id), color: QUEST_COLORS[i % QUEST_COLORS.length], number: i + 1, completed }))
-        .filter((e) => e.task);
+        .map(taskById)
+        .filter(Boolean)
+        .map((task, i) => ({ task, color: QUEST_COLORS[i % QUEST_COLORS.length], number: i + 1, completed }));
     state.tarkovMap.setQuestMarkers(entries);
 }
 
@@ -259,8 +261,11 @@ function bindQuestList() {
         } else if (t.dataset.up) {
             const ids = [...registeredIds()];
             const i = ids.indexOf(t.dataset.up);
-            if (i > 0) {
-                [ids[i - 1], ids[i]] = [ids[i], ids[i - 1]];
+            // 지금 데이터에 없어 목록에 안 보이는 퀘스트는 건너뛰고 바로 위에 보이는 퀘스트와 바꾼다
+            let j = i - 1;
+            while (j >= 0 && !taskById(ids[j])) j--;
+            if (j >= 0) {
+                [ids[j], ids[i]] = [ids[i], ids[j]];
                 await setRegistered(ids);
             }
         } else if (t.dataset.wiki) {
@@ -441,7 +446,7 @@ function bindSettings() {
     document.querySelectorAll('[data-pick]').forEach((btn) => {
         btn.addEventListener('click', async () => {
             const key = btn.dataset.pick;
-            const dir = await window.api.pickFolder(state.settings[key]);
+            const dir = await window.api.pickFolder(state.settings[key], key);
             if (!dir) return;
             await saveSettings({ [key]: dir });
             openSettings();
@@ -474,7 +479,10 @@ function showPosition(p, announce = true) {
     const { x, y, z } = p.position;
     const time = new Date().toLocaleTimeString('ko-KR');
     $('#locationStatus').innerHTML = `<b>${esc(state.currentMap.name)}</b> · X ${x.toFixed(1)} / Z ${z.toFixed(1)} / 높이 ${y.toFixed(1)} <span class="muted">(${time})</span>`;
-    if (announce) toast('위치를 표시했습니다.');
+    // 스크린샷 파일 이름에는 맵 정보가 없어서, 다른 맵에서 찍은 스크린샷이면 엉뚱한 곳에 찍힌다
+    if (state.tarkovMap.map && !state.tarkovMap.containsPosition(p.position)) {
+        toast(`이 좌표는 ${state.currentMap.name} 지도 범위 밖입니다. 다른 맵에서 찍은 스크린샷인지, 맵 선택이 맞는지 확인하세요.`, 'warn');
+    } else if (announce) toast('위치를 표시했습니다.');
 }
 
 function resolveLogMap(raw) {
