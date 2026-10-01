@@ -4,16 +4,19 @@
 // 원본(맵 JSON만 8MB 이상) 파싱은 별도 프로세스(data-builder.js)에서 하고, 가공 결과만 캐시해 메인 프로세스 메모리를 작게 유지한다.
 const fs = require('fs');
 const path = require('path');
-const { wikiUrl, parseWikiResponse, applyWikiExtracts } = require('./wiki-extracts');
+const { wikiUrl, parseWikiResponse, applyWikiExtracts, wikiImageInfoUrl, parseWikiImageInfo } = require('./wiki-extracts');
 const { fetchWikiEvents, EVENTS_VERSION } = require('./wiki-events');
 
 const JSON_API = 'https://json.tarkov.dev';
 const MAX_AGE_MS = 6 * 3600 * 1000;
 // 가공 결과 형식이 바뀌면 올린다 (이전 캐시 무효화)
-const BUILD_VERSION = 7;
+const BUILD_VERSION = 17;
 // 위키 이벤트 퀘스트는 자주 바뀌지 않아 하루에 한 번만 새로 받는다
 const EVENTS_MAX_AGE_MS = 24 * 3600 * 1000;
 const HANGUL = /[가-힣]/;
+// 위키 지도 이미지는 위키 페이지에서 불러온 것처럼 Referer 를 붙여야 받을 수 있다
+const WIKI_IMAGE_HOST = /^https:\/\/static\.wikia\.nocookie\.net\/escapefromtarkov_gamepedia\/images\//;
+const WIKI_IMAGE_MAX_AGE_MS = 7 * 24 * 3600 * 1000;
 const MAPS_JSON_URL = 'https://raw.githubusercontent.com/the-hideout/tarkov-dev/main/src/data/maps.json';
 
 // tarkov.dev maps.json 그룹 키 → 같은 지도를 쓰는 추가 API 맵
@@ -72,6 +75,47 @@ class DataService {
             throw new Error('허용되지 않은 SVG 주소');
         }
         return this.fetchWithCache(url, `svg_${path.basename(url)}`, { maxAgeMs: 7 * 24 * 3600 * 1000 });
+    }
+
+    // 위키 지도 이미지 { data, type } (디스크 캐시, 받지 못하면 이전 캐시)
+    async getWikiImage(url) {
+        if (!WIKI_IMAGE_HOST.test(url)) throw new Error('허용되지 않은 지도 이미지 주소');
+        const name = this.cacheFile(`wikimap_${url.split('/images/')[1]}`);
+        const meta = `${name}.type`;
+        const cached = () => ({ data: fs.readFileSync(name), type: fs.readFileSync(meta, 'utf8') });
+        try {
+            if (Date.now() - fs.statSync(name).mtimeMs < WIKI_IMAGE_MAX_AGE_MS) return cached();
+        } catch { /* 새로 받기 */ }
+        try {
+            const res = await fetch(url, {
+                headers: { 'User-Agent': 'EFT-Where-Am-I-KO/1.0', Referer: 'https://escapefromtarkov.fandom.com/' },
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = Buffer.from(await res.arrayBuffer());
+            const type = res.headers.get('content-type') || 'image/png';
+            fs.writeFileSync(name, data);
+            fs.writeFileSync(meta, type, 'utf8');
+            return { data, type };
+        } catch (err) {
+            try {
+                return cached();
+            } catch {
+                throw new Error(`위키 지도 이미지 다운로드 실패: ${err.message}`);
+            }
+        }
+    }
+
+    // 위키 지도 이미지 파일 이름 → 주소 (받지 못하면 빈 객체 → 위키 지도 없이 표시)
+    async getWikiImageUrls(wikiExtracts, force) {
+        const files = Object.values(wikiExtracts).map((w) => w.image?.file).filter(Boolean).sort();
+        if (!files.length) return {};
+        // 지도 목록이 바뀌면(새 맵 추가 등) 이전 캐시를 쓰지 않도록 캐시 이름에 목록을 넣는다
+        const key = require('crypto').createHash('sha1').update(files.join('|')).digest('hex').slice(0, 10);
+        try {
+            return parseWikiImageInfo(await this.fetchWithCache(wikiImageInfoUrl(files), `wiki-images-${key}.json`, { force }));
+        } catch {
+            return {};
+        }
     }
 
     loadOverrides() {
@@ -226,6 +270,7 @@ class DataService {
             return overrides[en] ?? text;
         };
         const trMap = makeTr(mapsKo, mapsEn);
+        const wikiImageUrls = await this.getWikiImageUrls(wikiExtracts, force);
         const trTrader = makeTr(tradersKo, { data: {} });
 
         // 상인
@@ -239,6 +284,24 @@ class DataService {
 
         // 맵
         const apiMaps = Object.values(maps.data.maps);
+        // 위키 지도 좌표를 다듬는 기준 물체 종류 (wiki-extracts REF_TYPES 와 같은 이름)
+        const containerTypes = Object.fromEntries(Object.values(maps.data.lootContainers || {}).map((c) => [c.id, c.normalizedName]));
+        const refType = (name) => {
+            if (/cache/.test(name)) return 'cache';
+            if (/body|dead-scav/.test(name)) return 'body';
+            if (/supply-crate/.test(name)) return 'supply';
+            return name;
+        };
+        const wikiRefs = (m) => [
+            ...(m.lootContainers || []).map((c) => ({ type: refType(containerTypes[c.lootContainer] || ''), position: c.position })),
+            ...(m.spawns || []).flatMap((sp) => [
+                ...(sp.sides.includes('pmc') || sp.sides.includes('all') ? [{ type: 'spawn-pmc', position: sp.position }] : []),
+                ...(sp.sides.includes('scav') || sp.sides.includes('all') ? [{ type: 'spawn-scav', position: sp.position }] : []),
+            ]),
+            ...(m.locks || []).map((l) => ({ type: 'lock', position: l.position })),
+            ...(m.stationaryWeapons || []).map((w) => ({ type: 'gun', position: w.position })),
+            ...(m.switches || []).map((sw) => ({ type: 'switch', position: sw.position })),
+        ].filter((r) => r.position);
         const mapList = [];
         for (const group of mapConfigs) {
             const config = group.maps.find((m) => m.projection === 'interactive');
@@ -247,7 +310,7 @@ class DataService {
             if (!primary) continue;
             const aliases = MAP_ALIASES[group.normalizedName] || [];
             const members = apiMaps.filter((m) => m.normalizedName === group.normalizedName || aliases.includes(m.normalizedName));
-            // 탈출구·이동 지점은 위키 목록 기준 (좌표는 tarkov.dev 우선)
+            // 탈출구·이동 지점은 위키 목록 기준 (좌표도 두 자료가 다르면 위키 지도 우선)
             const trMapEn = (key) => mapsEn.data?.[key] ?? key;
             const devPoints = {
                 extracts: (primary.extracts || []).map((e) => ({
@@ -256,8 +319,11 @@ class DataService {
                 transits: (primary.transits || []).map((t) => ({
                     name: trMapEn(t.description), label: trMap(t.description), position: t.position, top: t.top, bottom: t.bottom,
                 })),
+                // 위키 지도 좌표를 맞추는 기준점으로만 쓴다
+                switches: (primary.switches || []).map((s) => ({ name: trMapEn(s.name), position: s.position })),
+                refs: wikiRefs(primary),
             };
-            const points = applyWikiExtracts(wikiExtracts[group.normalizedName], devPoints, config.bounds) || devPoints;
+            const points = applyWikiExtracts(wikiExtracts[group.normalizedName], devPoints, config.bounds, group.normalizedName) || devPoints;
             const toMarker = (p) => ({
                 name: p.label,
                 faction: p.faction,
@@ -266,6 +332,8 @@ class DataService {
                 bottom: p.bottom,
                 source: p.source || 'tarkov.dev',
                 wiki: p.wiki || null,
+                // 층을 나눠 그린 위키 지도에서 이 탈출구가 그려진 층 (null = 기본 층, 없으면 높이로 판단)
+                level: p.level,
             });
             mapList.push({
                 key: group.normalizedName,
@@ -273,6 +341,10 @@ class DataService {
                 apiIds: members.map((m) => m.id),
                 nameIds: members.map((m) => (m.nameId || '').toLowerCase()),
                 config,
+                // 위키 지도 바탕 이미지 (게임 좌표에 맞출 수 있는 맵만)
+                wikiMap: points.wikiMap && wikiImageUrls[points.wikiMap.file]
+                    ? { ...points.wikiMap, url: wikiImageUrls[points.wikiMap.file] }
+                    : null,
                 extracts: points.extracts.map(toMarker),
                 transits: points.transits.map(toMarker),
             });

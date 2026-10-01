@@ -17,8 +17,9 @@
         autoPan: true,
         deadZonePercent: 70,
         autoCleanup: false,
-        mapStyle: 'svg',
-        showExtracts: true,
+        mapStyle: 'wiki',
+        mapStyleVersion: 2,
+        extractFilter: { pmc: true, scav: true, transit: true },
         sidebarWidth: 380,
         registered: {},
         completedObjectives: {},
@@ -30,12 +31,22 @@
     const canPickFolder = typeof window.showDirectoryPicker === 'function';
 
     const listeners = {};
+    let wikiIndex = null;
     const emit = (channel, payload) => (listeners[channel] || []).forEach((cb) => cb(payload));
     const status = (level, text) => emit('status', { level, text });
 
     let settings = { ...DEFAULT_SETTINGS };
     try {
-        settings = { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') };
+        const raw = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+        settings = { ...DEFAULT_SETTINGS, ...raw };
+        // 예전 탈출구 켜기/끄기 하나 → 종류별 표시
+        if (!raw.extractFilter && raw.showExtracts === false) settings.extractFilter = { pmc: false, scav: false, transit: false };
+        // 위키 지도가 생기기 전 설정은 한 번만 위키 지도로 바꾼다
+        if ((raw.mapStyleVersion || 1) < DEFAULT_SETTINGS.mapStyleVersion) {
+            settings.mapStyle = DEFAULT_SETTINGS.mapStyle;
+            settings.mapStyleVersion = DEFAULT_SETTINGS.mapStyleVersion;
+        }
+        delete settings.showExtracts;
     } catch { /* 기본값 사용 */ }
     const saveSettings = () => {
         try {
@@ -236,6 +247,15 @@
             const res = await fetch(`data/${mode}.json${force ? `?t=${Date.now()}` : ''}`, { cache: force ? 'reload' : 'default' });
             if (!res.ok) throw new Error(`데이터 파일을 받지 못했습니다 (HTTP ${res.status})`);
             return res.text();
+        },
+        // 위키 지도 이미지는 사이트에 함께 넣어 둔 파일에서 (wiki-maps/index.json)
+        getWikiImage: async (url) => {
+            wikiIndex ||= fetch('wiki-maps/index.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+            const entry = (await wikiIndex)[url];
+            if (!entry) throw new Error('위키 지도 이미지 없음');
+            const res = await fetch(`wiki-maps/${entry.file}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return { data: await res.arrayBuffer(), type: entry.type };
         },
         getSvg: async (url) => {
             if (!/^https:\/\/assets\.tarkov\.dev\//.test(url)) throw new Error('허용되지 않은 SVG 주소');

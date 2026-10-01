@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self'; img-src 'self' data: https://assets.tarkov.dev; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'">
+          content="default-src 'self'; img-src 'self' data: blob: https://assets.tarkov.dev; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'">
     <title>EFT Where Am I KO</title>
     <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css">
     <link rel="stylesheet" href="styles.css">
@@ -24,16 +24,16 @@
 
         <div class="map-row">
             <select id="mapSelect" title="맵 선택"></select>
-            <select id="modeSelect" title="게임 모드">
-                <option value="regular">PvP</option>
-                <option value="pve">PvE</option>
-            </select>
+            <div id="modeSeg" class="mode-seg" title="게임 모드">
+                <button data-mode="regular">PvP</button>
+                <button data-mode="pve">PvE</button>
+            </div>
         </div>
 
         <section class="card location-card">
             <div class="location-top">
                 <button id="btnLocate" class="primary-btn">📍 내 위치 확인</button>
-                <label class="switch" title="게임에서 스크린샷(PrtSc)을 찍으면 자동으로 위치를 표시합니다">
+                <label class="switch toggle" title="게임에서 스크린샷(PrtSc)을 찍으면 자동으로 위치를 표시합니다">
                     <input type="checkbox" id="quickAutoScreenshot"><span>자동</span>
                 </label>
             </div>
@@ -57,15 +57,29 @@
 
     <main id="mapWrap">
         <div id="map"></div>
-        <div id="mapLoading" class="map-loading">지도 불러오는 중…</div>
+        <div id="mapLoading" class="map-loading indeterminate">
+            <div class="loading-card">
+                <div id="mapLoadingText">지도 불러오는 중…</div>
+                <div class="loading-bar"><i id="mapLoadingBar"></i></div>
+            </div>
+        </div>
         <div class="map-controls">
             <div id="levelControl" class="control-box"></div>
             <div class="control-box row">
                 <div id="styleControl" class="seg"></div>
-                <label class="switch small-switch"><input type="checkbox" id="toggleExtracts"><span>탈출구</span></label>
+            </div>
+            <div id="extractFilter" class="control-box legend-box">
+                <div class="lg-title">탈출구</div>
+                <label class="lg pmc"><input type="checkbox" data-filter="pmc"><i></i>PMC</label>
+                <label class="lg scav"><input type="checkbox" data-filter="scav"><i></i>스캐브</label>
+                <label class="lg transit"><input type="checkbox" data-filter="transit"><i></i>트랜짓 · Co-op</label>
+                <div class="lg-note"><i></i>공용: PMC·스캐브 중 하나라도 켜면 표시</div>
             </div>
         </div>
         <button id="btnToggleSidebar" class="sidebar-toggle" title="패널 접기/펼치기">⟨</button>
+        <div id="mapBuilding" class="map-building hidden" title="위키 지도를 처음 열면 확대용 고해상도 타일을 만들어 둡니다 (다음부터는 바로 열림)">
+            <span class="spin"></span>고해상도 지도 준비 중 <b id="mapBuildingPct">0%</b>
+        </div>
         <div id="coordReadout" class="coord-readout"></div>
         <div id="toast" class="toast"></div>
     </main>
@@ -155,6 +169,7 @@
 </div>
 
 <script src="../node_modules/leaflet/dist/leaflet.js"></script>
+<script src="wiki-tiles.js"></script>
 <script src="map.js"></script>
 <script src="app.js"></script>
 </body>

@@ -12,7 +12,7 @@ const LEVEL_NAMES = {
     'Accommodation (upper)': '숙소 (상층)', "Officers' Deck": '장교 갑판', 'Stairs (blocked)': '계단 (막힘)',
     'Bridge': '함교', 'Bridge Roof': '함교 지붕', 'Control Room': '제어실', 'Engine Room': '기관실',
     'Engine Room (upper)': '기관실 (상층)', 'Fuel Pumps (lower)': '연료 펌프 (하층)', 'Fuel Pumps': '연료 펌프',
-    'Storage/Security': '창고/보안실',
+    'Storage/Security': '창고/보안실', 'Parking': '주차장',
 };
 // 게임 로그 scene 이름 → 맵 키 (원본 LogWatcherService 매핑)
 const LOG_MAP_NAMES = {
@@ -42,6 +42,30 @@ function toast(text, level = 'info') {
     el.className = `toast show ${level}`;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// 위키 지도 타일 만드는 진행률: 지도를 띄우기 전에는 가운데 카드, 띄운 뒤에는 아래쪽 작은 표시
+function showTileProgress(ratio) {
+    const pct = `${Math.round(ratio * 100)}%`;
+    if (!$('#mapLoading').classList.contains('hidden')) setMapLoading(`위키 지도 준비 중 (처음 한 번) ${pct}`, ratio);
+    $('#mapBuildingPct').textContent = pct;
+    $('#mapBuilding').classList.toggle('hidden', ratio >= 1 || !$('#mapLoading').classList.contains('hidden'));
+}
+
+// 지도 불러오는 중 표시 (ratio 를 모르면 흐르는 막대)
+function setMapLoading(text, ratio) {
+    $('#mapLoadingText').textContent = text;
+    $('#mapLoading').classList.toggle('indeterminate', ratio === undefined);
+    $('#mapLoadingBar').style.width = ratio === undefined ? '' : `${Math.round(ratio * 100)}%`;
+}
+
+function renderExtractFilter() {
+    const f = state.settings.extractFilter || {};
+    document.querySelectorAll('#extractFilter [data-filter]').forEach((c) => { c.checked = f[c.dataset.filter] !== false; });
+}
+
+function renderModeSeg() {
+    document.querySelectorAll('#modeSeg [data-mode]').forEach((b) => b.classList.toggle('active', b.dataset.mode === state.settings.gameMode));
 }
 
 async function saveSettings(patch) {
@@ -78,14 +102,15 @@ function traderRank(task) {
 async function init() {
     state.settings = await window.api.getSettings();
     applySidebarWidth(state.settings.sidebarWidth);
-    $('#modeSelect').value = state.settings.gameMode;
+    renderModeSeg();
     $('#quickAutoScreenshot').checked = state.settings.autoScreenshot;
-    $('#toggleExtracts').checked = state.settings.showExtracts;
+    renderExtractFilter();
 
     state.tarkovMap = new TarkovMap($('#map'), {
         onLevelChange: renderLevelControl,
         levelName: (name) => LEVEL_NAMES[name] || name,
         onMouseCoord: ({ x, z }) => { $('#coordReadout').textContent = `X ${x.toFixed(1)}  Z ${z.toFixed(1)}`; },
+        onLoadProgress: showTileProgress,
     });
 
     bindUi();
@@ -122,8 +147,13 @@ async function selectMap(key) {
     if (!mapInfo) return;
     state.currentMap = mapInfo;
     $('#mapSelect').value = key;
+    // 다른 맵으로 바꾸면 이전 맵의 위치 표시를 지운다
+    if (state.lastPosition?.mapKey !== key) $('#locationStatus').textContent = '스크린샷을 찍으면 위치가 표시됩니다.';
     if (state.settings.latestMap !== key) await saveSettings({ latestMap: key });
     renderQuestList();
+    $('#levelControl').classList.remove('open');
+    $('#mapBuilding').classList.add('hidden');
+    setMapLoading('지도 불러오는 중…');
     $('#mapLoading').classList.remove('hidden');
     try {
         await state.tarkovMap.setMap(mapInfo, state.settings.mapStyle);
@@ -131,14 +161,19 @@ async function selectMap(key) {
         toast(`지도 로드 실패: ${err.message}`, 'error');
     }
     $('#mapLoading').classList.add('hidden');
+    // 지도는 떴지만 고해상도 타일을 아직 만드는 중이면 아래쪽에 진행률을 보여 준다
+    if (state.tarkovMap.wikiSource && state.tarkovMap.tileProgress < 1) showTileProgress(state.tarkovMap.tileProgress);
     renderStyleControl();
-    state.tarkovMap.setExtracts(state.settings.showExtracts);
+    state.tarkovMap.setExtracts(state.settings.extractFilter);
     refreshQuestMarkers();
     renderQuestList();
     if (state.lastPosition && state.lastPosition.mapKey === key) showPosition(state.lastPosition, false);
 }
 
 // ---------------- 지도 컨트롤 ----------------
+// 층 버튼이 이보다 많으면 접는다
+const LEVELS_COLLAPSE_OVER = 6;
+
 function renderLevelControl(activeIndex) {
     const box = $('#levelControl');
     const layers = state.tarkovMap.layers;
@@ -146,10 +181,15 @@ function renderLevelControl(activeIndex) {
         box.innerHTML = '';
         return;
     }
-    const baseActive = activeIndex === -1;
-    box.innerHTML = '<div class="level-title">층</div>'
-        + `<button class="level-btn ${baseActive ? 'active' : ''}" data-level="-1">1층</button>`
-        + layers.map((l, i) => `<button class="level-btn ${i === activeIndex ? 'active' : ''}" data-level="${i}">${esc(LEVEL_NAMES[l.name] || l.name)}</button>`).join('');
+    const names = ['1층', ...layers.map((l) => LEVEL_NAMES[l.name] || l.name)];
+    const current = names[activeIndex + 1] || '1층';
+    // 층이 많으면(Icebreaker) 현재 층만 보이고 펼쳐서 고른다
+    const many = names.length > LEVELS_COLLAPSE_OVER;
+    box.classList.toggle('many', many);
+    box.innerHTML = `<div class="level-title">층<span class="cur">${esc(current)}</span></div>`
+        + names.map((n, k) => `<button class="level-btn ${k - 1 === activeIndex ? 'active' : ''}" data-level="${k - 1}">${esc(n)}</button>`).join('')
+        + (many ? `<button class="lv-more" data-more>${box.classList.contains('open') ? '접기 ▴' : `전체 층 ${names.length}개 ▾`}</button>` : '');
+    renderLocation();
 }
 
 function renderStyleControl() {
@@ -161,7 +201,7 @@ function renderStyleControl() {
         return;
     }
     box.classList.remove('hidden');
-    const label = { svg: '도면', tile: '위성' };
+    const label = { wiki: '위키', svg: '도면', tile: '위성' };
     box.innerHTML = styles.map((s) => `<button data-style="${s}" class="${s === state.tarkovMap.style ? 'active' : ''}">${label[s]}</button>`).join('');
 }
 
@@ -230,6 +270,7 @@ function renderQuestList() {
                     <button class="mini-btn danger" data-remove="${task.id}" title="등록 해제">✕</button>
                 </div>
             </div>
+            <div class="q-progress ${doneCount === total ? 'all' : ''}"><i style="width:${total ? Math.round((doneCount / total) * 100) : 0}%"></i></div>
             <ul class="objectives">${objectives}</ul>
             ${extra}
         </div>`;
@@ -476,13 +517,26 @@ function showPosition(p, announce = true) {
     state.lastPosition = { ...p, mapKey: state.currentMap.key };
     const s = state.settings;
     state.tarkovMap.setPlayer(p, { autoFloor: s.autoFloor, autoPan: s.autoPan, deadZonePercent: s.deadZonePercent });
-    const { x, y, z } = p.position;
-    const time = new Date().toLocaleTimeString('ko-KR');
-    $('#locationStatus').innerHTML = `<b>${esc(state.currentMap.name)}</b> · X ${x.toFixed(1)} / Z ${z.toFixed(1)} / 높이 ${y.toFixed(1)} <span class="muted">(${time})</span>`;
+    state.lastPosition.time = new Date().toLocaleTimeString('ko-KR');
+    renderLocation();
     // 스크린샷 파일 이름에는 맵 정보가 없어서, 다른 맵에서 찍은 스크린샷이면 엉뚱한 곳에 찍힌다
     if (state.tarkovMap.map && !state.tarkovMap.containsPosition(p.position)) {
         toast(`이 좌표는 ${state.currentMap.name} 지도 범위 밖입니다. 다른 맵에서 찍은 스크린샷인지, 맵 선택이 맞는지 확인하세요.`, 'warn');
     } else if (announce) toast('위치를 표시했습니다.');
+}
+
+// 위치 카드: 맵 · 층 · 좌표 칩 (지금 맵의 위치일 때만)
+function renderLocation() {
+    const p = state.lastPosition;
+    if (!p || p.mapKey !== state.currentMap?.key || !p.time) return;
+    const { x, y, z } = p.position;
+    const t = state.tarkovMap;
+    const layer = t.layers[t.levelIndex];
+    const level = layer ? (LEVEL_NAMES[layer.name] || layer.name) : (t.layers.length ? '1층' : '');
+    $('#locationStatus').innerHTML = `<div class="loc-chips"><span class="loc-chip map">${esc(state.currentMap.name)}</span>`
+        + (level ? `<span class="loc-chip level">${esc(level)}</span>` : '')
+        + `<span class="loc-chip"><b>X</b>${x.toFixed(1)}</span><span class="loc-chip"><b>Z</b>${z.toFixed(1)}</span>`
+        + `<span class="loc-chip"><b>높이</b>${y.toFixed(1)}</span><span class="loc-time">${esc(p.time)}</span></div>`;
 }
 
 function resolveLogMap(raw) {
@@ -529,8 +583,11 @@ function bindUi() {
         state.lastPosition = null;
         selectMap(e.target.value);
     });
-    $('#modeSelect').addEventListener('change', async (e) => {
-        await saveSettings({ gameMode: e.target.value });
+    $('#modeSeg').addEventListener('click', async (e) => {
+        const mode = e.target.closest('[data-mode]')?.dataset.mode;
+        if (!mode || mode === state.settings.gameMode) return;
+        await saveSettings({ gameMode: mode });
+        renderModeSeg();
         await loadData(false);
     });
     $('#btnLocate').addEventListener('click', async () => {
@@ -542,16 +599,27 @@ function bindUi() {
         showPosition(r);
     });
     $('#quickAutoScreenshot').addEventListener('change', (e) => saveSettings({ autoScreenshot: e.target.checked }));
-    $('#toggleExtracts').addEventListener('change', async (e) => {
-        await saveSettings({ showExtracts: e.target.checked });
-        state.tarkovMap.setExtracts(e.target.checked);
+    $('#extractFilter').addEventListener('change', async (e) => {
+        if (!e.target.dataset.filter) return;
+        // 체크 상자 상태를 그대로 쓴다 (저장이 끝나기 전에 연달아 바꿔도 앞의 변경을 잃지 않게)
+        const extractFilter = Object.fromEntries([...document.querySelectorAll('#extractFilter [data-filter]')].map((c) => [c.dataset.filter, c.checked]));
+        state.tarkovMap.setExtracts(extractFilter);
+        await saveSettings({ extractFilter });
     });
     $('#btnClearAll').addEventListener('click', async () => {
         if (confirm(`${state.currentMap.name}에 등록된 퀘스트를 모두 해제할까요?`)) await setRegistered([]);
     });
     $('#levelControl').addEventListener('click', (e) => {
+        if (e.target.closest('[data-more]')) {
+            $('#levelControl').classList.toggle('open');
+            renderLevelControl(state.tarkovMap.levelIndex);
+            return;
+        }
         const b = e.target.closest('[data-level]');
-        if (b) state.tarkovMap.setLevel(Number(b.dataset.level));
+        if (b) {
+            $('#levelControl').classList.remove('open');
+            state.tarkovMap.setLevel(Number(b.dataset.level));
+        }
     });
     $('#styleControl').addEventListener('click', async (e) => {
         const b = e.target.closest('[data-style]');

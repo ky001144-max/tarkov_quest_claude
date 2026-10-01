@@ -34,13 +34,94 @@ const MERGE_HEIGHT = 2.5;
 const CHIP_SIZE = 22;
 const CHIP_GAP = 2;
 
-// 게임 좌표 → Leaflet 좌표 (lat = z, lng = x)
+// 위키 지도를 보는 동안의 좌표계 (null 이면 tarkov.dev 지도: Leaflet 좌표 = 게임 좌표)
+let wikiView = null;
+
+// 게임 좌표 → Leaflet 좌표 (tarkov.dev 지도: lat = z, lng = x / 위키 지도: lat = 위키 y, lng = 위키 x)
 function pos(p) {
+    if (wikiView) {
+        const [x, y] = wikiView.toWiki(p);
+        return [y, x];
+    }
     return [p.z, p.x];
 }
 
+// 게임 좌표 범위 [[x, z], [x, z]] → Leaflet 범위 (네 모서리를 감싸는 범위)
 function getBounds(b) {
-    return L.latLngBounds([b[0][1], b[0][0]], [b[1][1], b[1][0]]);
+    const [[x1, z1], [x2, z2]] = b;
+    return L.latLngBounds([[x1, z1], [x2, z1], [x1, z2], [x2, z2]].map(([x, z]) => pos({ x, z })));
+}
+
+// 게임 좌표가 게임 좌표 범위 [[x, z], [x, z]] 안에 있는지
+function inGameBounds(b, p) {
+    const [[x1, z1], [x2, z2]] = b;
+    return p.x >= Math.min(x1, x2) && p.x <= Math.max(x1, x2) && p.z >= Math.min(z1, z2) && p.z <= Math.max(z1, z2);
+}
+
+function inPolygon([x, y], poly) {
+    let inside = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [xi, yi] = poly[i];
+        const [xj, yj] = poly[j];
+        if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+    }
+    return inside;
+}
+
+// 위키 지도 이미지 좌표 ↔ 게임 좌표 (게임 = matrix · 위키 + offset).
+// 층·구역을 나눠 그린 지도(The Lab, Factory, Interchange, Icebreaker)는 기본 판 좌표로 보여 주고,
+// 다른 판 그림은 기본 판 자리로 옮겨(같은 축척·방향이라 평행 이동) 그 층을 고를 때 겹쳐 그린다
+class WikiView {
+    constructor(wikiMap) {
+        const [a, b, c, d] = wikiMap.matrix;
+        this.m = { a, b, c, d, det: a * d - b * c };
+        this.panels = wikiMap.panels;
+        this.base = this.panels.find((p) => !p.area) || this.panels[0];
+        this.size = wikiMap.size;
+        // 위키 이미지가 놓이는 위키 좌표 범위
+        this.rect = wikiMap.imageRect || [0, 0, ...wikiMap.size];
+    }
+
+    // 게임 → 위키 좌표 (기본 판 기준)
+    toWiki(p) {
+        const { a, b, c, d, det } = this.m;
+        const dx = p.x - this.base.offset[0];
+        const dz = p.z - this.base.offset[1];
+        return [(d * dx - b * dz) / det, (a * dz - c * dx) / det];
+    }
+
+    // 판 그림을 기본 판 자리로 옮기는 위키 좌표 이동량
+    shiftOf(panel) {
+        const { a, b, c, d, det } = this.m;
+        const dx = panel.offset[0] - this.base.offset[0];
+        const dz = panel.offset[1] - this.base.offset[1];
+        return [(d * dx - b * dz) / det, (a * dz - c * dx) / det];
+    }
+
+    // 게임 좌표가 위키 지도 이미지 안에 그려지는지
+    contains(p) {
+        const [x, y] = this.toWiki(p);
+        const [x1, y1, x2, y2] = this.rect;
+        return x >= x1 && y >= y1 && x <= x2 && y <= y2;
+    }
+
+    // Leaflet 좌표 → 게임 좌표
+    toGame(latlng) {
+        const { a, b, c, d } = this.m;
+        const [x, y] = [latlng.lng, latlng.lat];
+        return { x: a * x + b * y + this.base.offset[0], z: c * x + d * y + this.base.offset[1] };
+    }
+
+    // 게임 방향(rotation 0 = +z, 90 = +x)이 화면에서 위쪽 기준 시계 방향으로 몇 도인지
+    screenAngle(rotation) {
+        const r = (rotation * Math.PI) / 180;
+        const { a, b, c, d, det } = this.m;
+        const gx = Math.sin(r);
+        const gz = Math.cos(r);
+        const wx = (d * gx - b * gz) / det;
+        const wy = (a * gz - c * gx) / det;
+        return (Math.atan2(wx, wy) * 180) / Math.PI;
+    }
 }
 
 // 층 extents 안에 위치가 있는지: 'full' | 'partial' | false
@@ -53,11 +134,21 @@ function onExtents(extents, p, top, bottom) {
             const type = b >= ext.height[0] && t <= ext.height[1] ? 'full' : 'partial';
             if (!ext.bounds) return type;
             for (const bounds of ext.bounds) {
-                if (getBounds(bounds).contains(pos(p))) return type;
+                if (inGameBounds(bounds, p)) return type;
             }
         }
     }
     return false;
+}
+
+// 탈출구 표시 필터: PMC / 스캐브 / 트랜짓·Co-op (Co-op 이 아닌 공용 탈출구는 PMC·스캐브 중 하나라도 켜면 보인다)
+const isCoopExtract = (item) => /co-?op/i.test(item.name || '') || /협동/.test(item.wiki?.requirements || '');
+function extractVisible(item, cls, filter) {
+    if (!filter) return false;
+    if (cls === 'transit' || isCoopExtract(item)) return !!filter.transit;
+    if (cls === 'pmc') return !!filter.pmc;
+    if (cls === 'scav') return !!filter.scav;
+    return !!(filter.pmc || filter.scav);
 }
 
 const FACTION_KO = { pmc: 'PMC 전용', scav: '스캐브 전용', shared: 'PMC·스캐브 공용', transit: '지역 이동' };
@@ -81,7 +172,7 @@ function extractInfoText(item) {
 
 function extractPopupHtml(item, cls, label) {
     const rows = extractInfoRows(item).map(([k, v]) => `<div class="popup-extract-row"><span>${k}</span>${escapeHtml(v)}</div>`).join('');
-    const source = item.source === 'wiki' ? '<div class="popup-elev">위치: 위키 지도에서 계산 (대략적)</div>' : '';
+    const source = item.source === 'wiki' ? '<div class="popup-elev">위치: 위키 지도 기준</div>' : '';
     return `<div class="popup-task extract-${cls}">${escapeHtml(label)}</div><div class="popup-item">${FACTION_KO[cls] || ''}</div>${rows}${source}`;
 }
 
@@ -94,12 +185,14 @@ function taskTitle(task) {
 const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 class TarkovMap {
-    constructor(el, { onLevelChange, onMouseCoord, levelName } = {}) {
+    constructor(el, { onLevelChange, onMouseCoord, levelName, onLoadProgress } = {}) {
         this.el = el;
         this.map = null;
         this.levelName = levelName || ((n) => n);
         this.onLevelChange = onLevelChange || (() => {});
         this.onMouseCoord = onMouseCoord || (() => {});
+        // 위키 지도를 처음 열 때 타일 만드는 진행률 (0~1)
+        this.onLoadProgress = onLoadProgress || (() => {});
         this.levelIndex = -1;
         this.objectiveTargets = {};
         this.playerMarker = null;
@@ -107,11 +200,16 @@ class TarkovMap {
     }
 
     get layers() {
-        return this.cfg?.layers || [];
+        // 위키 지도에만 따로 그려진 층(Interchange 주차장)은 위키 지도를 볼 때만 버튼을 더한다
+        const extra = this.style === 'wiki' ? this.mapInfo?.wikiMap?.extraLayers || [] : [];
+        return [...(this.cfg?.layers || []), ...extra];
     }
 
-    availableStyles(cfg = this.cfg) {
+    availableStyles(mapInfo = this.mapInfo) {
+        const cfg = mapInfo?.config;
         const s = [];
+        // 위키 지도 이미지는 Referer 가 필요해 데스크톱(메인 프로세스가 받아 줌)에서만
+        if (mapInfo?.wikiMap && window.api.getWikiImage) s.push('wiki');
         if (cfg?.svgPath) s.push('svg');
         if (cfg?.tilePath) s.push('tile');
         return s;
@@ -130,31 +228,105 @@ class TarkovMap {
         this.playerMarker = null;
         this.objectiveTargets = {};
         this.svgGroups = [];
+        this.wikiPanels = [];
+        wikiView = null;
+        this.wikiSource?.close();
+        this.wikiSource = null;
         // 지도를 불러오는 동안 이전 지도의 레이어에 마커를 넣지 않도록 비워 둔다
         this.extractLayer = null;
         this.questLayer = null;
         this.playerLayer = null;
 
-        const styles = this.availableStyles(cfg);
+        const styles = this.availableStyles(mapInfo);
         this.style = styles.includes(preferredStyle) ? preferredStyle : styles[0];
+
+        // 위키 지도: 타일을 먼저 준비하고 (처음 여는 지도면 이미지를 받아 자른다, 못 하면 tarkov.dev 지도로) 위키 이미지 좌표계로 연다
+        let wikiSource = null;
+        this.tileProgress = 1;
+        if (this.style === 'wiki') {
+            const wiki = mapInfo.wikiMap;
+            try {
+                wikiSource = await WikiTiles.open({
+                    file: wiki.file,
+                    url: wiki.url,
+                    rect: wiki.imageRect || [0, 0, ...wiki.size],
+                    loadImage: () => window.api.getWikiImage(wiki.url),
+                    onProgress: (r) => {
+                        if (token !== this.loadToken) return;
+                        this.tileProgress = r;
+                        this.onLoadProgress(r);
+                    },
+                });
+            } catch (err) {
+                this.style = styles.find((st) => st !== 'wiki');
+                if (!this.style) throw err;
+            }
+            if (token !== this.loadToken) {
+                wikiSource?.close();
+                return;
+            }
+        }
+        this.wikiSource = wikiSource;
+        if (wikiSource) wikiView = new WikiView(mapInfo.wikiMap);
+
         const maxZoom = Math.max(cfg.maxZoom + 2, 7);
         const bounds = getBounds(cfg.bounds);
         this.bounds = bounds;
-
-        const map = L.map(this.el, {
-            crs: getCRS(cfg),
-            zoomSnap: 0.1,
-            zoomDelta: 0.5,
-            wheelPxPerZoomLevel: 120,
-            attributionControl: false,
-            minZoom: cfg.minZoom,
-            maxZoom,
-            maxBounds: bounds.pad(0.6),
-        });
+        let map;
+        if (wikiSource) {
+            // 위키 지도는 위키 페이지처럼 이미지를 똑바로 세운 좌표계 (이미지 1px = 1). 처음에는 기본 판 영역을 보여 준다
+            const [x1, y1, x2, y2] = wikiView.rect;
+            const imageBounds = L.latLngBounds([y1, x1], [y2, x2]);
+            const view = wikiView.base.view;
+            const viewBounds = view ? L.latLngBounds(view.map(([x, y]) => [y, x])) : imageBounds;
+            map = L.map(this.el, {
+                crs: L.CRS.Simple,
+                zoomSnap: 0.1,
+                zoomDelta: 0.5,
+                wheelPxPerZoomLevel: 120,
+                attributionControl: false,
+                minZoom: -6,
+                maxZoom: 3,
+                maxBounds: viewBounds.pad(0.3),
+            });
+            map.fitBounds(viewBounds);
+            map.setMinZoom(map.getZoom() - 1);
+            this.focusZoom = map.getZoom() + 1.5;
+            this.baseLayer = new WikiTiles.WikiTileLayer(wikiSource, {
+                className: 'base-map wiki-map',
+                clip: view,
+                bounds: viewBounds,
+            }).addTo(map);
+            // 다른 판 그림: 기본 판 자리로 옮기고 그 판 영역만 그린다 (층을 고를 때 setLevel 에서 켠다)
+            this.wikiPanels = wikiView.panels.filter((p) => p.area && p.offset && p.levels.length).map((p) => {
+                const [sx, sy] = wikiView.shiftOf(p);
+                const area = p.area.map(([x, y]) => [x + sx, y + sy]);
+                const layer = new WikiTiles.WikiTileLayer(wikiSource, {
+                    className: 'wiki-map',
+                    pane: 'levelPane',
+                    clip: area,
+                    shift: [sx, sy],
+                    bounds: L.latLngBounds(area.map(([x, y]) => [y, x])),
+                });
+                return { levels: p.levels, layer };
+            });
+        } else {
+            map = L.map(this.el, {
+                crs: getCRS(cfg),
+                zoomSnap: 0.1,
+                zoomDelta: 0.5,
+                wheelPxPerZoomLevel: 120,
+                attributionControl: false,
+                minZoom: cfg.minZoom,
+                maxZoom,
+                maxBounds: bounds.pad(0.6),
+            });
+            map.fitBounds(bounds);
+            this.focusZoom = cfg.minZoom + 2;
+        }
         this.map = map;
         map.createPane('levelPane').style.zIndex = 420;
         map.createPane('zonePane').style.zIndex = 440;
-        map.fitBounds(bounds);
 
         const tileSize = cfg.tileSize || 256;
         this.tileOptions = { tileSize, bounds, maxZoom, maxNativeZoom: cfg.maxZoom };
@@ -187,7 +359,7 @@ class TarkovMap {
                     throw err;
                 }
             }
-        } else {
+        } else if (this.style === 'tile') {
             this.baseLayer = L.tileLayer(cfg.tilePath, this.tileOptions).addTo(map);
         }
         if (token !== this.loadToken) return;
@@ -196,7 +368,7 @@ class TarkovMap {
         this.questLayer = L.layerGroup().addTo(map);
         this.playerLayer = L.layerGroup().addTo(map);
 
-        map.on('mousemove', (e) => this.onMouseCoord({ x: e.latlng.lng, z: e.latlng.lat }));
+        map.on('mousemove', (e) => this.onMouseCoord(wikiView ? wikiView.toGame(e.latlng) : { x: e.latlng.lng, z: e.latlng.lat }));
 
         const defaultLevel = this.layers.findIndex((l) => l.show);
         this.setLevel(defaultLevel);
@@ -218,24 +390,62 @@ class TarkovMap {
             if (g.classList.contains('overlay-layer')) g.classList.add('hidden-layer');
         }
         const layer = this.layers[index];
-        if (layer) {
+        let overlay = false;
+        // 위키 지도: 고른 층의 판 그림을 기본 판 자리에 겹쳐 그린다
+        for (const p of this.wikiPanels || []) {
+            const on = !!layer && p.levels.includes(layer.name);
+            if (on && !this.map.hasLayer(p.layer)) p.layer.addTo(this.map);
+            if (!on) p.layer.remove();
+            overlay ||= on;
+        }
+        if (layer && this.style !== 'wiki') {
             const svgGroup = this.style === 'svg' && layer.svgLayer
                 ? this.svgGroups.find((g) => g.id === layer.svgLayer)
                 : null;
             if (svgGroup) {
                 svgGroup.classList.remove('hidden-layer');
+                overlay = true;
             } else if (layer.tilePath) {
                 this.levelTile = L.tileLayer(layer.tilePath, { ...this.tileOptions, pane: 'levelPane' }).addTo(this.map);
+                overlay = true;
             }
         }
+        // 다른 층을 보는 동안 기본 층 지도를 흐리게 (위키 지도는 위에 겹쳐 그릴 층 그림이 있을 때만)
         const base = this.baseElement();
-        if (base) base.classList.toggle('off-level', !!layer && !layer.show);
+        if (base) base.classList.toggle('off-level', !!layer && !layer.show && (this.style !== 'wiki' || overlay));
         this.refreshMarkerLevels();
         this.onLevelChange(index);
     }
 
+    // 층을 나눠 그린 위키 지도를 보는 중인지 (층을 위키 판 기준으로 정한다)
+    get wikiLevels() {
+        return !!wikiView && wikiView.panels.length > 1;
+    }
+
+    // 층 이름 → 층 번호 (기본 층·기본 판과 같은 층 이름이면 -1)
+    levelIndexOf(name) {
+        if (!name || wikiView?.base.levels.includes(name)) return -1;
+        return this.layers.findIndex((l) => l.name === name);
+    }
+
+    // 지금 보는 층 (기본 판과 같은 층 버튼(Icebreaker 의무실)도 기본 층으로 본다)
+    get activeLevel() {
+        const layer = this.layers[this.levelIndex];
+        return layer ? this.levelIndexOf(layer.name) : -1;
+    }
+
+    // 위키 지도에서 게임 좌표가 그려지는 판의 층 (판 고르기 규칙: 높이·위치 범위)
+    wikiLevelOf(p) {
+        const panel = wikiView.panels.find((x) => x.select
+            && (!x.select.height || (p.y >= x.select.height[0] && p.y < x.select.height[1]))
+            && (!x.select.bounds || inGameBounds(x.select.bounds, p))) || wikiView.base;
+        return this.levelIndexOf(panel.levels[0]);
+    }
+
     // 해당 위치가 현재 보이는 층에 있는지 (tarkov-dev markerIsOnActiveLayer 와 동일한 규칙)
-    isOnActiveLevel(p, top, bottom) {
+    // level: 위키 지도에서 이 마커가 그려진 층 이름 (탈출구, null = 기본 층)
+    isOnActiveLevel(p, top, bottom, level) {
+        if (this.wikiLevels) return (level !== undefined ? this.levelIndexOf(level) : this.wikiLevelOf(p)) === this.activeLevel;
         for (let i = 0; i < this.layers.length; i++) {
             const layer = this.layers[i];
             if (i === this.levelIndex || !layer.extents) continue;
@@ -249,6 +459,12 @@ class TarkovMap {
     }
 
     detectLevel(p) {
+        if (this.wikiLevels) {
+            // 기본 판에 층 버튼이 따로 있으면(Icebreaker 의무실) 그 버튼을 고른다
+            const index = this.wikiLevelOf(p);
+            const baseName = wikiView.base.levels[0];
+            return index === -1 && baseName ? this.layers.findIndex((l) => l.name === baseName) : index;
+        }
         for (let i = 0; i < this.layers.length; i++) {
             const layer = this.layers[i];
             if (!layer.extents || !layer.extents.some((e) => e.bounds)) continue;
@@ -261,7 +477,14 @@ class TarkovMap {
         if (!this.map) return;
         // 현재 층이 아니면 그 마커가 속한 층 이름을 돌려준다 (현재 층이면 null)
         const otherLevelName = (o) => {
-            if (this.isOnActiveLevel(o.gamePos, o.top, o.bottom)) return null;
+            if (this.isOnActiveLevel(o.gamePos, o.top, o.bottom, o.level)) return null;
+            if (this.wikiLevels) {
+                const index = o.level !== undefined ? this.levelIndexOf(o.level) : this.wikiLevelOf(o.gamePos);
+                if (index !== -1) return this.levelName(this.layers[index].name);
+                // 기본 층: 기본 판에 층 이름이 있으면(Icebreaker 의무실) 그 이름
+                const baseName = wikiView.base.levels[0];
+                return baseName ? this.levelName(baseName) : '1층';
+            }
             const index = this.detectLevel(o.gamePos);
             if (index === -1) return this.levelIndex === -1 ? '' : '1층';
             return this.levelName(this.layers[index].name);
@@ -285,16 +508,17 @@ class TarkovMap {
         this.extractLayer?.eachLayer(applyExtract);
     }
 
-    setExtracts(show) {
+    // filter: { pmc, scav, transit } 종류별 표시 여부
+    setExtracts(filter) {
         if (!this.extractLayer) return;
         this.extractLayer.clearLayers();
         this.unplacedControl?.remove();
         this.unplacedControl = null;
-        if (!show) return;
         const info = this.mapInfo;
         const unplaced = [];
         const add = (item, cls, label) => {
-            if (!item.position || !this.bounds.contains(pos(item.position))) {
+            if (!extractVisible(item, cls, filter)) return;
+            if (!item.position || !this.containsPosition(item.position)) {
                 unplaced.push({ item, cls, label });
                 return;
             }
@@ -307,6 +531,7 @@ class TarkovMap {
                 gamePos: item.position,
                 top: item.top,
                 bottom: item.bottom,
+                level: item.level,
                 label,
                 interactive: true,
             });
@@ -363,7 +588,7 @@ class TarkovMap {
                     + (approx ? '<div class="popup-elev">위키 가이드 지도 기준 대략 위치</div>' : `<div class="popup-elev">높이: ${p.y.toFixed(1)}</div>`);
                 for (const zone of obj.zones) {
                     if (!apiIds.includes(zone.map)) continue;
-                    if (!this.bounds.contains(pos(zone.position))) continue;
+                    if (!this.containsPosition(zone.position)) continue;
                     if (zone.outline.length >= 3) {
                         L.polygon(zone.outline.map(pos), {
                             color, weight: 2, fillOpacity: 0.15, pane: 'zonePane', interactive: false,
@@ -378,7 +603,7 @@ class TarkovMap {
                 for (const loc of obj.locations) {
                     if (!apiIds.includes(loc.map)) continue;
                     for (const p of loc.positions) {
-                        if (!this.bounds.contains(pos(p))) continue;
+                        if (!this.containsPosition(p)) continue;
                         addToSpot(p, undefined, undefined, { kind: 'item', color, number, done, objId: obj.id, popup: popupHtml(p) });
                     }
                 }
@@ -437,15 +662,21 @@ class TarkovMap {
 
     // 지금 지도 범위 안의 좌표인지 (다른 맵의 스크린샷인지 확인용)
     containsPosition(p) {
-        return !!this.bounds && this.bounds.contains(pos(p));
+        if (wikiView) return wikiView.contains(p);
+        return !!this.cfg && inGameBounds(this.cfg.bounds, p);
     }
 
     setPlayer(p, { autoFloor, autoPan, deadZonePercent }) {
         // 지도를 불러오는 중이면 건너뛴다 (불러오기가 끝나면 마지막 위치를 다시 표시한다)
         if (!this.map || !this.playerLayer) return;
-        let addRotation = this.cfg.coordinateRotation || 0;
-        if (addRotation === 90 || addRotation === 270) addRotation += 180;
-        const rotation = (p.rotation ?? 0) + addRotation;
+        let rotation;
+        if (wikiView) {
+            rotation = wikiView.screenAngle(p.rotation ?? 0);
+        } else {
+            let addRotation = this.cfg.coordinateRotation || 0;
+            if (addRotation === 90 || addRotation === 270) addRotation += 180;
+            rotation = (p.rotation ?? 0) + addRotation;
+        }
         const icon = L.divIcon({
             className: 'player-marker',
             // 가운데 점이 정확한 위치이고, 부채꼴·화살촉은 바라보는 방향만 나타낸다
@@ -475,7 +706,7 @@ class TarkovMap {
         const outside = pt.x < 0 || pt.y < 0 || pt.x > size.x || pt.y > size.y;
         const inDeadZone = pt.x < mx || pt.x > size.x - mx || pt.y < my || pt.y > size.y - my;
         if (outside && !this.playerShownOnce) {
-            this.map.setView(latlng, Math.max(this.map.getZoom(), this.cfg.minZoom + 2));
+            this.map.setView(latlng, Math.max(this.map.getZoom(), this.focusZoom));
         } else if (autoPan && inDeadZone) {
             this.map.panTo(latlng, { animate: true, duration: 0.4 });
         }

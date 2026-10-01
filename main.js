@@ -23,8 +23,9 @@ const DEFAULT_SETTINGS = {
     autoPan: true,                  // 위치 마커 따라가기
     deadZonePercent: 70,
     autoCleanup: false,             // 레이드 종료 시 스크린샷 삭제
-    mapStyle: 'svg',                // svg | tile
-    showExtracts: true,
+    mapStyle: 'wiki',               // wiki | svg | tile
+    mapStyleVersion: 2,             // 2: 위키 지도를 기본으로 바꾼 버전
+    extractFilter: { pmc: true, scav: true, transit: true },  // 탈출구 종류별 표시 (transit = 지역 이동 + Co-op)
     sidebarWidth: 380,
     registered: {},                 // { [mapKey]: [taskId, ...] }
     completedObjectives: {},        // { [objectiveId]: true }
@@ -43,6 +44,14 @@ function loadSettings() {
     try {
         const raw = JSON.parse(fs.readFileSync(settingsFile(), 'utf8'));
         settings = { ...DEFAULT_SETTINGS, ...raw };
+        // 예전 탈출구 켜기/끄기 하나 → 종류별 표시
+        if (!raw.extractFilter && raw.showExtracts === false) settings.extractFilter = { pmc: false, scav: false, transit: false };
+        delete settings.showExtracts;
+        // 위키 지도가 생기기 전 설정은 한 번만 위키 지도로 바꾼다 (이후 고른 스타일은 유지)
+        if ((raw.mapStyleVersion || 1) < DEFAULT_SETTINGS.mapStyleVersion) {
+            settings.mapStyle = DEFAULT_SETTINGS.mapStyle;
+            settings.mapStyleVersion = DEFAULT_SETTINGS.mapStyleVersion;
+        }
     } catch {
         settings = { ...DEFAULT_SETTINGS };
     }
@@ -125,6 +134,7 @@ ipcMain.handle('settings:set', (e, patch) => {
 });
 ipcMain.handle('data:load', (e, { mode, force }) => dataService.load(mode, force));
 ipcMain.handle('svg:get', (e, url) => dataService.getSvg(url));
+ipcMain.handle('wikimap:get', (e, url) => dataService.getWikiImage(url));
 ipcMain.handle('dialog:folder', async (e, current) => {
     const r = await dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'], defaultPath: current || undefined });
     return r.canceled ? null : r.filePaths[0];

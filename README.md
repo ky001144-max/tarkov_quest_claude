@@ -46,18 +46,26 @@ Windows 10/11 x64에서 동작하고, 처음 실행할 때 데이터를 받기 �
 - **자동 패닝**: 위치 마커가 데드존을 벗어나면 지도가 따라 움직입니다. 데드존은 50~99% 사이에서 조절할 수 있습니다.
 - **자동 맵 전환**: 게임 로그를 보고 레이드가 시작되면 그 맵으로 바꿉니다.
 - **스크린샷 자동 삭제**: 레이드가 끝나면 스크린샷 폴더를 정리합니다(기본값은 꺼짐).
-- 층 선택, 지도 스타일(도면/위성) 전환, 탈출구·이동 지점 표시, PvP/PvE 데이터 전환도 할 수 있습니다.
+- 층 선택, 지도 스타일(위키/도면/위성) 전환, 탈출구·이동 지점 표시, PvP/PvE 데이터 전환도 할 수 있습니다.
+
+### 위키 지도 (기본 지도)
+- 13개 맵 모두 [타르코프 위키 인터랙티브 지도](https://escapefromtarkov.fandom.com/wiki/Special:AllMaps)의 그림을 기본 지도로 씁니다. 위키 페이지처럼 똑바로 세운 그림 위에 탈출구·퀘스트 위치·내 위치를 표시합니다.
+- 위키 그림을 게임 좌표에 맞추는 변환은 위키 마커와 tarkov.dev 좌표(탈출구·스위치 이름, 상자·스폰·잠긴 문 수백 개)를 짝지어 구합니다. 맵마다 오차는 대략 1~4m입니다(인터체인지 바깥 지도는 5~9m).
+- 공장·연구소·쇄빙선·인터체인지처럼 층을 나눠 그린 위키 지도는 기본 층 그림을 보여 주고, 오른쪽 층 버튼을 누르면 그 층 그림을 같은 자리에 겹쳐 보여 줍니다. 탈출구 층 표시와 스크린샷 자동 층 전환도 위키 그림 기준입니다.
+- 위키 이미지는 크기가 커서, 맵을 처음 열 때 한 번 타일로 잘라 저장합니다. 작은 배율부터 만들어 1초 안에 지도를 보여 주고, 고해상도 타일은 뒤에서 이어 만듭니다(지도 아래 "고해상도 지도 준비 중" 표시). 다음부터는 바로 열립니다.
+- 위키 그림은 각 지도 제작자(re3mr, Jindouz, Muhawi 등)의 것이며 위키의 라이선스를 따릅니다.
 
 ### 탈출구 (타르코프 위키 기준)
 - 탈출구·이동 지점 목록은 [타르코프 위키](https://escapefromtarkov.fandom.com/wiki/Escape_from_Tarkov_Wiki) 맵 문서의 표를 기준으로 합니다. 위키에서 사라진 탈출구는 표시하지 않고, 새로 생긴 탈출구는 추가합니다.
-- 위치는 tarkov.dev 실측 좌표를 먼저 씁니다. tarkov.dev에 없는 탈출구는 위키 인터랙티브 지도의 마커 위치를 게임 좌표로 바꿔 대략적으로 표시합니다. 위키 지도의 비율이 실제와 다른 맵(공장, 연구소 등)이나 지하처럼 따로 그려진 곳은 좌표를 알 수 없어서 지도 왼쪽 아래 **위치 미표시 탈출구** 목록에 나옵니다.
+- 위치는 위키 지도 마커 위치를 씁니다. 위키에 마커가 없거나, 지도 옆에 따로 그린 건물·지하 확대도 위에 있는 마커(실제 위치와 60m 넘게 다른 것)는 tarkov.dev 좌표를 씁니다. 둘 다 없으면 지도 왼쪽 아래 **위치 미표시 탈출구** 목록에 나옵니다.
+- 지도 오른쪽 **탈출구** 패널에서 PMC / 스캐브 / 트랜짓·Co-op 을 따로 켜고 끌 수 있습니다. PMC·스캐브 공용 탈출구(Co-op 제외)는 PMC나 스캐브 중 하나라도 켜면 보입니다.
 - 탈출구를 클릭하면 진영, 항상 열림 여부, 1회용 여부, 조건(요금·필요 아이템 등), 메모가 나옵니다.
 
 > 원본의 Ctrl+NumPad 층 이동 단축키는 넣지 않았습니다. 대신 높이를 보고 층을 자동으로 바꿉니다.
 
 ## 설정 / 저장 위치
 - 설정과 등록한 퀘스트: `%APPDATA%\EFT Where Am I KO\settings.json`
-- 데이터 캐시: `%APPDATA%\EFT Where Am I KO\cache` (tarkov.dev·위키 데이터를 6시간마다 새로 받고, 오프라인일 때는 캐시를 사용)
+- 데이터 캐시: `%APPDATA%\EFT Where Am I KO\cache` (tarkov.dev·위키 데이터를 6시간마다 새로 받고, 오프라인일 때는 캐시를 사용). 위키 지도 이미지 원본도 여기에 두고, 잘라 둔 타일은 앱의 IndexedDB에 저장합니다.
 - 스크린샷 폴더(`문서\Escape from Tarkov\Screenshots`)와 로그 폴더는 자동으로 찾습니다. 못 찾으면 ⚙ 설정에서 직접 지정하세요.
 - 게임 **스크린샷 형식은 PNG**여야 합니다.
 - **GPU 가속**은 기본으로 꺼져 있습니다(메모리를 덜 쓰고 게임과 GPU를 나눠 쓰지 않음). 지도 이동이 버벅이면 ⚙ 설정 → 성능에서 켜고 다시 실행하세요.
@@ -80,11 +88,13 @@ node scripts/build-web.js   # _site/ 에 웹 버전 생성 (데이터 가공 포
 | `src/watchers.js` | 스크린샷·게임 로그 감시, 경로 자동 탐지 |
 | `renderer/game-files.js` | 스크린샷 파일 이름·게임 로그 줄 해석 (데스크톱·웹 공용) |
 | `web/web-api.js` | 웹 버전용 `window.api` (설정 localStorage, 폴더 연결은 File System Access API) |
-| `scripts/build-web.js` | 웹 버전(`_site/`) 생성: 화면 코드 복사 + 데이터 가공 |
+| `scripts/build-web.js` | 웹 버전(`_site/`) 생성: 화면 코드 복사 + 데이터 가공 + 위키 지도 이미지 받기(위키 이미지 서버가 다른 사이트에서 바로 불러오는 것을 막아서 사이트에 함께 넣음) |
 | `.github/workflows/pages.yml` | 웹 버전을 GitHub Pages로 배포 (push 때, 6시간마다) |
-| `renderer/map.js` | Leaflet 지도(tarkov.dev 좌표계와 층 처리 방식을 가져옴) |
+| `renderer/map.js` | Leaflet 지도(tarkov.dev 좌표계와 층 처리 방식을 가져옴), 위키 지도 좌표계·층 그림 겹치기 |
+| `renderer/wiki-tiles.js` | 위키 지도 타일 저장(IndexedDB)·그리기 레이어 |
+| `renderer/wiki-tiler.js` | 위키 지도 이미지를 배율별 타일로 자르는 Web Worker |
 | `renderer/app.js` | 퀘스트 등록/목록 UI, 설정, 위치 연동 |
-| `src/wiki-extracts.js` | 위키 맵 문서·인터랙티브 지도에서 탈출구 목록을 읽어 tarkov.dev 탈출구와 합침 |
+| `src/wiki-extracts.js` | 위키 맵 문서·인터랙티브 지도에서 탈출구 목록을 읽어 tarkov.dev 탈출구와 합침, 위키 지도 → 게임 좌표 변환(맵별 판 구성 `WIKI_LAYOUTS`) |
 | `assets/wiki_extracts.json` | 위키 탈출구 목록 오프라인용 사본 (위키를 받지 못할 때 사용) |
 | `src/wiki-events.js` | 위키 Event content 분류에서 이벤트 퀘스트와 이벤트 이름·기간을 읽음 |
 | `assets/event_tasks.json` | 이벤트 퀘스트 오프라인용 사본 (위키를 받지 못할 때 사용) |
@@ -97,4 +107,5 @@ node scripts/build-web.js   # _site/ 에 웹 버전 생성 (데이터 가공 포
 ## 크레딧
 - 원본: [karpitony/eft-where-am-i](https://github.com/karpitony/eft-where-am-i) (MIT). 아이콘도 원본 것을 사용했습니다.
 - 데이터, 지도 타일/SVG: [tarkov.dev](https://tarkov.dev) / [the-hideout](https://github.com/the-hideout)
+- 위키 지도·탈출구·이벤트 정보: [Escape from Tarkov Wiki](https://escapefromtarkov.fandom.com) (지도 그림: re3mr, Jindouz, Muhawi 등)
 - 이 프로그램을 써서 생기는 어떤 불이익(BSG 제재 등)도 책임지지 않습니다.
