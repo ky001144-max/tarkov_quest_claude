@@ -368,7 +368,8 @@ class TarkovMap {
         this.questLayer = L.layerGroup().addTo(map);
         this.playerLayer = L.layerGroup().addTo(map);
 
-        map.on('mousemove', (e) => this.onMouseCoord(wikiView ? wikiView.toGame(e.latlng) : { x: e.latlng.lng, z: e.latlng.lat }));
+        map.on('zoomend viewreset resize', () => this.scheduleExtractLabelLayout());
+        map.on('mousemove',(e) => this.onMouseCoord(wikiView ? wikiView.toGame(e.latlng) : { x: e.latlng.lng, z: e.latlng.lat }));
 
         const defaultLevel = this.layers.findIndex((l) => l.show);
         this.setLevel(defaultLevel);
@@ -506,6 +507,73 @@ class TarkovMap {
         };
         this.questLayer?.eachLayer((l) => (l.eachLayer ? l.eachLayer(applyQuest) : applyQuest(l)));
         this.extractLayer?.eachLayer(applyExtract);
+        this.scheduleExtractLabelLayout();
+    }
+
+    scheduleExtractLabelLayout() {
+        if (this.labelLayoutFrame) return;
+        this.labelLayoutFrame = requestAnimationFrame(() => {
+            this.labelLayoutFrame = null;
+            this.layoutExtractLabels();
+        });
+    }
+
+    // 탈출구 라벨끼리 겹치면 점(마커)은 그대로 두고 라벨만 Y축으로 밀어 서로 비켜 놓는다
+    layoutExtractLabels() {
+        if (!this.map || !this.extractLayer) return;
+        const GAP = 2;
+        const items = [];
+        this.extractLayer.eachLayer((layer) => {
+            const label = layer._icon?.querySelector('.extract-label');
+            if (!label) return;
+            label.style.transform = '';
+            const w = label.offsetWidth;
+            const h = label.offsetHeight;
+            if (!w || !h) return;
+            const p = this.map.latLngToContainerPoint(layer.getLatLng());
+            // .extract-label 의 CSS 위치(left: 10px, top: -10px)와 같은 기준
+            items.push({ label, x: p.x + 10, y: p.y - 10, w, h, dy: 0, group: null });
+        });
+        items.sort((a, b) => a.y - b.y || a.x - b.x);
+        const placed = [];
+        for (const it of items) {
+            let top = it.y;
+            // 가로로 겹치는 이미 놓인 라벨과 세로로도 겹치면 그 아래로 내린다 (더 겹치지 않을 때까지)
+            for (let moved = true; moved;) {
+                moved = false;
+                for (const o of placed) {
+                    if (it.x >= o.x + o.w || o.x >= it.x + it.w) continue;
+                    const oTop = o.y + o.dy;
+                    if (top < oTop + o.h + GAP && oTop < top + it.h + GAP) {
+                        top = oTop + o.h + GAP;
+                        if (!it.group) it.group = o.group;
+                        else if (it.group !== o.group) {
+                            const old = o.group;
+                            for (const m of old.members) { m.group = it.group; it.group.members.push(m); }
+                        }
+                        moved = true;
+                    }
+                }
+            }
+            it.dy = top - it.y;
+            if (!it.group) it.group = { members: [] };
+            it.group.members.push(it);
+            placed.push(it);
+        }
+        // 아래로만 밀면 무리가 한쪽으로 쏠리므로, 겹친 무리 전체를 밀린 양의 절반만큼 위로 되돌려 점 주변에 고르게 둔다
+        // (되돌린 뒤 다른 라벨과 새로 겹치면 되돌리지 않는다)
+        const overlaps = (a, b) => !(a.x >= b.x + b.w || b.x >= a.x + a.w)
+            && a.y + a.dy < b.y + b.dy + b.h + GAP && b.y + b.dy < a.y + a.dy + a.h + GAP;
+        for (const g of new Set(items.map((it) => it.group))) {
+            if (g.members.length < 2) continue;
+            const shift = Math.max(...g.members.map((m) => m.dy)) / 2;
+            for (const m of g.members) m.dy -= shift;
+            const clash = g.members.some((m) => items.some((o) => o.group !== g && overlaps(m, o)));
+            if (clash) for (const m of g.members) m.dy += shift;
+        }
+        for (const it of items) {
+            if (it.dy) it.label.style.transform = `translateY(${Math.round(it.dy)}px)`;
+        }
     }
 
     // filter: { pmc, scav, transit } 종류별 표시 여부
