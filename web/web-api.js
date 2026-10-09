@@ -6,6 +6,11 @@
 //   지원하지 않는 브라우저는 "내 위치 확인" 때 스크린샷 파일을 직접 고른다
 (function () {
     const SETTINGS_KEY = 'eft-where-am-i-ko:settings';
+    const WIKI_API = 'https://escapefromtarkov.fandom.com/api.php';
+    const PHOTOS_KEY = 'eft-where-am-i-ko:quest-photos';
+    // 데스크톱 data.js 의 QUEST_PHOTOS_VERSION 과 같이 올린다
+    const PHOTOS_VERSION = 3;
+    const PHOTOS_MAX_AGE_MS = 3 * 24 * 3600 * 1000;
     const DEFAULT_SETTINGS = {
         gameMode: 'regular',
         latestMap: 'customs',
@@ -260,6 +265,31 @@
             const res = await fetch(`wiki-maps/${entry.file}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return { data: await res.arrayBuffer(), type: entry.type };
+        },
+        // 위키 퀘스트 문서의 위치 사진 [{ url, caption, map }] (localStorage 에 며칠 저장)
+        getQuestPhotos: async (title) => {
+            if (!title || !window.WikiQuestPhotos) return [];
+            const key = `${PHOTOS_KEY}:${title}`;
+            let hit = null;
+            try {
+                hit = JSON.parse(localStorage.getItem(key) || 'null');
+            } catch { /* 없음 */ }
+            if (hit?.v === PHOTOS_VERSION && Date.now() - hit.at < PHOTOS_MAX_AGE_MS) return hit.photos;
+            const fetchJson = async (url) => {
+                const res = await fetch(`${url}&origin=*`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            };
+            try {
+                const photos = await window.WikiQuestPhotos.fetchQuestPhotos(WIKI_API, title, fetchJson);
+                try {
+                    localStorage.setItem(key, JSON.stringify({ v: PHOTOS_VERSION, at: Date.now(), photos }));
+                } catch { /* 저장 못 해도 그만 */ }
+                return photos;
+            } catch (err) {
+                if (hit?.v === PHOTOS_VERSION) return hit.photos;
+                throw err;
+            }
         },
         getSvg: async (url) => {
             if (!/^https:\/\/assets\.tarkov\.dev\//.test(url)) throw new Error('허용되지 않은 SVG 주소');

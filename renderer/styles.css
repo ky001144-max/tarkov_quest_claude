@@ -503,6 +503,8 @@ body.web .desktop-only, body:not(.web) .web-only { display: none !important; }
 
 /* 위키 퀘스트 사진 (지도에서 보기) */
 .photo-popup .leaflet-popup-content { margin: 10px 12px; }
+/* 마커 아래로 연 사진 팝업: 꼬리를 위쪽에 */
+.photo-popup.pp-below .leaflet-popup-tip-container { top: -20px; transform: rotate(180deg); }
 .photo-pop .pp-status { color: var(--muted); font-size: 12px; padding: 8px 0 2px; }
 .pp-frame { position: relative; margin-top: 6px; border-radius: 6px; overflow: hidden; background: #0b0c0e; min-height: 120px; display: grid; place-items: center; }
 .pp-frame img { display: block; width: 100%; max-height: 240px; object-fit: contain; cursor: zoom-in; }

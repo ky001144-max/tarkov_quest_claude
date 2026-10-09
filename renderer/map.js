@@ -237,10 +237,12 @@ function taskTitle(task) {
     return en && en !== task.name ? `${task.name} (${en})` : task.name;
 }
 
-// 위키 사진 → blob 주소 (최근 것만 남긴다). 위키 이미지 서버가 Referer 를 요구해 메인 프로세스에서 받는다
+// 위키 사진 → <img> 주소. 위키 이미지 서버는 Referer 가 없는 요청을 막는데, 데스크톱 화면(file://)은 Referer 가 없어
+// 메인 프로세스가 받아 blob 주소로 준다 (최근 것만 남긴다). 웹은 브라우저가 Referer 를 붙이므로 주소를 그대로 쓴다
 const PHOTO_CACHE = 40;
 const photoCache = new Map();
 function loadWikiPhoto(url) {
+    if (!window.api.getWikiPhoto) return Promise.resolve(url);
     if (photoCache.has(url)) return photoCache.get(url);
     const promise = window.api.getWikiPhoto(url).then(({ data, type }) => URL.createObjectURL(new Blob([data], { type })));
     promise.catch(() => photoCache.delete(url));
@@ -1196,7 +1198,7 @@ class TarkovMap {
 
     // 위키 사진 팝업 (사진이 없거나 받지 못하면 목표 설명 팝업)
     async openQuestPhotos(t) {
-        if (!window.api.getQuestPhotos || !window.api.getWikiPhoto || !t.task?.wiki) {
+        if (!window.api.getQuestPhotos || !t.task?.wiki) {
             t.marker.openPopup();
             return;
         }
@@ -1204,9 +1206,29 @@ class TarkovMap {
         const box = document.createElement('div');
         box.className = 'photo-pop';
         box.innerHTML = `${title}<div class="pp-status">위키 사진 불러오는 중…</div>`;
-        // 위쪽 패널(도움말·층·지도 종류)에 가리지 않게 여백을 두고 지도를 옮긴다
-        const popup = L.popup({ minWidth: 340, maxWidth: 340, className: 'photo-popup', autoPanPaddingTopLeft: L.point(20, 170), autoPanPaddingBottomRight: L.point(20, 20) })
+        // 위쪽 패널(도움말·층·지도 종류)에 가리지 않게, 지금 패널 높이만큼 여백을 두고 지도를 옮긴다
+        const mapTop = this.el.getBoundingClientRect().top;
+        const panelBottom = Math.max(0, ...[...document.querySelectorAll('#topBar .top-panel')]
+            .map((p) => p.getBoundingClientRect().bottom - mapTop));
+        const popup = L.popup({
+            minWidth: 340, maxWidth: 340, className: 'photo-popup',
+            autoPanPaddingTopLeft: L.point(20, Math.max(170, panelBottom + 12)), autoPanPaddingBottomRight: L.point(20, 20),
+        })
             .setLatLng(t.marker.getLatLng()).setContent(box).openOn(this.map);
+        // 지도 끝이라 더 내릴 수 없어 팝업이 위쪽 패널에 가리면, 팝업을 마커 아래로 연다
+        const TOP_GAP = Math.max(170, panelBottom + 12);
+        const placePopup = () => {
+            const el = popup.getElement();
+            if (!el || !this.map.hasLayer(popup)) return;
+            const height = el.offsetHeight;
+            const anchorY = this.map.latLngToContainerPoint(popup.getLatLng()).y;
+            const below = anchorY - height - 20 < TOP_GAP;
+            if (below === el.classList.contains('pp-below')) return;
+            el.classList.toggle('pp-below', below);
+            popup.options.offset = below ? L.point(0, height + 30) : L.point(0, 7);
+            popup.update();
+        };
+        placePopup();
         let photos = [];
         try {
             photos = await window.api.getQuestPhotos(t.task.wiki);
@@ -1252,6 +1274,13 @@ class TarkovMap {
                 img.onload = () => {
                     loading.hidden = true;
                     popup.update();
+                    // 사진 크기만큼 팝업 높이가 바뀌므로 위·아래 자리를 다시 정한다
+                    if (popup.getElement()?.classList.contains('pp-below')) {
+                        popup.options.offset = L.point(0, popup.getElement().offsetHeight + 30);
+                        popup.update();
+                    } else {
+                        placePopup();
+                    }
                 };
                 img.src = src;
             } catch {

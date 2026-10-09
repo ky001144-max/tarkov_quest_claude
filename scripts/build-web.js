@@ -11,9 +11,10 @@ const ROOT = path.join(__dirname, '..');
 const OUT = path.resolve(process.argv[2] || path.join(ROOT, '_site'));
 const MODES = ['regular', 'pve'];
 
-// 웹에서 불러오는 외부 주소: 지도 SVG·상인 이미지(assets.tarkov.dev)만 (위키 지도 이미지는 사이트에 함께 넣는다)
-const WEB_CSP = "default-src 'self'; img-src 'self' data: blob: https://assets.tarkov.dev; style-src 'self' 'unsafe-inline'; "
-    + "script-src 'self'; connect-src 'self' https://assets.tarkov.dev";
+// 웹에서 불러오는 외부 주소: 지도 SVG·상인 이미지(assets.tarkov.dev), 위키 퀘스트 사진(위키 이미지 서버)과 위키 API
+// (위키 지도 이미지는 위키 서버 상태와 상관없이 쓰도록 빌드할 때 받아 사이트에 함께 넣는다)
+const WEB_CSP = "default-src 'self'; img-src 'self' data: blob: https://assets.tarkov.dev https://static.wikia.nocookie.net; "
+    + "style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://assets.tarkov.dev https://escapefromtarkov.fandom.com";
 
 // 위키 이미지 주소 → 사이트 안 파일 이름
 const wikiImageFile = (url) => `${url.split('/images/')[1].replace(/[^a-z0-9.]/gi, '_')}.img`;
@@ -21,6 +22,22 @@ const wikiImageFile = (url) => `${url.split('/images/')[1].replace(/[^a-z0-9.]/g
 function copy(from, to) {
     fs.mkdirSync(path.dirname(to), { recursive: true });
     fs.copyFileSync(from, to);
+}
+
+// src/wiki-quest-photos.js(Node 모듈)를 브라우저에서 window.WikiQuestPhotos 로 쓰도록 감싼다
+// (require('./wiki-extracts') 는 그 파일의 cleanWikitext 하나만 넣어 준다)
+function buildQuestPhotosScript() {
+    const { cleanWikitext } = require('../src/wiki-extracts');
+    const source = fs.readFileSync(path.join(ROOT, 'src', 'wiki-quest-photos.js'), 'utf8');
+    return `// 자동 생성 (scripts/build-web.js): src/wiki-quest-photos.js 브라우저판
+(function () {
+const module = { exports: {} };
+const wikiExtracts = { cleanWikitext: (${cleanWikitext.toString()}) };
+const require = () => wikiExtracts;
+${source}
+window.WikiQuestPhotos = module.exports;
+}());
+`;
 }
 
 function buildHtml() {
@@ -32,7 +49,7 @@ function buildHtml() {
     replace(/(http-equiv="Content-Security-Policy"\s+content=")[^"]*"/, `$1${WEB_CSP}"`);
     replace(/\.\.\/node_modules\/leaflet\/dist\/leaflet\.css/, 'vendor/leaflet/leaflet.css');
     replace(/<script src="\.\.\/node_modules\/leaflet\/dist\/leaflet\.js"><\/script>/,
-        '<script src="vendor/leaflet/leaflet.js"></script>\n<script src="game-files.js"></script>\n<script src="web-api.js"></script>');
+        '<script src="vendor/leaflet/leaflet.js"></script>\n<script src="game-files.js"></script>\n<script src="quest-photos.js"></script>\n<script src="web-api.js"></script>');
     replace(/<body>/, '<body class="web">');
     replace(/<title>[^<]*<\/title>/, '<title>EFT Where Am I KO</title>\n    <link rel="icon" href="icon.ico">');
     return html;
@@ -44,6 +61,7 @@ async function main() {
 
     for (const f of ['app.js', 'map.js', 'wiki-tiles.js', 'wiki-tiler.js', 'styles.css', 'game-files.js']) copy(path.join(ROOT, 'renderer', f), path.join(OUT, f));
     copy(path.join(ROOT, 'web', 'web-api.js'), path.join(OUT, 'web-api.js'));
+    fs.writeFileSync(path.join(OUT, 'quest-photos.js'), buildQuestPhotosScript(), 'utf8');
     copy(path.join(ROOT, 'assets', 'icon.ico'), path.join(OUT, 'icon.ico'));
     const leaflet = path.dirname(require.resolve('leaflet/dist/leaflet.js', { paths: [ROOT] }));
     fs.cpSync(leaflet, path.join(OUT, 'vendor', 'leaflet'), { recursive: true });
