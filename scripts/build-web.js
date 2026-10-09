@@ -11,7 +11,7 @@ const ROOT = path.join(__dirname, '..');
 const OUT = path.resolve(process.argv[2] || path.join(ROOT, '_site'));
 const MODES = ['regular', 'pve'];
 
-// 웹에서 불러오는 외부 주소: 지도 SVG·타일·상인 이미지(assets.tarkov.dev)만 (위키 지도 이미지는 사이트에 함께 넣는다)
+// 웹에서 불러오는 외부 주소: 지도 SVG·상인 이미지(assets.tarkov.dev)만 (위키 지도 이미지는 사이트에 함께 넣는다)
 const WEB_CSP = "default-src 'self'; img-src 'self' data: blob: https://assets.tarkov.dev; style-src 'self' 'unsafe-inline'; "
     + "script-src 'self'; connect-src 'self' https://assets.tarkov.dev";
 

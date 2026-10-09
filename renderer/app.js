@@ -202,7 +202,7 @@ function renderLevelControl(activeIndex) {
     renderLocation();
 }
 
-const STYLE_LABELS = { wiki: '위키', svg: '도면', tile: '위성' };
+const STYLE_LABELS = { wiki: '위키', svg: '도면' };
 
 function renderStyleControl() {
     const styles = state.tarkovMap.availableStyles();

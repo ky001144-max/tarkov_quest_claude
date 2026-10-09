@@ -240,8 +240,12 @@ function parseWikiResponse(text) {
         let markers = [];
         let image = null;
         let refs = [];
+        let bosses = [];
         try {
             const map = JSON.parse(pages[`Map:${title}`]);
+            // 보스·광신도·레이더 출현 마커 (이름은 설명의 위키 링크 [[Shturman]], 없으면 제목)
+            bosses = map.markers.filter((m) => /^spawn_(boss|cultist|rogueraider)/.test(m.categoryId))
+                .map((m) => ({ name: (m.popup?.description || '').match(/\[\[([^\]|]+)/)?.[1] || m.popup?.title || '', position: m.position }));
             markers = map.markers.filter((m) => /^(exfil|lever)/.test(m.categoryId))
                 .map((m) => ({ name: m.popup?.title || '', category: m.categoryId, position: m.position }));
             // 마커 좌표는 mapBounds 기준 (왼쪽 아래 원점), 이미지는 이 크기로 늘여 그린다
@@ -249,7 +253,7 @@ function parseWikiResponse(text) {
             refs = map.markers.filter((m) => REF_TYPES[m.categoryId]).map((m) => ({ type: REF_TYPES[m.categoryId], position: m.position }));
         } catch { /* 지도 없음 */ }
         // 탈출구 표가 없는 맵(Terminal)도 위키 지도가 있으면 넣는다
-        if (extracts.length || transits.length || image) result[key] = { extracts, transits, markers, image, refs };
+        if (extracts.length || transits.length || image) result[key] = { extracts, transits, markers, image, refs, bosses };
     }
     return result;
 }
@@ -661,7 +665,14 @@ function applyWikiExtracts(wiki, dev, bounds, mapKey) {
     const transits = wiki.transits.length
         ? mergeWithWiki(wiki.transits.map((t) => ({ ...t, faction: '' })), dev.transits, wiki.markers, transform, heightRefs, inBounds, true, markerLevel)
         : dev.transits;
-    return { extracts, transits, wikiMap: transform && wiki.image ? wikiMapLayout(wiki.image, transform, panels, WIKI_LAYOUTS[mapKey] || {}) : null };
+    // 보스 출현 마커 → 게임 좌표 (높이는 모름: 층이 나뉜 위키 지도면 그 판의 높이·층)
+    const bosses = transform ? (wiki.bosses || []).flatMap((m) => {
+        const g = transform(m.position);
+        if (!g || !inBounds(g)) return [];
+        const level = markerLevel ? markerLevel(m.position) : undefined;
+        return [{ name: m.name.trim(), position: { x: +g.x.toFixed(1), y: g.y, z: +g.z.toFixed(1) }, level }];
+    }) : null;
+    return { extracts, transits, bosses, wikiMap: transform && wiki.image ? wikiMapLayout(wiki.image, transform, panels, WIKI_LAYOUTS[mapKey] || {}) : null };
 }
 
 // 위키 지도 이미지 좌표계 정보: 게임 좌표 = matrix · 위키 좌표 + 판별 offset

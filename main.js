@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, shell, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, Menu, session } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const { DataService } = require('./src/data');
@@ -113,6 +113,8 @@ function createWindow() {
             contextIsolation: true,
             nodeIntegration: false,
             spellcheck: false,
+            enableWebSQL: false,
+            backgroundThrottling: true,
         },
     });
     Menu.setApplicationMenu(null);
@@ -139,6 +141,9 @@ ipcMain.handle('settings:set', (e, patch) => {
 ipcMain.handle('data:load', (e, { mode, force }) => dataService.load(mode, force));
 ipcMain.handle('svg:get', (e, url) => dataService.getSvg(url));
 ipcMain.handle('wikimap:get', (e, url) => dataService.getWikiImage(url));
+ipcMain.handle('wikimap:drop', (e, url) => dataService.dropWikiImage(url));
+ipcMain.handle('quest:photos', (e, title) => dataService.getQuestPhotos(title));
+ipcMain.handle('wikiphoto:get', (e, url) => dataService.getWikiPhoto(url));
 ipcMain.handle('dialog:folder', async (e, current) => {
     const r = await dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'], defaultPath: current || undefined });
     return r.canceled ? null : r.filePaths[0];
@@ -161,11 +166,24 @@ ipcMain.handle('paths:detect', async () => {
 
 loadSettings();
 if (!settings.hardwareAcceleration) app.disableHardwareAcceleration();
-
+// 메모리 절약: 미리 띄워 두는 여분 렌더러 프로세스·쓰지 않는 미디어/가림 감지 기능을 끈다
+app.commandLine.appendSwitch('disable-features', 'SpareRendererForSitePerProcess,HardwareMediaKeyHandling,MediaSessionService,CalculateNativeWinOcclusion');
+// 디스크 절약: 웹 캐시(지도 SVG·상인 이미지)는 20MB 까지만, GPU 셰이더 캐시는 디스크에 두지 않는다
+const DISK_CACHE_BYTES = 20 * 1024 * 1024;
+app.commandLine.appendSwitch('disk-cache-size', String(DISK_CACHE_BYTES));
+app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
     app.quit();
 } else {
+    // 쓰지 않는 맞춤법 사전·GPU 캐시 폴더는 Chromium 이 뜨기 전에 지운다
+    // (이미 실행 중인 창이 있으면 지우지 않고, 아직 닫히는 중이라 잠긴 파일이 있으면 다음 실행 때 지운다)
+    for (const dir of ['Dictionaries', 'GPUCache', 'GrShaderCache', 'ShaderCache', 'GraphiteDawnCache', 'DawnGraphiteCache', 'DawnWebGPUCache', 'GPUPersistentCache']) {
+        try {
+            fs.rmSync(path.join(app.getPath('userData'), dir), { recursive: true, force: true });
+        } catch { /* 다음 실행 때 */ }
+    }
+
     app.on('second-instance', () => {
         if (mainWindow) {
             if (mainWindow.isMinimized()) mainWindow.restore();
@@ -174,7 +192,16 @@ if (!gotLock) {
     });
 
     app.whenReady().then(async () => {
+        // 맞춤법 검사는 쓰지 않는다 (사전 다운로드 막기)
+        session.defaultSession.setSpellCheckerEnabled(false);
+        session.defaultSession.setSpellCheckerLanguages([]);
+        // 제한을 두기 전에 쌓인 웹 캐시는 줄어들지 않아서, 제한보다 크면 비운다
+        session.defaultSession.getCacheSize().then((n) => {
+            if (n > DISK_CACHE_BYTES) session.defaultSession.clearCache();
+        }).catch(() => {});
         dataService = new DataService(path.join(app.getPath('userData'), 'cache'), path.join(__dirname, 'assets', 'maps.json'));
+        // 지난번에 타일로 잘라 둔 위키 지도 원본 이미지 정리 (타일이 없는 지도는 열 때 다시 받는다)
+        dataService.dropWikiImage();
         if (!settings.screenshotPath || !fs.existsSync(settings.screenshotPath)) {
             settings.screenshotPath = findScreenshotDir(app.getPath('documents'));
         }

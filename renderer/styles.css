@@ -226,7 +226,6 @@ select:focus, input:focus { border-color: var(--accent); }
 #styleControl button::before { margin-right: 4px; }
 #styleControl button[data-style="wiki"]::before { content: '📖'; }
 #styleControl button[data-style="svg"]::before { content: '📐'; }
-#styleControl button[data-style="tile"]::before { content: '🛰️'; }
 /* 스타일이 하나뿐이면 스타일 줄을 숨긴다 */
 .control-box.row:has(> #styleControl.hidden:only-child) { display: none; }
 /* 탈출구 종류별 표시 (색 점이 체크 상자) */
@@ -256,7 +255,8 @@ select:focus, input:focus { border-color: var(--accent); }
 
 /* 탈출 조건 꼬리표 (라벨 뒤) */
 .extract-conds { display: inline-flex; gap: 3px; margin-left: 5px; vertical-align: 1px; }
-.cond { display: inline-block; font-size: 9.5px; font-weight: 700; line-height: 13px; padding: 0 4px; border-radius: 4px; border: 1px solid; color: #e8e2d4; background: rgba(0, 0, 0, .35); font-style: normal; }
+.extract-conds .cond { font-size: calc(9.5px * var(--label-scale, 1)); }
+.cond { display: inline-block; font-size: 9.5px; font-weight: 700; line-height: 1.37; padding: 0 4px; border-radius: 4px; border: 1px solid; color: #e8e2d4; background: rgba(0, 0, 0, .35); font-style: normal; }
 .cond.pay { border-color: #d4ad5f; color: #f0d08a; }
 .cond.item { border-color: #5ab8f2; color: #a7dbfb; }
 .cond.no { border-color: #e06c5c; color: #ffb4a8; }
@@ -272,16 +272,21 @@ select:focus, input:focus { border-color: var(--accent); }
 
 /* 보스 */
 .boss-marker { position: relative; }
-.boss-dot { position: absolute; left: -9px; top: -10px; font-size: 15px; line-height: 1; filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 1px #000); }
 .boss-marker { transition: opacity .15s; }
 .boss-marker.other-level { opacity: .35; }
+.boss-zone { transition: opacity .15s; }
+.boss-zone.other-level { opacity: .3; }
+.boss-label {
+    position: absolute; left: 0; top: 0; translate: -50% -50%; white-space: nowrap; font-size: calc(10.5px * var(--label-scale, 1)); font-weight: 700; line-height: 1.43; color: #ffb4a8;
+    padding: 0 calc(6px * var(--label-scale, 1)); border-radius: 999px; background: rgba(30, 12, 10, .8); border: 1px solid rgba(224, 108, 92, .35); cursor: pointer;
+}
 
 /* 내 메모 */
 .memo-marker { position: relative; }
-.memo-pin { position: absolute; left: -8px; top: -18px; font-size: 16px; line-height: 1; filter: drop-shadow(0 1px 2px #000); }
+.memo-pin { position: absolute; left: -6px; top: -14px; font-size: 13px; line-height: 1; filter: drop-shadow(0 1px 2px #000); }
 .memo-label {
-    position: absolute; left: 10px; top: -16px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    font-size: 11px; font-weight: 700; line-height: 16px; color: #ffd1ec; padding: 0 6px; border-radius: 6px;
+    position: absolute; left: 10px; top: calc(-16px * var(--label-scale, 1)); max-width: calc(220px * var(--label-scale, 1)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-size: calc(11px * var(--label-scale, 1)); font-weight: 700; line-height: 1.45; color: #ffd1ec; padding: 0 calc(6px * var(--label-scale, 1)); border-radius: 6px;
     background: rgba(30, 14, 26, .85); border: 1px solid rgba(255, 143, 209, .45);
 }
 .memo-marker.other-level { opacity: .4; }
@@ -394,16 +399,16 @@ path.off-level { stroke-opacity: .2; fill-opacity: .02; }
 
 .qm-chips { display: flex; gap: 2px; }
 .qm-chip {
-    display: grid; place-items: center; width: 22px; height: 22px; flex: none; border-radius: 50%; box-sizing: border-box;
-    color: #111; font-weight: 800; font-size: 12px; border: 2px solid #111; box-shadow: 0 0 0 1px rgba(255,255,255,.4);
+    display: grid; place-items: center; width: 18px; height: 18px; flex: none; border-radius: 50%; box-sizing: border-box;
+    color: #111; font-weight: 800; font-size: 10px; border: 2px solid #111; box-shadow: 0 0 0 1px rgba(255,255,255,.4);
 }
-.qm-chip.item { border-radius: 4px; background: #111; color: #fff; border-width: 3px; }
+.qm-chip.item { border-radius: 4px; background: #111; color: #fff; border-width: 2.5px; }
 .qm-chip.done { opacity: .35; }
 .quest-marker.done .qm-chip.done { opacity: 1; }
 .quest-marker.done { opacity: .35; }
 .quest-marker.other-level::after {
-    content: attr(data-level); position: absolute; left: 50%; top: 26px; transform: translateX(-50%);
-    white-space: nowrap; font-size: 10px; font-weight: 700; color: #fff; background: rgba(17,17,17,.85);
+    content: attr(data-level); position: absolute; left: 50%; top: 21px; transform: translateX(-50%);
+    white-space: nowrap; font-size: 9px; font-weight: 700; color: #fff; background: rgba(17,17,17,.85);
     border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 0 6px; line-height: 14px; pointer-events: none;
 }
 .quest-marker.other-level .qm-chip { border-style: dashed; }
@@ -412,10 +417,10 @@ path.done-zone { stroke-dasharray: 4 4; fill-opacity: .04; }
 
 /* 탈출구: 색 점 + 반투명 알약 라벨 */
 .extract-marker { position: relative; }
-.extract-dot { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #111; box-shadow: 0 0 0 2px rgba(255, 255, 255, .25); }
+.extract-dot { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #111; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .25); }
 .extract-label {
-    position: absolute; left: 10px; top: -10px; white-space: nowrap; font-size: 11px; font-weight: 700; line-height: 17px;
-    padding: 1px 7px; border-radius: 999px; background: rgba(14, 16, 19, .78); border: 1px solid rgba(255, 255, 255, .08); backdrop-filter: blur(2px);
+    position: absolute; left: 8px; top: calc(-10px * var(--label-scale, 1)); white-space: nowrap; font-size: calc(11px * var(--label-scale, 1)); font-weight: 700; line-height: 1.55;
+    padding: 1px calc(7px * var(--label-scale, 1)); border-radius: 999px; background: rgba(14, 16, 19, .78); border: 1px solid rgba(255, 255, 255, .08); backdrop-filter: blur(2px);
 }
 .extract-marker.pmc .extract-dot { background: #5bd46b; } .extract-marker.pmc .extract-label { color: #9ff0a9; }
 .extract-marker.scav .extract-dot { background: #f2c94c; } .extract-marker.scav .extract-label { color: #f7de8e; }
@@ -495,3 +500,32 @@ input[type=range] { accent-color: var(--accent); }
 
 /* 데스크톱(Electron) / 웹(GitHub Pages) 전용 항목 */
 body.web .desktop-only, body:not(.web) .web-only { display: none !important; }
+
+/* 위키 퀘스트 사진 (지도에서 보기) */
+.photo-popup .leaflet-popup-content { margin: 10px 12px; }
+.photo-pop .pp-status { color: var(--muted); font-size: 12px; padding: 8px 0 2px; }
+.pp-frame { position: relative; margin-top: 6px; border-radius: 6px; overflow: hidden; background: #0b0c0e; min-height: 120px; display: grid; place-items: center; }
+.pp-frame img { display: block; width: 100%; max-height: 240px; object-fit: contain; cursor: zoom-in; }
+.pp-frame img:not([src]) { display: none; }
+.pp-loading { color: var(--muted); font-size: 12px; padding: 40px 0; }
+.pp-loading[hidden] { display: none; }
+.pp-caption { margin-top: 5px; font-size: 12px; line-height: 1.4; color: var(--text); }
+.pp-caption:empty { display: none; }
+.pp-bar { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 6px; }
+.pp-bar .pp-count { font-size: 11.5px; color: var(--muted); }
+.pp-bar button { border: 1px solid var(--line); background: var(--card-2); color: var(--text); border-radius: 6px; padding: 2px 9px; font-size: 13px; line-height: 18px; }
+.pp-bar button:hover { border-color: var(--muted); }
+.pp-bar .pp-desc { margin-left: auto; font-size: 11.5px; }
+.pp-bar .pp-photos { margin-left: auto; font-size: 11.5px; }
+.pp-bar button:disabled { opacity: .5; cursor: default; }
+.photo-viewer { position: fixed; inset: 0; z-index: 5000; background: rgba(0, 0, 0, .85); display: grid; place-items: center; cursor: zoom-out; }
+.photo-viewer .pv-box { max-width: 92vw; max-height: 92vh; display: flex; flex-direction: column; gap: 6px; cursor: default; }
+.photo-viewer img { max-width: 92vw; max-height: calc(92vh - 60px); object-fit: contain; border-radius: 6px; background: #0b0c0e; }
+.photo-viewer .pv-title { color: var(--accent-2); font-weight: 700; font-size: 13px; }
+.photo-viewer .pv-caption { color: #e8e8e8; font-size: 13px; }
+.photo-viewer .pv-count { color: var(--muted); margin-left: 6px; }
+.photo-viewer button { position: fixed; border: 1px solid rgba(255, 255, 255, .2); background: rgba(20, 22, 26, .8); color: #fff; border-radius: 50%; width: 40px; height: 40px; font-size: 22px; line-height: 1; cursor: pointer; }
+.photo-viewer button:hover { background: rgba(40, 44, 50, .95); }
+.photo-viewer .pv-prev { left: 20px; top: 50%; translate: 0 -50%; }
+.photo-viewer .pv-next { right: 20px; top: 50%; translate: 0 -50%; }
+.photo-viewer .pv-close { right: 20px; top: 20px; font-size: 16px; }

@@ -31,7 +31,7 @@ function getCRS(cfg) {
 // 이 거리(미터) 안에 있는 퀘스트 마커는 하나로 합쳐 표시한다
 const MERGE_DISTANCE = 3;
 const MERGE_HEIGHT = 2.5;
-const CHIP_SIZE = 22;
+const CHIP_SIZE = 18;
 const CHIP_GAP = 2;
 
 // 위키 지도를 보는 동안의 좌표계 (null 이면 tarkov.dev 지도: Leaflet 좌표 = 게임 좌표)
@@ -237,6 +237,61 @@ function taskTitle(task) {
     return en && en !== task.name ? `${task.name} (${en})` : task.name;
 }
 
+// 위키 사진 → blob 주소 (최근 것만 남긴다). 위키 이미지 서버가 Referer 를 요구해 메인 프로세스에서 받는다
+const PHOTO_CACHE = 40;
+const photoCache = new Map();
+function loadWikiPhoto(url) {
+    if (photoCache.has(url)) return photoCache.get(url);
+    const promise = window.api.getWikiPhoto(url).then(({ data, type }) => URL.createObjectURL(new Blob([data], { type })));
+    promise.catch(() => photoCache.delete(url));
+    photoCache.set(url, promise);
+    while (photoCache.size > PHOTO_CACHE) {
+        const [k, v] = photoCache.entries().next().value;
+        photoCache.delete(k);
+        v.then((u) => URL.revokeObjectURL(u), () => {});
+    }
+    return promise;
+}
+
+// 위키 썸네일 주소의 폭을 바꾼다 (…/scale-to-width-down/640 → 1600)
+const photoAtWidth = (url, width) => url.replace(/\/scale-to-width-down\/\d+/, `/scale-to-width-down/${width}`);
+
+// 사진 크게 보기 (← → 로 넘기고, 바깥을 누르거나 Esc 로 닫는다)
+function openPhotoViewer(photos, start, title) {
+    let index = start;
+    const el = document.createElement('div');
+    el.className = 'photo-viewer';
+    const step = (d) => { index = (index + photos.length + d) % photos.length; show(); };
+    const onKey = (e) => {
+        if (e.key === 'Escape') { e.stopPropagation(); close(); }
+        if (e.key === 'ArrowLeft' && photos.length > 1) step(-1);
+        if (e.key === 'ArrowRight' && photos.length > 1) step(1);
+    };
+    const close = () => {
+        el.remove();
+        document.removeEventListener('keydown', onKey, true);
+    };
+    function show() {
+        const photo = photos[index];
+        el.innerHTML = `<div class="pv-box"><div class="pv-title">${escapeHtml(title)}</div><img alt="">`
+            + `<div class="pv-caption">${escapeHtml(photo.caption || '')}${photos.length > 1 ? ` <span class="pv-count">${index + 1} / ${photos.length}</span>` : ''}</div></div>`
+            + (photos.length > 1 ? '<button class="pv-prev" title="이전 사진 (←)">‹</button><button class="pv-next" title="다음 사진 (→)">›</button>' : '')
+            + '<button class="pv-close" title="닫기 (Esc)">✕</button>';
+        el.querySelector('.pv-prev')?.addEventListener('click', (e) => { e.stopPropagation(); step(-1); });
+        el.querySelector('.pv-next')?.addEventListener('click', (e) => { e.stopPropagation(); step(1); });
+        el.querySelector('.pv-close').addEventListener('click', close);
+        el.querySelector('.pv-box').addEventListener('click', (e) => e.stopPropagation());
+        const img = el.querySelector('img');
+        // 큰 사진을 받는 동안 작은 사진을 먼저 보여 준다
+        loadWikiPhoto(photo.url).then((src) => { if (!img.getAttribute('src')) img.src = src; }, () => {});
+        loadWikiPhoto(photoAtWidth(photo.url, 1600)).then((src) => { if (photos[index] === photo) img.src = src; }, () => {});
+    }
+    el.addEventListener('click', close);
+    document.addEventListener('keydown', onKey, true);
+    document.body.appendChild(el);
+    show();
+}
+
 const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 class TarkovMap {
@@ -268,7 +323,6 @@ class TarkovMap {
         // 위키 지도 이미지는 Referer 가 필요해 데스크톱(메인 프로세스가 받아 줌)에서만
         if (mapInfo?.wikiMap && window.api.getWikiImage) s.push('wiki');
         if (cfg?.svgPath) s.push('svg');
-        if (cfg?.tilePath) s.push('tile');
         return s;
     }
 
@@ -281,7 +335,6 @@ class TarkovMap {
         }
         this.cfg = cfg;
         this.mapInfo = mapInfo;
-        this.levelTile = null;
         this.playerMarker = null;
         this.objectiveTargets = {};
         this.svgGroups = [];
@@ -310,6 +363,7 @@ class TarkovMap {
                     url: wiki.url,
                     rect: wiki.imageRect || [0, 0, ...wiki.size],
                     loadImage: () => window.api.getWikiImage(wiki.url),
+                    onStored: () => window.api.dropWikiImage?.(wiki.url),
                     onProgress: (r) => {
                         if (token !== this.loadToken) return;
                         this.tileProgress = r;
@@ -381,45 +435,36 @@ class TarkovMap {
                 maxBounds: bounds.pad(0.6),
             });
             map.fitBounds(bounds);
+            // 처음 화면이 tarkov.dev 최소 배율과 거의 같아 축소가 막히지 않도록, 처음 화면보다 0.8 단계 더 축소할 수 있게 한다
+            map.setMinZoom(Math.min(cfg.minZoom, Math.round((map.getZoom() - 0.8) * 10) / 10));
             this.focusZoom = cfg.minZoom + 2;
         }
         this.map = map;
+        // 지도 글자(탈출구·보스·메모 이름표) 크기: 처음 화면 배율을 1로 두고 확대하면 조금씩 커지고 축소하면 작아진다
+        this.baseZoom = map.getZoom();
+        this.applyLabelScale();
+        map.on('zoom', () => this.applyLabelScale());
         map.createPane('levelPane').style.zIndex = 420;
         map.createPane('zonePane').style.zIndex = 440;
-
-        const tileSize = cfg.tileSize || 256;
-        this.tileOptions = { tileSize, bounds, maxZoom, maxNativeZoom: cfg.maxZoom };
 
         if (this.style === 'svg') {
             const svgBounds = cfg.svgBounds ? getBounds(cfg.svgBounds) : bounds;
             const svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
             this.baseLayer = L.svgOverlay(svgEl, svgBounds, { className: 'base-map' }).addTo(map);
-            try {
-                const text = await window.api.getSvg(cfg.svgPath);
-                if (token !== this.loadToken) return;
-                svgEl.innerHTML = text;
-                const inner = svgEl.children[0];
-                svgEl.setAttribute('viewBox', inner.getAttribute('viewBox'));
-                this.svgGroups = [...inner.children].filter((c) => c.nodeName === 'g' && !!c.id);
-                for (const g of this.svgGroups) {
-                    if (g.id === cfg.svgLayer || g.dataset.keepWithGroup === cfg.svgLayer) {
-                        g.classList.add('base-layer');
-                    } else {
-                        g.classList.add('overlay-layer', 'hidden-layer');
-                    }
-                }
-            } catch (err) {
-                if (cfg.tilePath) {
-                    this.baseLayer.remove();
-                    this.style = 'tile';
-                    this.baseLayer = L.tileLayer(cfg.tilePath, this.tileOptions).addTo(map);
+            const text = await window.api.getSvg(cfg.svgPath);
+            if (token !== this.loadToken) return;
+            svgEl.innerHTML = text;
+            const inner = svgEl.children[0];
+            svgEl.setAttribute('viewBox', inner.getAttribute('viewBox'));
+            this.svgGroups = [...inner.children].filter((c) => c.nodeName === 'g' && !!c.id);
+            for (const g of this.svgGroups) {
+                if (g.id === cfg.svgLayer || g.dataset.keepWithGroup === cfg.svgLayer) {
+                    g.classList.add('base-layer');
                 } else {
-                    throw err;
+                    g.classList.add('overlay-layer', 'hidden-layer');
                 }
             }
-        } else if (this.style === 'tile') {
-            this.baseLayer = L.tileLayer(cfg.tilePath, this.tileOptions).addTo(map);
         }
         if (token !== this.loadToken) return;
 
@@ -432,9 +477,19 @@ class TarkovMap {
         map.on('zoomend viewreset resize', () => this.scheduleExtractLabelLayout());
         map.on('mousemove', (e) => this.onMouseCoord(this.toGame(e.latlng)));
         map.on('contextmenu', (e) => this.onMapContextMenu(this.toGame(e.latlng), e.latlng));
+        map.on('popupopen', (e) => this.onPopupOpen(e.popup));
+        map.on('popupclose', () => this.scheduleFocusRestore());
 
         const defaultLevel = this.layers.findIndex((l) => l.show);
         this.setLevel(defaultLevel);
+    }
+
+    // 배율 한 단계마다 약 23%씩, 0.8 ~ 1.4배 사이 (기본 글자 크기는 CSS 의 85%)
+    applyLabelScale() {
+        if (!this.map) return;
+        const LABEL_BASE = 0.85;
+        const scale = LABEL_BASE * Math.min(1.4, Math.max(0.8, 2 ** ((this.map.getZoom() - this.baseZoom) * 0.3)));
+        this.el.style.setProperty('--label-scale', scale.toFixed(3));
     }
 
     // Leaflet 좌표 → 게임 좌표 (높이 없음)
@@ -447,13 +502,11 @@ class TarkovMap {
         return this.baseLayer._image || this.baseLayer.getContainer?.() || null;
     }
 
-    setLevel(index) {
+    // keepRestore: 지도에서 보기로 바꾼 층 (팝업을 닫으면 원래 층으로 되돌린다). 그 밖의 층 변경은 되돌리기를 취소한다
+    setLevel(index, { keepRestore = false } = {}) {
         if (!this.map) return;
+        if (!keepRestore) this.focusRestore = null;
         this.levelIndex = index;
-        if (this.levelTile) {
-            this.levelTile.remove();
-            this.levelTile = null;
-        }
         for (const g of this.svgGroups) {
             if (g.classList.contains('overlay-layer')) g.classList.add('hidden-layer');
         }
@@ -472,9 +525,6 @@ class TarkovMap {
                 : null;
             if (svgGroup) {
                 svgGroup.classList.remove('hidden-layer');
-                overlay = true;
-            } else if (layer.tilePath) {
-                this.levelTile = L.tileLayer(layer.tilePath, { ...this.tileOptions, pane: 'levelPane' }).addTo(this.map);
                 overlay = true;
             }
         }
@@ -660,11 +710,12 @@ class TarkovMap {
             // 현재 층이 아닌 탈출구는 반투명하게
             layer._icon.classList.toggle('other-level', name !== null);
         };
-        // 보스: 다른 층이면 반투명
+        // 보스 구역 상자·이름: 다른 층이면 반투명
         const applyBoss = (layer) => {
             const o = layer.options || {};
-            if (!o.gamePos || !layer._icon) return;
-            layer._icon.classList.toggle('other-level', this.extractLevel({ gamePos: o.gamePos }) !== this.currentLevel);
+            const el = layer._icon || layer._path;
+            if (!o.gamePos || !el) return;
+            el.classList.toggle('other-level', this.extractLevel({ gamePos: o.gamePos }) !== this.currentLevel);
         };
         // 메모: 적어 둔 층이 아니면 반투명하고 층 이름을 붙인다
         const currentName = this.layers[this.levelIndex]?.name ?? null;
@@ -684,47 +735,74 @@ class TarkovMap {
         this.scheduleExtractLabelLayout();
     }
 
-    // 보스 출현 위치 표시 (show: 켬/끔). 지도 라벨에는 이름만, 확률은 팝업과 오른쪽 보스 목록에 쓴다
-    // (확률이 하나로 정해지지 않은 보스(chance: null)는 확률을 쓰지 않는다)
+    // 보스 출현 구역 표시 (show: 켬/끔): 가까운 출현 위치(같은 층)를 묶어 반투명한 상자로 그리고 가운데에 보스 이름을 쓴다.
+    // 확률·호위는 상자·이름을 누르면 나오는 팝업과 오른쪽 보스 목록에 쓴다 (확률이 하나로 정해지지 않은 보스(chance: null)는 확률을 쓰지 않는다)
     setBosses(show) {
         if (!this.bossLayer) return;
         this.bossLayer.clearLayers();
-        const info = this.mapInfo;
-        const inside = (p) => this.containsPosition(p);
-        if (show) {
-            // 같은 자리에 나오는 보스(세관 요새의 르샬라·나이트·사제 등)는 마커 하나로 묶는다
-            const spots = new Map();
-            for (const b of info.bosses || []) {
-                for (const loc of b.locations) {
-                    loc.positions.forEach((p) => {
-                        if (!inside(p)) return;
-                        const key = `${Math.round(p.x)},${Math.round(p.z)}`;
-                        const spot = spots.get(key) || { p, entries: [] };
-                        if (!spot.entries.some((e) => e.b === b)) spot.entries.push({ b, loc });
-                        spots.set(key, spot);
-                    });
+        if (!show) {
+            this.refreshMarkerLevels();
+            return;
+        }
+        const [[bx1, bz1], [bx2, bz2]] = this.cfg.bounds;
+        const mapSize = Math.max(Math.abs(bx1 - bx2), Math.abs(bz1 - bz2));
+        // 상자 여백(출현 위치 둘레)과 한 구역으로 묶을 거리 (미터, 맵 크기에 맞춘다)
+        const PAD = Math.min(15, Math.max(5, mapSize * 0.015));
+        const LINK = Math.min(40, Math.max(8, mapSize * 0.03));
+        const points = [];
+        for (const b of this.mapInfo.bosses || []) {
+            for (const loc of b.locations) {
+                for (const p of loc.positions) {
+                    if (this.containsPosition(p)) points.push({ p, b, loc, level: this.extractLevel({ gamePos: p }) });
                 }
             }
-            const pct = (v) => (v === null || v === undefined ? '' : `${Math.round(v * 100)}%`);
-            // 보스 종류·확률은 오른쪽 보스 목록에 있으므로 지도에는 아이콘만 (이름은 마우스를 올렸을 때·팝업)
-            for (const { p, entries } of spots.values()) {
-                const m = L.marker(pos(p), {
-                    icon: L.divIcon({ className: 'boss-marker', html: '<span class="boss-dot">💀</span>', iconSize: [0, 0] }),
-                    gamePos: p,
-                    title: entries.map((e) => e.b.name).join(' · '),
-                });
-                m.bindPopup(entries.map(({ b, loc }) => {
-                    const escorts = b.escorts ? ` · 호위 ${b.escorts[0] === b.escorts[1] ? b.escorts[0] : `${b.escorts[0]}~${b.escorts[1]}`}명` : '';
-                    const chance = pct(b.chance);
-                    const line = [chance && `출현 확률 ${chance}`, escorts.replace(/^ · /, '')].filter(Boolean).join(' · ');
-                    const locChance = pct(loc.chance);
-                    return `<div class="popup-task">💀 ${escapeHtml(b.name)}${b.enName !== b.name ? ` <span class="muted">(${escapeHtml(b.enName)})</span>` : ''}</div>`
-                        + (line ? `<div class="popup-item">${line}</div>` : '')
-                        + `<div class="popup-elev">출현 구역: ${escapeHtml(loc.name)}${locChance ? ` (이 구역 ${locChance})` : ''}</div>`;
-                }).join('<hr class="popup-sep">'));
-                m.on('add', () => this.refreshMarkerLevels());
-                m.addTo(this.bossLayer);
+        }
+        // 가까운 위치끼리 이어 붙여 구역으로 묶는다 (층이 다르면 따로)
+        const zones = [];
+        for (const pt of points) {
+            const near = zones.filter((z) => z.level === pt.level && z.points.some((q) => Math.hypot(q.p.x - pt.p.x, q.p.z - pt.p.z) <= LINK));
+            const zone = near[0] || { level: pt.level, points: [] };
+            if (!near.length) zones.push(zone);
+            zone.points.push(pt);
+            for (const other of near.slice(1)) {
+                zone.points.push(...other.points);
+                zones.splice(zones.indexOf(other), 1);
             }
+        }
+        const pct = (v) => (v === null || v === undefined ? '' : `${Math.round(v * 100)}%`);
+        for (const zone of zones) {
+            const xs = zone.points.map((q) => q.p.x);
+            const zs = zone.points.map((q) => q.p.z);
+            const [x1, x2, z1, z2] = [Math.min(...xs) - PAD, Math.max(...xs) + PAD, Math.min(...zs) - PAD, Math.max(...zs) + PAD];
+            const center = { x: (x1 + x2) / 2, y: zone.points[0].p.y, z: (z1 + z2) / 2 };
+            // 보스별 출현 구역 이름
+            const byBoss = new Map();
+            for (const { b, loc } of zone.points) {
+                const e = byBoss.get(b) || { b, locs: new Map() };
+                e.locs.set(loc.name, loc);
+                byBoss.set(b, e);
+            }
+            const names = [...byBoss.values()].map((e) => e.b.name).join(' · ');
+            const popup = [...byBoss.values()].map(({ b, locs }) => {
+                const escorts = b.escorts ? ` · 호위 ${b.escorts[0] === b.escorts[1] ? b.escorts[0] : `${b.escorts[0]}~${b.escorts[1]}`}명` : '';
+                const chance = pct(b.chance);
+                const line = [chance && `출현 확률 ${chance}`, escorts.replace(/^ · /, '')].filter(Boolean).join(' · ');
+                const where = [...locs.values()].map((loc) => `${escapeHtml(loc.name)}${pct(loc.chance) ? ` (이 구역 ${pct(loc.chance)})` : ''}`).join(', ');
+                return `<div class="popup-task">💀 ${escapeHtml(b.name)}${b.enName !== b.name ? ` <span class="muted">(${escapeHtml(b.enName)})</span>` : ''}</div>`
+                    + (line ? `<div class="popup-item">${line}</div>` : '')
+                    + `<div class="popup-elev">출현 구역: ${where}</div>`;
+            }).join('<hr class="popup-sep">');
+            const box = L.polygon([[x1, z1], [x2, z1], [x2, z2], [x1, z2]].map(([x, z]) => pos({ x, z })), {
+                className: 'boss-zone', color: '#e06c5c', weight: 1.5, opacity: 0.8, fillColor: '#e06c5c', fillOpacity: 0.16, gamePos: center,
+            }).bindPopup(popup);
+            const label = L.marker(pos(center), {
+                icon: L.divIcon({ className: 'boss-marker', html: `<span class="boss-label">${escapeHtml(names)}</span>`, iconSize: [0, 0] }),
+                gamePos: center,
+                title: names,
+            }).bindPopup(popup);
+            box.addTo(this.bossLayer);
+            label.on('add', () => this.refreshMarkerLevels());
+            label.addTo(this.bossLayer);
         }
         this.refreshMarkerLevels();
     }
@@ -803,24 +881,79 @@ class TarkovMap {
         });
     }
 
-    // 탈출구 라벨끼리 겹치면 점(마커)은 그대로 두고 라벨만 Y축으로 밀어 서로 비켜 놓는다
+    // 지도 아이콘(탈출구 점·퀘스트 번호·메모)끼리 겹치면 화면에서 겹치지 않을 만큼만 서로 밀어 놓고,
+    // 탈출구·보스 라벨은 다른 라벨·아이콘과 겹치지 않게 Y축으로 밀어 비켜 놓는다 (배율이 바뀔 때마다 다시 계산)
     layoutExtractLabels() {
         if (!this.map || !this.extractLayer) return;
         const GAP = 2;
+        const ICON_GAP = 2;
+        const origin = this.map.getContainer().getBoundingClientRect();
+        const rectOf = (el) => {
+            const r = el.getBoundingClientRect();
+            return { x: r.left - origin.left, y: r.top - origin.top, w: r.width, h: r.height };
+        };
+        const markers = [];
+        const each = (group, fn) => group?.eachLayer((l) => (l.eachLayer ? l.eachLayer(fn) : fn(l)));
+        [this.extractLayer, this.bossLayer, this.questLayer, this.memoLayer].forEach((g) => each(g, (l) => l._icon && markers.push(l)));
+        // 지난번에 옮긴 위치를 지우고 원래 자리에서 잰다
+        for (const l of markers) {
+            l._icon.style.translate = '';
+            l._icon.querySelectorAll('.extract-label, .boss-label').forEach((el) => { el.style.transform = ''; });
+        }
+
+        // 1) 아이콘끼리 겹치지 않게 서로 민다 (겹친 만큼 짧은 쪽 축으로 반씩)
+        const icons = [];
+        for (const l of markers) {
+            const el = l._icon.querySelector('.extract-dot, .qm-chips, .memo-pin');
+            if (!el) continue;
+            const r = rectOf(el);
+            if (!r.w || !r.h) continue;
+            icons.push({ layer: l, cx: r.x + r.w / 2, cy: r.y + r.h / 2, w: r.w, h: r.h, dx: 0, dy: 0 });
+        }
+        for (let iter = 0; iter < 30; iter++) {
+            let moved = false;
+            for (let i = 0; i < icons.length; i++) {
+                for (let j = i + 1; j < icons.length; j++) {
+                    const a = icons[i];
+                    const b = icons[j];
+                    let vx = (b.cx + b.dx) - (a.cx + a.dx);
+                    let vy = (b.cy + b.dy) - (a.cy + a.dy);
+                    const ox = (a.w + b.w) / 2 + ICON_GAP - Math.abs(vx);
+                    const oy = (a.h + b.h) / 2 + ICON_GAP - Math.abs(vy);
+                    if (ox <= 0 || oy <= 0) continue;
+                    // 같은 자리면 좌우로 벌린다
+                    if (!vx && !vy) vx = 1;
+                    if (ox < oy) {
+                        const d = (ox / 2) * Math.sign(vx || 1);
+                        a.dx -= d;
+                        b.dx += d;
+                    } else {
+                        const d = (oy / 2) * Math.sign(vy || 1);
+                        a.dy -= d;
+                        b.dy += d;
+                    }
+                    moved = true;
+                }
+            }
+            if (!moved) break;
+        }
+        for (const it of icons) {
+            if (Math.abs(it.dx) >= 0.5 || Math.abs(it.dy) >= 0.5) it.layer._icon.style.translate = `${Math.round(it.dx)}px ${Math.round(it.dy)}px`;
+        }
+        // 라벨이 피할 아이콘 자리 (옮긴 뒤)
+        const obstacles = icons.map((it) => ({ x: it.cx + it.dx - it.w / 2, y: it.cy + it.dy - it.h / 2, w: it.w, h: it.h, dy: 0, fixed: true }));
+
+        // 2) 라벨: 다른 라벨·아이콘과 겹치면 아래로 내린다
         const items = [];
-        this.extractLayer.eachLayer((layer) => {
-            const label = layer._icon?.querySelector('.extract-label');
-            if (!label) return;
-            label.style.transform = '';
-            const w = label.offsetWidth;
-            const h = label.offsetHeight;
-            if (!w || !h) return;
-            const p = this.map.latLngToContainerPoint(layer.getLatLng());
-            // .extract-label 의 CSS 위치(left: 10px, top: -10px)와 같은 기준
-            items.push({ label, x: p.x + 10, y: p.y - 10, w, h, dy: 0, group: null });
-        });
+        for (const l of markers) {
+            const label = l._icon.querySelector('.extract-label, .boss-label');
+            if (!label) continue;
+            const r = rectOf(label);
+            if (!r.w || !r.h) continue;
+            items.push({ label, x: r.x, y: r.y, w: r.w, h: r.h, dy: 0, group: null });
+        }
         items.sort((a, b) => a.y - b.y || a.x - b.x);
-        const placed = [];
+        const placed = [...obstacles];
         for (const it of items) {
             let top = it.y;
             // 가로로 겹치는 이미 놓인 라벨과 세로로도 겹치면 그 아래로 내린다 (더 겹치지 않을 때까지)
@@ -831,6 +964,7 @@ class TarkovMap {
                     const oTop = o.y + o.dy;
                     if (top < oTop + o.h + GAP && oTop < top + it.h + GAP) {
                         top = oTop + o.h + GAP;
+                        if (o.fixed) { moved = true; continue; }
                         if (!it.group) it.group = o.group;
                         else if (it.group !== o.group) {
                             const old = o.group;
@@ -853,7 +987,7 @@ class TarkovMap {
             if (g.members.length < 2) continue;
             const shift = Math.max(...g.members.map((m) => m.dy)) / 2;
             for (const m of g.members) m.dy -= shift;
-            const clash = g.members.some((m) => items.some((o) => o.group !== g && overlaps(m, o)));
+            const clash = g.members.some((m) => items.some((o) => o.group !== g && overlaps(m, o)) || obstacles.some((o) => overlaps(m, o)));
             if (clash) for (const m of g.members) m.dy += shift;
         }
         for (const it of items) {
@@ -951,7 +1085,8 @@ class TarkovMap {
                     + (obj.questItem ? `<div class="popup-item">퀘스트 아이템: ${escapeHtml(obj.questItem.name)}</div>` : '')
                     + (obj.keys || []).map((g) => `<div class="popup-item">필요 열쇠: ${escapeHtml([...new Set(g.map((k) => k.name))].join(' 또는 '))}</div>`).join('')
                     + (obj.bring?.length ? `<div class="popup-item">가져갈 아이템: ${escapeHtml([...new Set(obj.bring.map((k) => k.name))].join(' 또는 '))}</div>` : '')
-                    + (approx ? '<div class="popup-elev">위키 가이드 지도 기준 대략 위치</div>' : `<div class="popup-elev">높이: ${p.y.toFixed(1)}</div>`);
+                    + (approx ? '<div class="popup-elev">위키 가이드 지도 기준 대략 위치</div>' : `<div class="popup-elev">높이: ${p.y.toFixed(1)}</div>`)
+                    + (window.api.getQuestPhotos && task.wiki ? `<div class="pp-bar"><button class="pp-photos" data-photo-obj="${obj.id}" title="위키 위치 사진 보기">📷 사진</button></div>` : '');
                 for (const zone of obj.zones) {
                     if (!apiIds.includes(zone.map)) continue;
                     if (!this.containsPosition(zone.position)) continue;
@@ -963,14 +1098,14 @@ class TarkovMap {
                         }).addTo(this.questLayer);
                     }
                     addToSpot(zone.position, zone.top, zone.bottom, {
-                        kind: 'zone', color, number, done, objId: obj.id, popup: popupHtml(zone.position, zone.approx),
+                        kind: 'zone', color, number, done, objId: obj.id, task, popup: popupHtml(zone.position, zone.approx),
                     });
                 }
                 for (const loc of obj.locations) {
                     if (!apiIds.includes(loc.map)) continue;
                     for (const p of loc.positions) {
                         if (!this.containsPosition(p)) continue;
-                        addToSpot(p, undefined, undefined, { kind: 'item', color, number, done, objId: obj.id, popup: popupHtml(p) });
+                        addToSpot(p, undefined, undefined, { kind: 'item', color, number, done, objId: obj.id, task, popup: popupHtml(p) });
                     }
                 }
             }
@@ -1002,8 +1137,9 @@ class TarkovMap {
                 bottom: spot.bottom,
             }).bindPopup(popups.join('<hr class="popup-sep">'), { maxHeight: 320 });
             marker.addTo(this.questLayer);
-            for (const objId of new Set(spot.items.map((it) => it.objId))) {
-                (this.objectiveTargets[objId] ||= []).push({ marker, position: spot.position });
+            for (const it of spot.items) {
+                const list = (this.objectiveTargets[it.objId] ||= []);
+                if (!list.some((x) => x.marker === marker)) list.push({ marker, position: spot.position, task: it.task, color: it.color, objId: it.objId });
             }
         }
         this.refreshMarkerLevels();
@@ -1020,10 +1156,120 @@ class TarkovMap {
         const next = (current + 1) % targets.length;
         targets.__cursor = next;
         const t = targets[next];
-        this.setLevel(this.detectLevel(t.position));
-        // 확대 없이 현재 배율 그대로 위치만 표시
+        // 목표가 다른 층이면 그 층을 보여 주고, 팝업을 닫으면 원래 층으로 되돌린다
+        const level = this.detectLevel(t.position);
+        if (level !== this.levelIndex) {
+            const restore = this.focusRestore?.level ?? this.levelIndex;
+            this.setLevel(level);
+            this.focusRestore = { level: restore };
+        }
+        // 확대 없이 현재 배율 그대로 위치만 표시하고, 그 자리에 위키 퀘스트 문서의 위치 사진을 띄운다
         this.map.panTo(pos(t.position), { animate: true, duration: 0.4 });
-        setTimeout(() => t.marker.openPopup(), 450);
+        setTimeout(() => this.openQuestPhotos(t), 450);
+    }
+
+    // 팝업이 모두 닫히면 지도에서 보기로 바꿨던 층을 원래대로 (사진 ↔ 설명 팝업을 바꾸는 사이에는 되돌리지 않는다)
+    scheduleFocusRestore() {
+        if (!this.focusRestore) return;
+        clearTimeout(this.focusRestoreTimer);
+        this.focusRestoreTimer = setTimeout(() => {
+            if (!this.focusRestore || !this.map) return;
+            if (this.map._popup && this.map.hasLayer(this.map._popup)) return;
+            const { level } = this.focusRestore;
+            this.focusRestore = null;
+            this.setLevel(level);
+        }, 150);
+    }
+
+    // 목표 설명 팝업의 [📷 사진] 버튼 → 그 목표의 위키 사진 팝업
+    onPopupOpen(popup) {
+        const el = popup.getElement();
+        const marker = popup._source;
+        el?.querySelectorAll('[data-photo-obj]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const list = this.objectiveTargets[btn.dataset.photoObj] || [];
+                const t = list.find((x) => x.marker === marker) || list[0];
+                if (t) this.openQuestPhotos(t);
+            });
+        });
+    }
+
+    // 위키 사진 팝업 (사진이 없거나 받지 못하면 목표 설명 팝업)
+    async openQuestPhotos(t) {
+        if (!window.api.getQuestPhotos || !window.api.getWikiPhoto || !t.task?.wiki) {
+            t.marker.openPopup();
+            return;
+        }
+        const title = `<div class="popup-task" style="border-color:${t.color}">${escapeHtml(taskTitle(t.task))}</div>`;
+        const box = document.createElement('div');
+        box.className = 'photo-pop';
+        box.innerHTML = `${title}<div class="pp-status">위키 사진 불러오는 중…</div>`;
+        // 위쪽 패널(도움말·층·지도 종류)에 가리지 않게 여백을 두고 지도를 옮긴다
+        const popup = L.popup({ minWidth: 340, maxWidth: 340, className: 'photo-popup', autoPanPaddingTopLeft: L.point(20, 170), autoPanPaddingBottomRight: L.point(20, 20) })
+            .setLatLng(t.marker.getLatLng()).setContent(box).openOn(this.map);
+        let photos = [];
+        try {
+            photos = await window.api.getQuestPhotos(t.task.wiki);
+        } catch { /* 설명으로 */ }
+        // 여러 맵에 걸친 퀘스트는 지금 맵의 사진만 (위키 문서에서 어느 맵 설명 아래 있는지로 정한 맵, 모르면 모든 맵에 보인다)
+        const mapKey = this.mapInfo?.key;
+        photos = photos.filter((ph) => !ph.map || ph.map === mapKey);
+        if (!this.map || !this.map.hasLayer(popup)) return;
+        if (!photos.length) {
+            this.map.closePopup(popup);
+            t.marker.openPopup();
+            // 다시 열린 설명 팝업의 사진 버튼에 사진이 없다고 알린다
+            const btn = t.marker.getPopup()?.getElement()?.querySelector(`[data-photo-obj="${t.objId}"]`);
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '위키 사진 없음';
+            }
+            return;
+        }
+        // 버튼을 다시 그리면 눌린 버튼이 문서에서 빠져 Leaflet 이 지도 클릭으로 보고 팝업을 닫으므로, 틀은 한 번만 만들고 내용만 바꾼다
+        box.innerHTML = `${title}<div class="pp-frame"><span class="pp-loading">불러오는 중…</span><img alt=""></div>`
+            + '<div class="pp-caption"></div>'
+            + '<div class="pp-bar">'
+            + (photos.length > 1
+                ? '<button class="pp-prev" title="이전 사진">‹</button><span class="pp-count"></span><button class="pp-next" title="다음 사진">›</button>'
+                : '<span></span>')
+            + '<button class="pp-desc" title="퀘스트 목표 설명 보기">📝 목표 설명</button></div>';
+        L.DomEvent.disableClickPropagation(box);
+        const img = box.querySelector('img');
+        const loading = box.querySelector('.pp-loading');
+        let index = 0;
+        const show = async () => {
+            const photo = photos[index];
+            box.querySelector('.pp-caption').textContent = photo.caption || '';
+            const count = box.querySelector('.pp-count');
+            if (count) count.textContent = `${index + 1} / ${photos.length}`;
+            img.removeAttribute('src');
+            loading.textContent = '불러오는 중…';
+            loading.hidden = false;
+            try {
+                const src = await loadWikiPhoto(photo.url);
+                if (photos[index] !== photo) return;
+                img.onload = () => {
+                    loading.hidden = true;
+                    popup.update();
+                };
+                img.src = src;
+            } catch {
+                if (photos[index] === photo) loading.textContent = '사진을 받지 못했습니다';
+            }
+        };
+        const step = (d) => {
+            index = (index + photos.length + d) % photos.length;
+            show();
+        };
+        box.querySelector('.pp-prev')?.addEventListener('click', () => step(-1));
+        box.querySelector('.pp-next')?.addEventListener('click', () => step(1));
+        box.querySelector('.pp-desc').addEventListener('click', () => {
+            this.map.closePopup(popup);
+            t.marker.openPopup();
+        });
+        img.addEventListener('click', () => openPhotoViewer(photos, index, taskTitle(t.task)));
+        show();
     }
 
     // 지금 보는 지도 스타일과 상관없이, tarkov.dev 지도 범위나 위키 이미지 범위 중 하나라도 벗어나는지
@@ -1033,7 +1279,7 @@ class TarkovMap {
     }
 
     // 지도 밖 게임 좌표 → 지도 안쪽 게임 좌표 (맵 끝 지뢰 지대 쪽).
-    // 위키·도면·위성 지도에서 같은 자리에 보이도록 tarkov.dev 지도 범위와 위키 이미지 범위 둘 다의 안쪽(가장자리에서 15m 들인 곳)으로,
+    // 위키·도면 지도에서 같은 자리에 보이도록 tarkov.dev 지도 범위와 위키 이미지 범위 둘 다의 안쪽(가장자리에서 15m 들인 곳)으로,
     // 지도 가운데를 향해 가장 적게 옮긴다
     insidePosition(p) {
         const INSET_M = 15;

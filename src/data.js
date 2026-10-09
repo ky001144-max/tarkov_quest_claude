@@ -4,19 +4,28 @@
 // 원본(맵 JSON만 8MB 이상) 파싱은 별도 프로세스(data-builder.js)에서 하고, 가공 결과만 캐시해 메인 프로세스 메모리를 작게 유지한다.
 const fs = require('fs');
 const path = require('path');
-const { wikiUrl, parseWikiResponse, applyWikiExtracts, wikiImageInfoUrl, parseWikiImageInfo } = require('./wiki-extracts');
+const { WIKI_API, wikiUrl, parseWikiResponse, applyWikiExtracts, wikiImageInfoUrl, parseWikiImageInfo } = require('./wiki-extracts');
 const { fetchWikiEvents, EVENTS_VERSION } = require('./wiki-events');
+const { fetchQuestPhotos } = require('./wiki-quest-photos');
 
 const JSON_API = 'https://json.tarkov.dev';
 const MAX_AGE_MS = 6 * 3600 * 1000;
 // 가공 결과 형식이 바뀌면 올린다 (이전 캐시 무효화)
-const BUILD_VERSION = 21;
+const BUILD_VERSION = 25;
 // 위키 이벤트 퀘스트는 자주 바뀌지 않아 하루에 한 번만 새로 받는다
 const EVENTS_MAX_AGE_MS = 24 * 3600 * 1000;
 const HANGUL = /[가-힣]/;
 // 위키 지도 이미지는 위키 페이지에서 불러온 것처럼 Referer 를 붙여야 받을 수 있다
 const WIKI_IMAGE_HOST = /^https:\/\/static\.wikia\.nocookie\.net\/escapefromtarkov_gamepedia\/images\//;
 const WIKI_IMAGE_MAX_AGE_MS = 7 * 24 * 3600 * 1000;
+const QUEST_PHOTOS_MAX_AGE_MS = 3 * 24 * 3600 * 1000;
+// 퀘스트 사진 목록 형식이 바뀌면 올린다 (2: 사진마다 맵, 3: 지도 그림 빼기)
+const QUEST_PHOTOS_VERSION = 3;
+// 위키 주소(https://…/wiki/First_in_Line) → 문서 제목
+const wikiTitle = (link) => {
+    const m = String(link || '').match(/\/wiki\/([^?#]+)/);
+    return m ? decodeURIComponent(m[1]).replace(/_/g, ' ') : null;
+};
 const MAPS_JSON_URL = 'https://raw.githubusercontent.com/the-hideout/tarkov-dev/main/src/data/maps.json';
 
 // tarkov.dev maps.json 그룹 키 → 같은 지도를 쓰는 추가 API 맵
@@ -58,6 +67,16 @@ function itemDisplayName(ko, en, dict) {
     const latin = kr.match(/[A-Za-z][\w.-]*(?:\s+[A-Za-z][\w.-]*)+/);
     if (latin && en.toLowerCase().includes(latin[0].toLowerCase())) return kr;
     return `${kr} (${en})`;
+}
+
+// 화면에서 쓰는 지도 설정만 남긴다 (위성 타일 주소·지도 라벨·작성자 등은 빼서 가공 데이터를 줄인다)
+const MAP_CONFIG_KEYS = ['minZoom', 'maxZoom', 'transform', 'coordinateRotation', 'bounds', 'svgBounds', 'svgPath', 'svgLayer', 'heightRange'];
+const LAYER_KEYS = ['name', 'svgLayer', 'show', 'extents'];
+const pick = (obj, keys) => Object.fromEntries(keys.filter((k) => obj[k] !== undefined).map((k) => [k, obj[k]]));
+function pickMapConfig(config) {
+    const out = pick(config, MAP_CONFIG_KEYS);
+    if (config.layers) out.layers = config.layers.map((l) => pick(l, LAYER_KEYS));
+    return out;
 }
 
 class DataService {
@@ -138,6 +157,54 @@ class DataService {
                 throw new Error(`위키 지도 이미지 다운로드 실패: ${err.message}`);
             }
         }
+    }
+
+    // 위키 퀘스트 문서의 위치 사진 [{ url, caption, map }] (문서 제목별로 며칠 동안 저장)
+    async getQuestPhotos(title) {
+        if (!title) return [];
+        const file = this.cacheFile('wiki-quest-photos.json');
+        let cache = {};
+        try {
+            cache = JSON.parse(fs.readFileSync(file, 'utf8'));
+        } catch { /* 처음 */ }
+        const hit = cache[title];
+        const fresh = hit?.v === QUEST_PHOTOS_VERSION;
+        if (fresh && Date.now() - hit.at < QUEST_PHOTOS_MAX_AGE_MS) return hit.photos;
+        const fetchJson = async (url) => {
+            const res = await fetch(url, { headers: { 'User-Agent': 'EFT-Where-Am-I-KO/1.0' } });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+        };
+        try {
+            const photos = await fetchQuestPhotos(WIKI_API, title, fetchJson);
+            cache[title] = { v: QUEST_PHOTOS_VERSION, at: Date.now(), photos };
+            fs.writeFileSync(file, JSON.stringify(cache), 'utf8');
+            return photos;
+        } catch (err) {
+            if (fresh) return hit.photos;
+            throw new Error(`위키 퀘스트 사진을 받지 못했습니다: ${err.message}`);
+        }
+    }
+
+    // 위키 사진 한 장 { data, type } (위키 이미지 서버가 Referer 를 요구해 메인 프로세스에서 받는다. 디스크에는 두지 않는다)
+    async getWikiPhoto(url) {
+        if (!WIKI_IMAGE_HOST.test(url)) throw new Error('허용되지 않은 사진 주소');
+        const res = await fetch(url, {
+            headers: { 'User-Agent': 'EFT-Where-Am-I-KO/1.0', Referer: 'https://escapefromtarkov.fandom.com/' },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return { data: Buffer.from(await res.arrayBuffer()), type: res.headers.get('content-type') || 'image/png' };
+    }
+
+    // 타일로 잘라 저장한 위키 지도 원본 이미지는 지운다 (url 없으면 남은 원본 전부)
+    dropWikiImage(url) {
+        if (url && !WIKI_IMAGE_HOST.test(url)) return;
+        const prefix = url ? path.basename(this.cacheFile(`wikimap_${url.split('/images/')[1]}`)) : 'wikimap_';
+        try {
+            for (const f of fs.readdirSync(this.cacheDir)) {
+                if (f === prefix || f === `${prefix}.type` || (!url && f.startsWith(prefix))) fs.rmSync(path.join(this.cacheDir, f), { force: true });
+            }
+        } catch { /* 없으면 그만 */ }
     }
 
     // 위키 지도 이미지 파일 이름 → 주소 (받지 못하면 빈 객체 → 위키 지도 없이 표시)
@@ -355,7 +422,34 @@ class DataService {
         // 몹 종류가 달라도 이름이 같으면(쇄빙선 블랙 디비전 3종 등) 같은 보스로 본다. PvE 의 AI PMC(pmcUSEC·pmcBEAR)는 보스가 아니라 뺀다
         const mobs = maps.data.mobs || {};
         const mobEnName = (mob) => mapsEn.data?.[mobs[mob]?.name] || mob;
-        const bossesOf = (m) => {
+        // tarkov.dev 보스 이름 → 위키 지도 출현 마커 이름 (같은 이름이면 생략).
+        // 레이더·로그·블랙 디비전 같은 무리는 위키에 구역 표시만 한두 개 있어서 tarkov.dev 의 실제 출현 지점을 그대로 쓴다
+        const WIKI_BOSS_NAMES = {
+            Knight: ['The Goons', 'Knight'], 'Big Pipe': ['The Goons'], 'Bird Eye': ['The Goons'], 'Cultist Priest': ['Cultists'],
+            Raider: [], Rogue: [], 'Black Div.': [], AF: [],
+        };
+        const wikiNorm = (s) => s.trim().toLowerCase();
+        // 위키 지도에 그 보스의 출현 마커가 있으면 그 위치를 쓴다 (tarkov.dev 구역 좌표는 Woods 처럼 맵 곳곳에 흩어진 경우가 있다).
+        // 높이·구역 이름은 같은 보스의 가장 가까운 tarkov.dev 위치에서 가져온다. 위키에 없으면 tarkov.dev 위치 그대로
+        const placeOnWiki = (enName, locations, wikiBosses) => {
+            const names = (WIKI_BOSS_NAMES[enName] || [enName]).map(wikiNorm);
+            const marks = (wikiBosses || []).filter((w) => names.includes(wikiNorm(w.name)));
+            const devPts = locations.flatMap((loc) => loc.positions.map((p) => ({ p, loc })));
+            if (!marks.length || !devPts.length) return locations;
+            const out = new Map();
+            for (const w of marks) {
+                let near = devPts[0];
+                for (const d of devPts) {
+                    if (Math.hypot(d.p.x - w.position.x, d.p.z - w.position.z) < Math.hypot(near.p.x - w.position.x, near.p.z - w.position.z)) near = d;
+                }
+                const p = { x: w.position.x, y: w.position.y ?? near.p.y, z: w.position.z };
+                const loc = out.get(near.loc) || { ...near.loc, positions: [] };
+                if (!loc.positions.some((q) => Math.hypot(q.x - p.x, q.z - p.z) < 1)) loc.positions.push(p);
+                out.set(near.loc, loc);
+            }
+            return [...out.values()];
+        };
+        const bossesOf = (m, wikiBosses) => {
             const byName = new Map();
             for (const b of m.bosses || []) {
                 if (/^pmc(USEC|BEAR)$/i.test(b.mob)) continue;
@@ -386,14 +480,15 @@ class DataService {
                     enName,
                     chance: chances.size === 1 ? [...chances][0] : null,
                     escorts: counts.length ? [Math.min(...counts), Math.max(...counts)] : null,
-                    locations: [...locations.values()].map((l) => ({
+                    locations: placeOnWiki(enName, [...locations.values()].map((l) => ({
                         name: l.name,
                         chance: l.chances.size === 1 ? [...l.chances][0] : null,
                         positions: l.positions,
-                    })),
+                    })), wikiBosses),
                 };
             }).filter((b) => b.locations.length);
         };
+        const NO_BOSS_MAPS = ['terminal', 'the-lab'];
         const mapList = [];
         for (const group of mapConfigs) {
             const config = group.maps.find((m) => m.projection === 'interactive');
@@ -434,14 +529,15 @@ class DataService {
                 name: trMap(primary.name),
                 apiIds: members.map((m) => m.id),
                 nameIds: members.map((m) => (m.nameId || '').toLowerCase()),
-                config,
+                config: pickMapConfig(config),
                 // 위키 지도 바탕 이미지 (게임 좌표에 맞출 수 있는 맵만)
                 wikiMap: points.wikiMap && wikiImageUrls[points.wikiMap.file]
                     ? { ...points.wikiMap, url: wikiImageUrls[points.wikiMap.file] }
                     : null,
                 extracts: points.extracts.map(toMarker),
                 transits: points.transits.map(toMarker),
-                bosses: bossesOf(primary),
+                // 터미널·연구소는 보스·무리가 맵 전체에 나와서 보스 표시를 하지 않는다
+                bosses: NO_BOSS_MAPS.includes(group.normalizedName) ? [] : bossesOf(primary, points.bosses),
             });
         }
 
@@ -509,6 +605,7 @@ class DataService {
                 mapIds: [...mapIds],
                 objectives,
                 link: `https://tarkov.dev/task/${t.normalizedName}`,
+                wiki: wikiTitle(t.wikiLink) || (tasksEn.data?.[t.name] ?? t.name).trim(),
             };
         });
         const taskNameById = Object.fromEntries(taskList.map((t) => [t.id, t.name]));
@@ -554,6 +651,7 @@ class DataService {
                 mapIds: [...new Set([...objectives.flatMap((o) => [...o.maps, ...o.zones.map((z) => z.map)]), ...taskMaps])],
                 objectives,
                 link: `https://escapefromtarkov.fandom.com/wiki/${x.wiki}`,
+                wiki: String(x.wiki).replace(/_/g, ' '),
                 ...extra,
             };
             taskList.push(task);

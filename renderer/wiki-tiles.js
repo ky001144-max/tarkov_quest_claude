@@ -7,7 +7,7 @@
     // 위키 지도 이미지 타일 규칙이 바뀌면 올린다 (이전 타일 무시)
     const TILE_VERSION = 1;
     // 디코딩해 둔 타일 (최근 것만). 밀려난 타일은 그리던 중일 수 있어 조금 뒤에 닫는다
-    const BITMAP_CACHE = 64;
+    const BITMAP_CACHE = 40;
     const CLOSE_DELAY_MS = 5000;
 
     let dbPromise = null;
@@ -131,7 +131,8 @@
     // 위키 지도 타일 원본. url 이 같으면 저장해 둔 타일을 쓰고, 없으면 loadImage() 로 받아 새로 자른다.
     // 새로 자를 때는 가장 작은 배율이 끝나면 바로 돌려주고, 나머지 타일은 만들어지는 대로 그린다.
     // rect: 이미지가 놓이는 위키 좌표 범위 [x1, y1, x2, y2], onProgress(0~1): 타일 만드는 진행률
-    async function open({ file, url, rect, loadImage, onProgress }) {
+    // onStored: 타일을 모두 저장한 뒤 (원본 이미지는 더 필요 없다)
+    async function open({ file, url, rect, loadImage, onProgress, onStored }) {
         const id = `v${TILE_VERSION}|${rect.join(',')}|${url}`;
         let meta = await request('meta', 'readonly', (s) => s.get(id));
         let job = null;
@@ -145,6 +146,7 @@
                     job.done.then(async (zMin) => {
                         await request('meta', 'readwrite', (s) => s.put({ file, rect, zMin, tileSize: TILE }, id));
                         jobs.delete(id);
+                        onStored?.();
                         removeOld(file, id).catch(() => {});
                     }, () => jobs.delete(id));
                 }
@@ -204,6 +206,8 @@
                 // 위키 지도는 이미지 1px = 1 좌표라 음수 배율로 본다 (기본값 0 이면 축소했을 때 타일을 안 그린다)
                 minZoom: -20,
                 noWrap: true,
+                // 화면 밖에 남겨 두는 타일 캔버스(장당 1MB)를 줄인다
+                keepBuffer: 1,
                 ...options,
             });
         },
