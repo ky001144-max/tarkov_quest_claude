@@ -523,6 +523,31 @@ const MARKER_CATEGORY = { pmc: 'exfil_pmc', scav: 'exfil_scav', transit: 'exfil_
 // tarkov.dev 탈출구/이동 지점을 위키 목록 기준으로 다시 만든다 (위치도 위키 지도가 우선)
 // dev: [{ name(영문), label(표시 이름), faction, position, top, bottom }]
 // markerLevel: 위키 마커가 그려진 판의 층 이름 (층을 나눠 그린 지도만, 기본 판은 null)
+// 탈출 구역(게임 좌표 다각형) 밖으로 이 거리(미터)보다 멀면 구역 경계로 옮긴다 (위키 아이콘은 구역 근처 길·문에 찍히기도 해 여유를 둔다)
+const ZONE_TOLERANCE = 8;
+function snapToZone(g, outline) {
+    const poly = outline.map((p) => [p.x, p.z]);
+    let inside = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [xi, zi] = poly[i];
+        const [xj, zj] = poly[j];
+        if ((zi > g.z) !== (zj > g.z) && g.x < ((xj - xi) * (g.z - zi)) / (zj - zi) + xi) inside = !inside;
+    }
+    if (inside) return g;
+    let best = null;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [ax, az] = poly[j];
+        const [bx, bz] = poly[i];
+        const len = (bx - ax) ** 2 + (bz - az) ** 2;
+        const t = len ? Math.min(1, Math.max(0, ((g.x - ax) * (bx - ax) + (g.z - az) * (bz - az)) / len)) : 0;
+        const x = ax + t * (bx - ax);
+        const z = az + t * (bz - az);
+        const d = Math.hypot(g.x - x, g.z - z);
+        if (!best || d < best.d) best = { d, x, z };
+    }
+    return best.d > ZONE_TOLERANCE ? { ...g, x: best.x, z: best.z } : g;
+}
+
 function mergeWithWiki(wikiRows, devPoints, markers, transform, allDevPoints, inBounds, isTransit, markerLevel) {
     const out = [];
     for (const row of wikiRows) {
@@ -548,6 +573,8 @@ function mergeWithWiki(wikiRows, devPoints, markers, transform, allDevPoints, in
         let g = marker && transform ? transform(marker.position) : null;
         // 위키 지도의 별도 영역(지도 밖)에 그려진 마커는 쓰지 않는다
         if (g && !inBounds(g)) g = null;
+        // 위키 마커가 tarkov.dev 실제 탈출 구역에서 많이 벗어나 있으면 구역 경계의 가장 가까운 자리로 옮긴다
+        if (g && pick?.outline?.length >= 3) g = snapToZone(g, pick.outline);
 
         // 위키 지도 마커 위치를 쓴다 (위키에 없거나, 지도 옆 확대도 위에 그려진 마커면 tarkov.dev 좌표)
         const shift = pick && g ? Math.hypot(pick.position.x - g.x, pick.position.z - g.z) : 0;

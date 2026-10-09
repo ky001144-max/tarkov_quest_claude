@@ -62,6 +62,8 @@ function setMapLoading(text, ratio) {
 function renderExtractFilter() {
     const f = state.settings.extractFilter || {};
     document.querySelectorAll('#extractFilter [data-filter]').forEach((c) => { c.checked = f[c.dataset.filter] !== false; });
+    const o = state.settings.overlayFilter || {};
+    document.querySelectorAll('#extractFilter [data-overlay]').forEach((c) => { c.checked = !!o[c.dataset.overlay]; });
 }
 
 function renderModeSeg() {
@@ -105,12 +107,15 @@ async function init() {
     renderModeSeg();
     $('#quickAutoScreenshot').checked = state.settings.autoScreenshot;
     renderExtractFilter();
+    renderHelpBar();
+    renderPanels();
 
     state.tarkovMap = new TarkovMap($('#map'), {
         onLevelChange: renderLevelControl,
         levelName: (name) => LEVEL_NAMES[name] || name,
         onMouseCoord: ({ x, z }) => { $('#coordReadout').textContent = `X ${x.toFixed(1)}  Z ${z.toFixed(1)}`; },
         onLoadProgress: showTileProgress,
+        onMapContextMenu: (p, latlng) => addMemo(p, latlng),
     });
 
     bindUi();
@@ -165,6 +170,9 @@ async function selectMap(key) {
     if (state.tarkovMap.wikiSource && state.tarkovMap.tileProgress < 1) showTileProgress(state.tarkovMap.tileProgress);
     renderStyleControl();
     state.tarkovMap.setExtracts(state.settings.extractFilter);
+    state.tarkovMap.setBosses(!!state.settings.overlayFilter?.boss);
+    renderBossList();
+    renderMemos();
     refreshQuestMarkers();
     renderQuestList();
     if (state.lastPosition && state.lastPosition.mapKey === key) showPosition(state.lastPosition, false);
@@ -177,32 +185,46 @@ const LEVELS_COLLAPSE_OVER = 6;
 function renderLevelControl(activeIndex) {
     const box = $('#levelControl');
     const layers = state.tarkovMap.layers;
+    // 층이 없는 맵은 층 패널을 숨긴다
+    $('#levelPanel').classList.toggle('hidden', !layers.length);
     if (!layers.length) {
         box.innerHTML = '';
         return;
     }
     const names = ['1층', ...layers.map((l) => LEVEL_NAMES[l.name] || l.name)];
-    const current = names[activeIndex + 1] || '1층';
+    // 패널 머리에 지금 층을 보여 준다 (패널을 닫아 둬도 보이게)
+    $('#levelCur').textContent = names[activeIndex + 1] || '1층';
     // 층이 많으면(Icebreaker) 현재 층만 보이고 펼쳐서 고른다
     const many = names.length > LEVELS_COLLAPSE_OVER;
     box.classList.toggle('many', many);
-    box.innerHTML = `<div class="level-title">층<span class="cur">${esc(current)}</span></div>`
-        + names.map((n, k) => `<button class="level-btn ${k - 1 === activeIndex ? 'active' : ''}" data-level="${k - 1}">${esc(n)}</button>`).join('')
+    box.innerHTML = names.map((n, k) => `<button class="level-btn ${k - 1 === activeIndex ? 'active' : ''}" data-level="${k - 1}">${esc(n)}</button>`).join('')
         + (many ? `<button class="lv-more" data-more>${box.classList.contains('open') ? '접기 ▴' : `전체 층 ${names.length}개 ▾`}</button>` : '');
     renderLocation();
 }
 
+const STYLE_LABELS = { wiki: '위키', svg: '도면', tile: '위성' };
+
 function renderStyleControl() {
     const styles = state.tarkovMap.availableStyles();
     const box = $('#styleControl');
+    // 지도 종류가 하나뿐이면 패널을 숨긴다
+    $('#stylePanel').classList.toggle('hidden', styles.length < 2);
     if (styles.length < 2) {
         box.innerHTML = '';
-        box.classList.add('hidden');
         return;
     }
-    box.classList.remove('hidden');
-    const label = { wiki: '위키', svg: '도면', tile: '위성' };
-    box.innerHTML = styles.map((s) => `<button data-style="${s}" class="${s === state.tarkovMap.style ? 'active' : ''}">${label[s]}</button>`).join('');
+    $('#styleCur').textContent = STYLE_LABELS[state.tarkovMap.style] || '';
+    box.innerHTML = styles.map((s) => `<button data-style="${s}" class="${s === state.tarkovMap.style ? 'active' : ''}">${STYLE_LABELS[s]}</button>`).join('');
+}
+
+// 지도 위쪽 패널(도움말 · 층 · 지도 종류 · 마커 표시) 열림 상태 (기본: 모두 열림)
+function renderPanels() {
+    const open = state.settings.panels || {};
+    document.querySelectorAll('#topBar .top-panel').forEach((p) => {
+        const closed = open[p.dataset.panel] === false;
+        p.classList.toggle('closed', closed);
+        p.querySelector('.panel-head').setAttribute('aria-expanded', String(!closed));
+    });
 }
 
 function refreshQuestMarkers() {
@@ -214,6 +236,25 @@ function refreshQuestMarkers() {
         .filter(Boolean)
         .map((task, i) => ({ task, color: QUEST_COLORS[i % QUEST_COLORS.length], number: i + 1, completed }));
     state.tarkovMap.setQuestMarkers(entries);
+}
+
+// 그중 하나만 있으면 되는 아이템들 → "A 또는 B" (많으면 앞의 3개만)
+function itemChoices(list) {
+    const names = [...new Set(list.map((it) => it.name))];
+    const head = names.slice(0, 3).join(' 또는 ');
+    return names.length > 3 ? `${head} 외 ${names.length - 3}개` : head;
+}
+
+// 목표 위치(이 맵의 구역·후보 위치)가 있는 층 이름들 (층이 없는 맵이거나 위치를 모르면 빈 목록)
+function objectiveFloors(o, mapInfo) {
+    const t = state.tarkovMap;
+    if (!t.map || t.mapInfo !== mapInfo || !t.layers.length) return [];
+    const onMap = (id) => mapInfo.apiIds.includes(id);
+    const spots = [
+        ...o.zones.filter((z) => onMap(z.map) && z.position).map((z) => [z.position, z.top, z.bottom]),
+        ...(o.locations || []).filter((l) => onMap(l.map)).flatMap((l) => l.positions.map((p) => [p])),
+    ].filter(([p]) => typeof p.y === 'number' && t.containsPosition(p));
+    return [...new Set(spots.map(([p, top, bottom]) => t.floorOf(p, top, bottom)).filter(Boolean))];
 }
 
 // ---------------- 등록된 퀘스트 목록 (왼쪽 UI) ----------------
@@ -240,6 +281,10 @@ function renderQuestList() {
             if (o.optional) tags.push('<span class="obj-tag">(선택)</span>');
             if (o.count > 1) tags.push(`<span class="obj-tag">×${o.count}</span>`);
             if (o.questItem) tags.push(`<span class="obj-tag item">📦 ${esc(o.questItem.name)}</span>`);
+            for (const group of o.keys || []) tags.push(`<span class="obj-tag key" title="필요한 열쇠">🔑 ${esc(itemChoices(group))}</span>`);
+            if (o.bring?.length) tags.push(`<span class="obj-tag bring" title="가져가야 하는 아이템">🎒 ${esc(itemChoices(o.bring))}</span>`);
+            const floors = objectiveFloors(o, mapInfo);
+            if (floors.length) tags.push(`<span class="obj-tag floor" title="목표 위치의 층">🏢 ${esc(floors.join(' · '))}</span>`);
             if (otherMap) tags.push('<span class="obj-tag">(다른 맵)</span>');
             const locate = state.tarkovMap.hasTarget(o.id)
                 ? `<button class="locate-btn" data-locate="${o.id}" title="지도에서 보기">📍</button>` : '';
@@ -256,7 +301,12 @@ function renderQuestList() {
             task.lightkeeperRequired ? '<span class="badge lk">등대지기</span>' : '',
             eventBadge(task),
         ].join('');
-        const extra = task.requires.length ? `<div class="quest-extra">선행 퀘스트: ${task.requires.map(esc).join(', ')}</div>` : '';
+        // 퀘스트 전체에 필요한 열쇠를 한눈에 (목표마다 붙은 열쇠를 모은 것)
+        const keyNames = [...new Set(task.objectives.flatMap((o) => (o.keys || []).map(itemChoices)))];
+        const extra = [
+            keyNames.length ? `<div class="quest-extra">필요 열쇠: ${keyNames.map(esc).join(', ')}</div>` : '',
+            task.requires.length ? `<div class="quest-extra">선행 퀘스트: ${task.requires.map(esc).join(', ')}</div>` : '',
+        ].join('');
         return `<div class="quest-card ${collapsed[task.id] ? 'collapsed' : ''}" style="--qc:${color}" data-task="${task.id}">
             <div class="quest-head" data-toggle="${task.id}">
                 <span class="quest-num">${i + 1}</span>
@@ -470,6 +520,8 @@ function openSettings() {
         else el.value = v;
     });
     $('#deadZoneValue').textContent = `${s.deadZonePercent}%`;
+    state.hotkeyCapture = null;
+    renderHotkeys();
     $('#settingsModal').classList.remove('hidden');
 }
 
@@ -509,6 +561,7 @@ function bindSettings() {
 }
 
 function closeModals() {
+    state.hotkeyCapture = null;
     document.querySelectorAll('.modal').forEach((m) => m.classList.add('hidden'));
 }
 
@@ -568,6 +621,210 @@ function bindIpc() {
     window.api.on('status', ({ level, text }) => toast(text, level));
 }
 
+// 이 맵 보스와 출현 확률 (지도 라벨 대신 오른쪽 "보스" 아래에 보여 준다, 확률이 하나로 정해지지 않으면 "변동")
+function renderBossList() {
+    const box = $('#bossList');
+    const show = $('#extractFilter [data-overlay="boss"]').checked;
+    const bosses = state.currentMap?.bosses || [];
+    box.classList.toggle('hidden', !show || !bosses.length);
+    box.innerHTML = bosses.map((b) => `<div class="boss-row" title="${esc(b.enName)}"><span>${esc(b.name)}</span>`
+        + `<b>${b.chance === null ? '<span class="muted" title="같은 보스가 여러 번 등록되어 확률이 하나로 정해지지 않음">변동</span>' : `${Math.round(b.chance * 100)}%`}</b></div>`).join('');
+}
+
+// ---------------- 내 메모 마커 (지도 우클릭) ----------------
+function mapMemos(key = state.currentMap?.key) {
+    return state.settings.memos?.[key] || [];
+}
+
+async function saveMemos(list) {
+    await saveSettings({ memos: { ...state.settings.memos, [state.currentMap.key]: list } });
+    renderMemos();
+}
+
+function renderMemos() {
+    const show = state.settings.overlayFilter?.memos !== false;
+    state.tarkovMap.setMemos(show ? mapMemos() : [], {
+        onEdit: (memo) => state.tarkovMap.openMemoEditor(state.tarkovMap.latLngOf(memo), memo.text, (text) =>
+            saveMemos(mapMemos().map((m) => (m.id === memo.id ? { ...m, text } : m)))),
+        onDelete: (memo) => saveMemos(mapMemos().filter((m) => m.id !== memo.id)),
+    });
+}
+
+function addMemo(p, latlng) {
+    const t = state.tarkovMap;
+    // 적은 층을 같이 저장해, 다른 층을 볼 때는 흐리게 층 이름을 붙인다
+    const level = t.layers[t.levelIndex]?.name ?? null;
+    t.openMemoEditor(latlng, '', async (text) => {
+        await saveMemos([...mapMemos(), { id: Date.now().toString(36), x: +p.x.toFixed(1), z: +p.z.toFixed(1), level, text }]);
+        if (state.settings.overlayFilter?.memos === false) toast('메모를 저장했습니다. 지도에 보이려면 오른쪽 "내 메모"를 켜세요.');
+    });
+}
+
+// ---------------- 필요 아이템 모아보기 ----------------
+function openItems() {
+    if (!state.data || !state.currentMap) return;
+    $('#itemsMapName').textContent = $('#itemsAllMaps').checked ? '모든 맵' : state.currentMap.name;
+    renderItems();
+    $('#itemsModal').classList.remove('hidden');
+}
+
+// 등록한 퀘스트의 (남은) 목표에 필요한 아이템 → { key | bring | quest: Map(이름 → [{ task, number, color, mapName }]) }
+function collectNeededItems() {
+    const includeDone = $('#itemsIncludeDone').checked;
+    const allMaps = $('#itemsAllMaps').checked;
+    const done = state.settings.completedObjectives || {};
+    const groups = { key: new Map(), bring: new Map(), quest: new Map() };
+    const mapKeys = allMaps ? state.data.maps.map((m) => m.key) : [state.currentMap.key];
+    for (const mk of mapKeys) {
+        const mapInfo = state.data.maps.find((m) => m.key === mk);
+        registeredIds(mk).map(taskById).filter(Boolean).forEach((task, i) => {
+            const who = { task, number: i + 1, color: QUEST_COLORS[i % QUEST_COLORS.length], mapName: mapInfo.name };
+            for (const o of task.objectives) {
+                if (!includeDone && done[o.id]) continue;
+                // 다른 맵에서 하는 목표는 이 맵 레이드에 챙길 필요가 없다
+                if (o.maps.length && !o.maps.some((m) => mapInfo.apiIds.includes(m))) continue;
+                const add = (kind, name) => {
+                    const list = groups[kind].get(name) || [];
+                    if (!list.some((w) => w.task === task && w.mapName === who.mapName)) list.push(who);
+                    groups[kind].set(name, list);
+                };
+                for (const g of o.keys || []) add('key', itemChoices(g));
+                if (o.bring?.length) add('bring', itemChoices(o.bring));
+                if (o.questItem) add('quest', o.questItem.name);
+            }
+        });
+    }
+    return groups;
+}
+
+function renderItems() {
+    const allMaps = $('#itemsAllMaps').checked;
+    $('#itemsMapName').textContent = allMaps ? '모든 맵' : state.currentMap.name;
+    const groups = collectNeededItems();
+    const sections = [
+        ['key', '🔑 필요한 열쇠', '목표 장소에 들어가려면 필요'],
+        ['bring', '🎒 가져갈 아이템', '설치·표시·사용할 아이템'],
+        ['quest', '📦 찾을 퀘스트 아이템', '레이드에서 찾아 가지고 나올 아이템'],
+    ];
+    const chip = (w) => `<span class="q-chip" style="--qc:${w.color}" title="${esc(`${allMaps ? `[${w.mapName}] ` : ''}${taskTitle(w.task)}`)}">${allMaps ? `${esc(w.mapName)} ` : ''}${w.number}</span>`;
+    const html = sections.map(([kind, title, note]) => {
+        const rows = [...groups[kind]].sort((a, b) => a[0].localeCompare(b[0], 'ko'));
+        if (!rows.length) return '';
+        return `<div class="items-section"><div class="items-head">${title} <span class="count">${rows.length}</span><span class="muted small">${note}</span></div>`
+            + rows.map(([name, who]) => `<div class="item-row"><span class="item-name">${esc(name)}</span><span class="item-quests">${who.map(chip).join('')}</span></div>`).join('')
+            + '</div>';
+    }).join('');
+    $('#itemsList').innerHTML = html || '<div class="empty">챙길 아이템이 없습니다.<br><span class="muted small">퀘스트를 등록하거나 "완료한 목표 포함"을 켜 보세요.</span></div>';
+}
+
+// ---------------- 단축키 ----------------
+// [동작, 설명, 기본 키]
+const HOTKEY_ACTIONS = [
+    ['levelUp', '위층으로', 'PageUp'],
+    ['levelDown', '아래층으로', 'PageDown'],
+    ['levelBase', '1층으로', 'Home'],
+    ['centerPlayer', '내 위치로 지도 이동', 'C'],
+    ['locate', '내 위치 확인 (최근 스크린샷)', 'L'],
+    ['toggleSidebar', '왼쪽 패널 접기·펼치기', 'B'],
+    ['items', '필요 아이템 보기', 'I'],
+];
+
+// 동작 → 키 ('' = 지정 안 함)
+function hotkeyMap() {
+    return { ...Object.fromEntries(HOTKEY_ACTIONS.map(([a, , k]) => [a, k])), ...(state.settings.hotkeys || {}) };
+}
+
+// 키 입력 → "Ctrl+Shift+K" (조합 키만 누른 동안은 null). 글자·숫자는 자판 배열과 관계없이 같은 이름
+function comboOf(e) {
+    if (['Control', 'Shift', 'Alt', 'Meta', 'Process', 'HangulMode'].includes(e.key)) return null;
+    let key = e.key === ' ' ? 'Space' : e.key.length === 1 ? e.key.toUpperCase() : e.key;
+    if (/^Key[A-Z]$/.test(e.code)) key = e.code.slice(3);
+    else if (/^Digit\d$/.test(e.code)) key = e.code.slice(5);
+    return [e.ctrlKey && 'Ctrl', e.altKey && 'Alt', e.shiftKey && 'Shift', key].filter(Boolean).join('+');
+}
+
+// 지도 위쪽 도움말 패널: 메모 사용법과 지금 단축키
+function renderHelpBar() {
+    const bar = $('#helpBar');
+    const keys = hotkeyMap();
+    const short = { levelUp: '위층', levelDown: '아래층', levelBase: '1층', centerPlayer: '내 위치로', locate: '위치 확인', toggleSidebar: '패널 접기', items: '필요 아이템' };
+    const hotkeys = HOTKEY_ACTIONS.filter(([a]) => keys[a])
+        .map(([a]) => `<span class="help-key"><kbd>${esc(keys[a])}</kbd>${esc(short[a])}</span>`).join('');
+    bar.innerHTML = '<div class="help-line"><b>📌 메모</b><span>지도 <kbd>우클릭</kbd> → 입력 → <kbd>Enter</kbd> 저장 (<kbd>Shift+Enter</kbd> 줄바꿈)</span>'
+        + '<span class="help-dim">핀을 누르면 수정·삭제</span></div>'
+        + `<div class="help-line"><b>⌨ 단축키</b>${hotkeys || '<span class="help-dim">지정된 단축키 없음</span>'}`
+        + '<span class="help-dim">설정 ⚙에서 변경</span></div>';
+}
+
+function renderHotkeys() {
+    const keys = hotkeyMap();
+    $('#hotkeyList').innerHTML = HOTKEY_ACTIONS.map(([action, label]) => {
+        const capturing = state.hotkeyCapture === action;
+        return `<div class="hotkey-row"><span>${esc(label)}</span><button class="hotkey-btn ${capturing ? 'capturing' : ''}" data-hotkey="${action}">${capturing ? '키를 누르세요…' : esc(keys[action] || '없음')}</button></div>`;
+    }).join('');
+}
+
+function moveLevel(step) {
+    const t = state.tarkovMap;
+    if (!t.map || !t.layers.length) return;
+    const order = t.levelsByHeight();
+    let i = order.indexOf(t.levelIndex);
+    // 기본 판과 같은 층 버튼만 목록에 있으면(Icebreaker) 기본 층은 그 버튼 자리
+    if (i === -1) i = Math.max(0, order.indexOf(t.layers.findIndex((l) => l.show)));
+    const next = order[i + step];
+    if (next !== undefined) t.setLevel(next);
+}
+
+const HOTKEY_RUN = {
+    levelUp: () => moveLevel(1),
+    levelDown: () => moveLevel(-1),
+    levelBase: () => state.tarkovMap.map && state.tarkovMap.setLevel(-1),
+    centerPlayer: () => {
+        if (state.tarkovMap.playerMarker) state.tarkovMap.centerOnPlayer();
+        else toast('아직 표시된 내 위치가 없습니다.', 'warn');
+    },
+    locate: () => $('#btnLocate').click(),
+    toggleSidebar: () => $('#btnToggleSidebar').click(),
+    items: () => ($('#itemsModal').classList.contains('hidden') ? openItems() : closeModals()),
+};
+
+function onHotkey(e) {
+    // 단축키 지정 중: 누른 키를 저장 (Esc 취소, Backspace·Delete 지우기)
+    if (state.hotkeyCapture) {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            e.stopPropagation();
+            state.hotkeyCapture = null;
+            renderHotkeys();
+            return;
+        }
+        const combo = ['Backspace', 'Delete'].includes(e.key) ? '' : comboOf(e);
+        if (combo === null) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const keys = hotkeyMap();
+        // 같은 키를 쓰던 다른 동작은 비운다
+        for (const a of Object.keys(keys)) if (combo && keys[a] === combo) keys[a] = '';
+        keys[state.hotkeyCapture] = combo;
+        state.hotkeyCapture = null;
+        saveSettings({ hotkeys: keys }).then(() => {
+            renderHotkeys();
+            renderHelpBar();
+        });
+        return;
+    }
+    const el = e.target;
+    if (el.closest?.('input, textarea, select, [contenteditable="true"]')) return;
+    // 필요 아이템 창을 닫는 단축키 말고는 창이 열려 있는 동안 동작하지 않는다
+    const modalOpen = [...document.querySelectorAll('.modal')].some((m) => !m.classList.contains('hidden'));
+    const combo = comboOf(e);
+    if (!combo) return;
+    const action = Object.entries(hotkeyMap()).find(([, k]) => k && k === combo)?.[0];
+    if (!action || (modalOpen && action !== 'items')) return;
+    e.preventDefault();
+    HOTKEY_RUN[action]();
+}
+
 // ---------------- UI 바인딩 ----------------
 function applySidebarWidth(w) {
     $('#sidebar').style.width = `${w}px`;
@@ -600,6 +857,14 @@ function bindUi() {
     });
     $('#quickAutoScreenshot').addEventListener('change', (e) => saveSettings({ autoScreenshot: e.target.checked }));
     $('#extractFilter').addEventListener('change', async (e) => {
+        if (e.target.dataset.overlay) {
+            const overlayFilter = Object.fromEntries([...document.querySelectorAll('#extractFilter [data-overlay]')].map((c) => [c.dataset.overlay, c.checked]));
+            state.tarkovMap.setBosses(!!overlayFilter.boss);
+            renderBossList();
+            await saveSettings({ overlayFilter });
+            renderMemos();
+            return;
+        }
         if (!e.target.dataset.filter) return;
         // 체크 상자 상태를 그대로 쓴다 (저장이 끝나기 전에 연달아 바꿔도 앞의 변경을 잃지 않게)
         const extractFilter = Object.fromEntries([...document.querySelectorAll('#extractFilter [data-filter]')].map((c) => [c.dataset.filter, c.checked]));
@@ -638,7 +903,33 @@ function bindUi() {
         if (e.target === m) closeModals();
     }));
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModals();
+        if (e.key === 'Escape' && !state.hotkeyCapture) closeModals();
+    });
+    // 단축키 지정 중의 Esc 가 창을 닫지 않도록 먼저 받는다
+    document.addEventListener('keydown', onHotkey, true);
+    $('#btnItems').addEventListener('click', openItems);
+    // 지도 위쪽 패널 열고 닫기 (상태 저장)
+    $('#topBar').addEventListener('click', async (e) => {
+        const head = e.target.closest('[data-panel-toggle]');
+        if (!head) return;
+        const key = head.dataset.panelToggle;
+        const panels = { ...state.settings.panels };
+        panels[key] = panels[key] === false;
+        await saveSettings({ panels });
+        renderPanels();
+    });
+    ['#itemsIncludeDone', '#itemsAllMaps'].forEach((s) => $(s).addEventListener('change', renderItems));
+    $('#hotkeyList').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-hotkey]');
+        if (!b) return;
+        state.hotkeyCapture = state.hotkeyCapture === b.dataset.hotkey ? null : b.dataset.hotkey;
+        renderHotkeys();
+    });
+    $('#btnHotkeyReset').addEventListener('click', async () => {
+        state.hotkeyCapture = null;
+        await saveSettings({ hotkeys: null });
+        renderHotkeys();
+        renderHelpBar();
     });
 
     // 사이드바 너비 조절

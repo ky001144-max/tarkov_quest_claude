@@ -24,6 +24,10 @@
         registered: {},
         completedObjectives: {},
         collapsedTasks: {},
+        overlayFilter: { boss: false, memos: true },
+        memos: {},
+        hotkeys: null,
+        panels: {},
     };
     const WATCHER_KEYS = ['screenshotPath', 'logPath', 'autoScreenshot', 'autoMap'];
     const SCREENSHOT_POLL_MS = 1000;

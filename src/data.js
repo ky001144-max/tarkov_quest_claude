@@ -10,7 +10,7 @@ const { fetchWikiEvents, EVENTS_VERSION } = require('./wiki-events');
 const JSON_API = 'https://json.tarkov.dev';
 const MAX_AGE_MS = 6 * 3600 * 1000;
 // 가공 결과 형식이 바뀌면 올린다 (이전 캐시 무효화)
-const BUILD_VERSION = 17;
+const BUILD_VERSION = 21;
 // 위키 이벤트 퀘스트는 자주 바뀌지 않아 하루에 한 번만 새로 받는다
 const EVENTS_MAX_AGE_MS = 24 * 3600 * 1000;
 const HANGUL = /[가-힣]/;
@@ -26,6 +26,40 @@ const MAP_ALIASES = {
     'the-lab': ['the-lab-dark'],
 };
 
+// tarkov.dev 한국어 데이터에 없는 보스 이름
+const BOSS_NAME_KO = {
+    Knight: '나이트', Partisan: '파르티잔', Kaban: '카반', Kollontay: '콜론타이',
+    'Shadow of Tagilla': '타길라의 그림자', 'The Wedge': '웨지', 'The Wedge (Labs)': '웨지 (연구소)',
+};
+
+// 사전에 없는 아이템 이름을 옮기는 규칙 (영문 → 한국어)
+const ITEM_NAME_RULES = [
+    [/^(.+) ammo pack \((\d+) pcs\)$/, '$1 탄약 팩 ($2발)'],
+    [/^(\d+(?:\.\d+)?x\d+mm .+) \((\d+) pcs\)$/, '$1 ($2발)'],
+    [/^26x75mm flare cartridge \(Red\)$/, '26x75mm 신호탄 (빨강)'],
+    [/^26x75mm flare cartridge \(Yellow\)$/, '26x75mm 신호탄 (노랑)'],
+    [/^26x75mm flare cartridge \(Green\)$/, '26x75mm 신호탄 (초록)'],
+    [/^Health Resort (west|east) wing (office )?room (\d+) key$/, (m, wing, office, n) => `요양소 ${wing === 'west' ? '서관' : '동관'} ${n}호 ${office ? '사무실 ' : ''}열쇠`],
+    [/^Dorm room (\d+) key$/, '기숙사 $1호 열쇠'],
+    [/^((?:RB|ZB)-[\w-]+) key$/, '$1 열쇠'],
+];
+
+function itemDisplayName(ko, en, dict) {
+    if (!en) return ko;
+    let kr = HANGUL.test(ko) ? ko : dict[en];
+    if (!kr) {
+        const rule = ITEM_NAME_RULES.find(([re]) => re.test(en));
+        if (rule) kr = en.replace(rule[0], rule[1]);
+    }
+    if (!kr) return en;
+    // tarkov.dev 한국어 이름에 영문이 이미 들어 있으면 그대로
+    // (예: "벨루가 식당 지배인 열쇠 (Beluga restaurant director key)", "Propane tank 프로판 탱크 (5L)")
+    if (kr.toLowerCase().includes(en.toLowerCase())) return kr;
+    const latin = kr.match(/[A-Za-z][\w.-]*(?:\s+[A-Za-z][\w.-]*)+/);
+    if (latin && en.toLowerCase().includes(latin[0].toLowerCase())) return kr;
+    return `${kr} (${en})`;
+}
+
 class DataService {
     constructor(cacheDir, bundledMapsPath) {
         this.cacheDir = cacheDir;
@@ -36,6 +70,7 @@ class DataService {
         this.eventTasksPath = path.join(path.dirname(bundledMapsPath), 'event_tasks.json');
         this.eventKoPath = path.join(path.dirname(bundledMapsPath), 'event_ko.json');
         this.eventLocationsPath = path.join(path.dirname(bundledMapsPath), 'event_locations.json');
+        this.itemNamesKoPath = path.join(path.dirname(bundledMapsPath), 'item_names_ko.json');
         fs.mkdirSync(cacheDir, { recursive: true });
     }
 
@@ -121,6 +156,14 @@ class DataService {
     loadOverrides() {
         try {
             return JSON.parse(fs.readFileSync(this.overridesPath, 'utf8'));
+        } catch {
+            return {};
+        }
+    }
+
+    loadItemNamesKo() {
+        try {
+            return JSON.parse(fs.readFileSync(this.itemNamesKoPath, 'utf8'));
         } catch {
             return {};
         }
@@ -242,7 +285,7 @@ class DataService {
 
     async build(mode, force) {
         const opts = { force };
-        const [tasks, tasksKo, tasksEn, maps, mapsKo, mapsEn, traders, tradersKo, mapConfigs, wikiExtracts, wikiEvents] = await Promise.all([
+        const [tasks, tasksKo, tasksEn, maps, mapsKo, mapsEn, traders, tradersKo, mapConfigs, wikiExtracts, wikiEvents, items, itemsKo, itemsEn] = await Promise.all([
             this.fetchJson(`${mode}/tasks`, opts),
             this.fetchJson(`${mode}/tasks_ko`, opts),
             this.fetchJson(`${mode}/tasks_en`, opts),
@@ -254,6 +297,10 @@ class DataService {
             this.getMapConfigs(force),
             this.getWikiExtracts(force),
             this.getWikiEvents(force),
+            // 아이템 이름(퀘스트에 필요한 열쇠·아이템 표시용)은 받지 못해도 나머지는 쓸 수 있게 한다
+            this.fetchJson(`${mode}/items`, opts).catch(() => ({ data: {} })),
+            this.fetchJson(`${mode}/items_ko`, opts).catch(() => ({ data: {} })),
+            this.fetchJson(`${mode}/items_en`, opts).catch(() => ({ data: {} })),
         ]);
 
         const makeTr = (ko, en) => (key) => {
@@ -302,6 +349,51 @@ class DataService {
             ...(m.stationaryWeapons || []).map((w) => ({ type: 'gun', position: w.position })),
             ...(m.switches || []).map((sw) => ({ type: 'switch', position: sw.position })),
         ].filter((r) => r.position);
+        const roundPos = (p) => ({ x: +p.x.toFixed(1), y: +p.y.toFixed(1), z: +p.z.toFixed(1) });
+        // 보스: 이름 · 출현 확률 · 출현 구역(구역별 확률과 위치) · 호위 수.
+        // 한 맵에 같은 보스가 여러 번 등록되어 등록마다 확률이 다르면(등대 로그 등) 확률은 비우고(null) 하나로 합친다.
+        // 몹 종류가 달라도 이름이 같으면(쇄빙선 블랙 디비전 3종 등) 같은 보스로 본다. PvE 의 AI PMC(pmcUSEC·pmcBEAR)는 보스가 아니라 뺀다
+        const mobs = maps.data.mobs || {};
+        const mobEnName = (mob) => mapsEn.data?.[mobs[mob]?.name] || mob;
+        const bossesOf = (m) => {
+            const byName = new Map();
+            for (const b of m.bosses || []) {
+                if (/^pmc(USEC|BEAR)$/i.test(b.mob)) continue;
+                const list = byName.get(mobEnName(b.mob)) || [];
+                list.push(b);
+                byName.set(mobEnName(b.mob), list);
+            }
+            return [...byName].map(([enName, entries]) => {
+                const mob = entries[0].mob;
+                const chances = new Set(entries.map((b) => b.spawnChance));
+                const counts = entries.flatMap((b) => (b.escorts || []).flatMap((e) => (e.amount || []).map((a) => a.count)));
+                const locations = new Map();
+                for (const b of entries) {
+                    for (const l of b.spawnLocations || []) {
+                        if (!l.positions?.length) continue;
+                        const name = trMap(l.name);
+                        const loc = locations.get(name) || { name, chances: new Set(), positions: [] };
+                        loc.chances.add(l.chance);
+                        for (const p of l.positions.map(roundPos)) {
+                            if (!loc.positions.some((q) => q.x === p.x && q.z === p.z)) loc.positions.push(p);
+                        }
+                        locations.set(name, loc);
+                    }
+                }
+                return {
+                    id: mob,
+                    name: BOSS_NAME_KO[enName] || trMap(mobs[mob]?.name || mob),
+                    enName,
+                    chance: chances.size === 1 ? [...chances][0] : null,
+                    escorts: counts.length ? [Math.min(...counts), Math.max(...counts)] : null,
+                    locations: [...locations.values()].map((l) => ({
+                        name: l.name,
+                        chance: l.chances.size === 1 ? [...l.chances][0] : null,
+                        positions: l.positions,
+                    })),
+                };
+            }).filter((b) => b.locations.length);
+        };
         const mapList = [];
         for (const group of mapConfigs) {
             const config = group.maps.find((m) => m.projection === 'interactive');
@@ -315,9 +407,11 @@ class DataService {
             const devPoints = {
                 extracts: (primary.extracts || []).map((e) => ({
                     name: trMapEn(e.name), label: trMap(e.name), faction: e.faction, position: e.position, top: e.top, bottom: e.bottom,
+                    outline: e.outline,
                 })),
                 transits: (primary.transits || []).map((t) => ({
                     name: trMapEn(t.description), label: trMap(t.description), position: t.position, top: t.top, bottom: t.bottom,
+                    outline: t.outline,
                 })),
                 // 위키 지도 좌표를 맞추는 기준점으로만 쓴다
                 switches: (primary.switches || []).map((s) => ({ name: trMapEn(s.name), position: s.position })),
@@ -347,15 +441,36 @@ class DataService {
                     : null,
                 extracts: points.extracts.map(toMarker),
                 transits: points.transits.map(toMarker),
+                bosses: bossesOf(primary),
             });
         }
 
         // 퀘스트
         const questItems = tasks.data.questItems || {};
+        const itemById = items.data?.items || {};
+        const itemNamesKo = this.loadItemNamesKo();
+        // 아이템 이름: "한국어 (영문 원문)" (tarkov.dev 에 한국어가 없으면 보완 사전·규칙으로 옮긴다)
+        const itemRef = (id) => {
+            const it = itemById[id];
+            if (!it) return { name: id, icon: '' };
+            const en = (itemsEn.data?.[it.name] || '').trim();
+            const ko = (itemsKo.data?.[it.name] || '').trim();
+            return { name: itemDisplayName(ko, en, itemNamesKo), icon: it.iconLink || '' };
+        };
+        // 목표를 하려고 레이드에 가져가야 하는 아이템 (설치할 아이템·표식기·사용할 아이템, 여러 개면 그중 하나)
+        const bringOf = (o) => {
+            if (o.type === 'plantItem') return o.items || [];
+            if (o.type === 'mark') return o.markerItem ? [o.markerItem] : [];
+            if (o.type === 'useItem') return o.useAny || [];
+            return [];
+        };
         const taskList = Object.values(tasks.data.tasks).map((t) => {
             const objectives = (t.objectives || []).map((o) => {
                 const qi = o.questItem ? questItems[o.questItem] : null;
                 return {
+                    // 필요한 열쇠: [[열쇠, 대체 열쇠...], ...] 묶음마다 그중 하나만 있으면 된다
+                    keys: (o.requiredKeys || []).map((group) => group.map(itemRef)).filter((g) => g.length),
+                    bring: bringOf(o).map(itemRef),
                     id: o.id,
                     type: o.type,
                     description: trTask(o.description),
@@ -421,6 +536,8 @@ class DataService {
                 zones: o.zones || [],
                 locations: [],
                 questItem: o.questItem ? { name: o.questItem, icon: '' } : null,
+                keys: [],
+                bring: [],
             }));
             const taskMaps = (x.maps || []).map((m) => mapIdByNormalized[m]).filter(Boolean);
             const trader = traderByNormalized[x.trader] || { id: x.trader, name: x.traderName || '?', image: '' };

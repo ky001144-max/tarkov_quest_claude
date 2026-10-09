@@ -31,6 +31,10 @@ const DEFAULT_SETTINGS = {
     completedObjectives: {},        // { [objectiveId]: true }
     collapsedTasks: {},             // { [taskId]: true }
     hardwareAcceleration: false,    // GPU 가속 (끄면 메모리·GPU 사용량 감소, 재시작 후 적용)
+    overlayFilter: { boss: false, memos: true },  // 보스·메모 표시
+    memos: {},                      // { [mapKey]: [{ id, x, z, level, text }] }
+    hotkeys: null,                  // { [동작]: 'Ctrl+PageUp' } (null 이면 기본 단축키)
+    panels: {},                     // 지도 위쪽 패널 열림 { help, level, style, filter: false 면 닫힘 }
 };
 
 let mainWindow = null;

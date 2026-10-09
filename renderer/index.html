@@ -44,6 +44,7 @@
             <h2>등록된 퀘스트 <span id="registeredCount" class="count">0</span></h2>
             <div class="section-actions">
                 <button id="btnClearAll" class="ghost-btn small" title="이 맵의 등록 퀘스트 모두 해제">전체 해제</button>
+                <button id="btnItems" class="ghost-btn small" title="필요 아이템 모아보기 (등록한 퀘스트에 필요한 열쇠·아이템)">🎒</button>
                 <button id="btnOpenPicker" class="accent-btn">＋ 퀘스트 등록</button>
             </div>
         </div>
@@ -63,17 +64,36 @@
                 <div class="loading-bar"><i id="mapLoadingBar"></i></div>
             </div>
         </div>
-        <div class="map-controls">
-            <div id="levelControl" class="control-box"></div>
-            <div class="control-box row">
-                <div id="styleControl" class="seg"></div>
+        <!-- 지도 위쪽 막대: 도움말 · 층 · 지도 종류 · 마커 표시 (패널마다 머리 버튼으로 열고 닫는다) -->
+        <div id="topBar" class="top-bar">
+            <div class="top-spacer"></div>
+            <div class="top-panel" data-panel="help">
+                <button class="panel-head" data-panel-toggle="help" title="메모 사용법 · 단축키">❔ 도움말</button>
+                <div id="helpBar" class="panel-body help-body"></div>
             </div>
-            <div id="extractFilter" class="control-box legend-box">
-                <div class="lg-title">탈출구</div>
-                <label class="lg pmc"><input type="checkbox" data-filter="pmc"><i></i>PMC</label>
-                <label class="lg scav"><input type="checkbox" data-filter="scav"><i></i>스캐브</label>
-                <label class="lg transit"><input type="checkbox" data-filter="transit"><i></i>트랜짓 · Co-op</label>
-                <div class="lg-note"><i></i>공용: PMC·스캐브 중 하나라도 켜면 표시</div>
+            <div class="top-spacer"></div>
+            <div class="top-panel" data-panel="level" id="levelPanel">
+                <button class="panel-head" data-panel-toggle="level" title="층 선택">층 <b id="levelCur">1층</b></button>
+                <div id="levelControl" class="panel-body control-box"></div>
+            </div>
+            <div class="top-panel" data-panel="style" id="stylePanel">
+                <button class="panel-head" data-panel-toggle="style" title="지도 종류">지도 <b id="styleCur"></b></button>
+                <div class="panel-body control-box row"><div id="styleControl" class="seg"></div></div>
+            </div>
+            <div class="top-panel" data-panel="filter">
+                <button class="panel-head" data-panel-toggle="filter" title="탈출구 · 보스 · 메모 표시">마커 표시</button>
+                <div id="extractFilter" class="panel-body control-box legend-box">
+                    <div class="lg-title">탈출구</div>
+                    <label class="lg pmc"><input type="checkbox" data-filter="pmc"><i></i>PMC</label>
+                    <label class="lg scav"><input type="checkbox" data-filter="scav"><i></i>스캐브</label>
+                    <label class="lg transit"><input type="checkbox" data-filter="transit"><i></i>트랜짓 · Co-op</label>
+                    <div class="lg-note"><i></i>공용: PMC·스캐브 중 하나라도 켜면 표시</div>
+                    <label class="lg icons" title="탈출구 이름 뒤에 조건을 짧은 글로 붙입니다 (유료 · 신호탄 · 가방 X · 조끼 X · 전원 · 열쇠 · N분 후 · 쪽지 · 등반 장비 · 지뢰 지도 · 협동 · 1회용 · 랜덤). 탈출구를 누르면 자세한 뜻이 나옵니다."><input type="checkbox" data-filter="icons"><i></i>탈출 조건 <span class="lg-help">?</span></label>
+                    <div class="lg-title lg-sep">표시</div>
+                    <label class="lg boss"><input type="checkbox" data-overlay="boss"><i></i>💀 보스</label>
+                    <div id="bossList" class="boss-list"></div>
+                    <label class="lg memo" title="지도를 우클릭하면 메모를 남길 수 있습니다"><input type="checkbox" data-overlay="memos"><i></i>📌 내 메모 <span class="lg-help">?</span></label>
+                </div>
             </div>
         </div>
         <button id="btnToggleSidebar" class="sidebar-toggle" title="패널 접기/펼치기">⟨</button>
@@ -123,6 +143,22 @@
     </div>
 </div>
 
+<!-- 필요 아이템 모아보기 모달 -->
+<div id="itemsModal" class="modal hidden">
+    <div class="modal-box items">
+        <div class="modal-head">
+            <h3>필요 아이템 — <span id="itemsMapName"></span></h3>
+            <button class="icon-btn" data-close>✕</button>
+        </div>
+        <div class="items-filters">
+            <label class="check"><input type="checkbox" id="itemsIncludeDone"> 완료한 목표 포함</label>
+            <label class="check"><input type="checkbox" id="itemsAllMaps"> 모든 맵에 등록한 퀘스트</label>
+            <span class="muted small">레이드 전 챙길 목록 · 번호는 왼쪽 퀘스트 번호</span>
+        </div>
+        <div id="itemsList" class="items-list"></div>
+    </div>
+</div>
+
 <!-- 설정 모달 -->
 <div id="settingsModal" class="modal hidden">
     <div class="modal-box settings">
@@ -160,10 +196,15 @@
                 <span class="muted small">꺼 두면 메모리를 덜 쓰고 게임과 GPU를 나눠 쓰지 않습니다. 지도 이동이 버벅이면 켜세요.</span>
             </div>
 
+            <h4>단축키</h4>
+            <p class="muted small">버튼을 누른 뒤 원하는 키(Ctrl·Alt·Shift 조합 가능)를 누르세요. Backspace는 지우기, Esc는 취소. 글을 입력하는 중에는 동작하지 않습니다.</p>
+            <div id="hotkeyList" class="hotkey-list"></div>
+            <button id="btnHotkeyReset" class="ghost-btn small">기본값으로</button>
+
             <h4>데이터</h4>
             <button id="btnRefreshData" class="ghost-btn">tarkov.dev 데이터 새로 받기</button>
             <p class="muted small">퀘스트/맵 데이터: tarkov.dev (the-hideout/tarkov-data-manager). <span class="desktop-only">6시간마다 자동 갱신되며, 오프라인일 때는 마지막으로 받은 데이터를 사용합니다.</span><span class="web-only">웹 버전 데이터는 GitHub Actions가 6시간마다 새로 만듭니다.</span></p>
-            <p class="muted small desktop-only">단축키: F5 새로고침 · F12 개발자 도구</p>
+            <p class="muted small desktop-only">고정 단축키: F5 새로고침 · F12 개발자 도구</p>
         </div>
     </div>
 </div>

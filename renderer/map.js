@@ -124,6 +124,19 @@ class WikiView {
     }
 }
 
+// 한 층 버튼에 지하·위층이 함께 그려진 층 (연구소 기술층): [높이 상한, 실제 층 이름] 순서대로
+// 높이 구간은 tarkov.dev 연구소 층 높이 (기술층 < -0.9 ≤ 1층 < 3 ≤ 2층)
+const FLOOR_BY_HEIGHT = {
+    'the-lab': { Technical: [[-0.9, '지하'], [3, '1층'], [Infinity, '2층']] },
+};
+
+// 좌표가 지도 밖인 탈출구를 놓을 자리 (게임 좌표). 탈출 구역 중 지도 안에 걸친 맵 끝 위험 지대 쪽으로,
+// 위키 지도와 도면에서 함께 맞춰 본 자리 (없으면 insidePosition 으로 지도 안쪽에 들인다)
+const OFF_MAP_SPOTS = {
+    // 철로 끝: 도면의 붉은 점선 위험 구역 안, 위키 지도의 맵 경계 너머 철로 옆
+    customs: [{ name: /^Railroad Passage/, x: 175, z: -272 }],
+};
+
 // 층 extents 안에 위치가 있는지: 'full' | 'partial' | false
 function onExtents(extents, p, top, bottom) {
     if (!extents) return 'full';
@@ -166,12 +179,54 @@ function extractInfoRows(item) {
     return rows;
 }
 
+// 탈출 조건 꼬리표 (위키 조건 문구에서 찾는다, 이름은 "Power Station" 처럼 겹쳐 쓰지 않는다):
+// [찾을 문구, 짧은 글 (문자열 또는 찾은 문구 → 글), 뜻, 종류(색)]
+const EXTRACT_CONDITIONS = [
+    [/Roubles|Euros|Dollars|루블|유로|달러/i, '유료', '돈을 내야 탈출', 'pay'],
+    // "녹색 신호탄 = 열림"은 열린 탈출구 위로 신호탄이 오른다는 안내라 조건이 아니다 (직접 쏘는 탈출구만)
+    [/신호탄을 하늘로|shoot a green flare/i, '신호탄', '녹색 신호탄을 쏴야 열림', 'item'],
+    [/가방 미착용/, '가방 X', '가방을 메면 탈출 불가', 'no'],
+    [/방탄조끼 미착용/, '조끼 X', '방탄조끼를 입으면 탈출 불가', 'no'],
+    [/power|lever|button|switch|전원|레버/i, '전원', '전원·레버를 켜야 열림', 'act'],
+    [/keycard|key\b|열쇠|키카드/i, '열쇠', '열쇠·키카드 필요', 'item'],
+    [/(\d+)분 후부터/, (m) => `${m[1]}분 후`, '레이드 시작 후 일정 시간이 지나야 열림', 'time'],
+    [/암호 쪽지/, '쪽지', '암호 쪽지 필요', 'item'],
+    [/ice pick|paracord/i, '등반 장비', '등반 장비(얼음 도끼·파라코드) 필요', 'item'],
+    [/minefield map/i, '지뢰 지도', '지뢰 지도 필요', 'item'],
+];
+
+// 탈출구의 조건 꼬리표 목록 [{ text, title, kind }]
+function extractConditions(item) {
+    const w = item.wiki || {};
+    const req = w.requirements || '';
+    const list = [];
+    for (const [re, text, title, kind] of EXTRACT_CONDITIONS) {
+        const m = req.match(re);
+        if (m) list.push({ text: typeof text === 'function' ? text(m) : text, title, kind });
+    }
+    if (isCoopExtract(item)) list.push({ text: '협동', title: '스캐브와 협동해야 탈출', kind: 'act' });
+    // 차량(택시) 탈출 V-Ex: 유료 · 1회용 · 랜덤은 택시 탈출이면 늘 같으므로 "택시 탈출" 하나로 묶는다
+    if (/V-?Ex\b/i.test(item.name || '')) {
+        return [
+            { text: '택시 탈출', title: '차량 탈출 — 돈을 내고 타며 한 명(파티)만 쓸 수 있고, 레이드마다 오지 않을 수도 있음', kind: 'pay' },
+            ...list.filter((c) => c.text !== '유료'),
+        ];
+    }
+    if (w.singleUse === true) list.push({ text: '1회용', title: '한 명이 쓰면 닫힘', kind: 'time' });
+    if (w.alwaysAvailable === false) list.push({ text: '랜덤', title: '레이드마다 열릴 수도, 닫혀 있을 수도 있음', kind: 'time' });
+    return list;
+}
+
+const conditionTags = (conds) => conds.map((c) => `<span class="cond ${c.kind}">${escapeHtml(c.text)}</span>`).join('');
+
 function extractInfoText(item) {
     return extractInfoRows(item).map(([k, v]) => `${k}: ${v}`).join('\n');
 }
 
 function extractPopupHtml(item, cls, label) {
-    const rows = extractInfoRows(item).map(([k, v]) => `<div class="popup-extract-row"><span>${k}</span>${escapeHtml(v)}</div>`).join('');
+    const conds = extractConditions(item);
+    const rows = (conds.length ? `<div class="popup-conds">${conds.map((c) => `<div><span class="cond ${c.kind}">${escapeHtml(c.text)}</span>${escapeHtml(c.title)}</div>`).join('')}</div>` : '')
+        + extractInfoRows(item).map(([k, v]) => `<div class="popup-extract-row"><span>${k}</span>${escapeHtml(v)}</div>`).join('');
     const source = item.source === 'wiki' ? '<div class="popup-elev">위치: 위키 지도 기준</div>' : '';
     return `<div class="popup-task extract-${cls}">${escapeHtml(label)}</div><div class="popup-item">${FACTION_KO[cls] || ''}</div>${rows}${source}`;
 }
@@ -185,12 +240,14 @@ function taskTitle(task) {
 const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 class TarkovMap {
-    constructor(el, { onLevelChange, onMouseCoord, levelName, onLoadProgress } = {}) {
+    constructor(el, { onLevelChange, onMouseCoord, levelName, onLoadProgress, onMapContextMenu } = {}) {
         this.el = el;
         this.map = null;
         this.levelName = levelName || ((n) => n);
         this.onLevelChange = onLevelChange || (() => {});
         this.onMouseCoord = onMouseCoord || (() => {});
+        // 지도 우클릭 (게임 좌표, Leaflet 좌표) → 메모 추가
+        this.onMapContextMenu = onMapContextMenu || (() => {});
         // 위키 지도를 처음 열 때 타일 만드는 진행률 (0~1)
         this.onLoadProgress = onLoadProgress || (() => {});
         this.levelIndex = -1;
@@ -236,6 +293,8 @@ class TarkovMap {
         this.extractLayer = null;
         this.questLayer = null;
         this.playerLayer = null;
+        this.bossLayer = null;
+        this.memoLayer = null;
 
         const styles = this.availableStyles(mapInfo);
         this.style = styles.includes(preferredStyle) ? preferredStyle : styles[0];
@@ -364,15 +423,23 @@ class TarkovMap {
         }
         if (token !== this.loadToken) return;
 
+        this.bossLayer = L.layerGroup().addTo(map);
         this.extractLayer = L.layerGroup().addTo(map);
+        this.memoLayer = L.layerGroup().addTo(map);
         this.questLayer = L.layerGroup().addTo(map);
         this.playerLayer = L.layerGroup().addTo(map);
 
         map.on('zoomend viewreset resize', () => this.scheduleExtractLabelLayout());
-        map.on('mousemove',(e) => this.onMouseCoord(wikiView ? wikiView.toGame(e.latlng) : { x: e.latlng.lng, z: e.latlng.lat }));
+        map.on('mousemove', (e) => this.onMouseCoord(this.toGame(e.latlng)));
+        map.on('contextmenu', (e) => this.onMapContextMenu(this.toGame(e.latlng), e.latlng));
 
         const defaultLevel = this.layers.findIndex((l) => l.show);
         this.setLevel(defaultLevel);
+    }
+
+    // Leaflet 좌표 → 게임 좌표 (높이 없음)
+    toGame(latlng) {
+        return wikiView ? wikiView.toGame(latlng) : { x: latlng.lng, z: latlng.lat };
     }
 
     baseElement() {
@@ -447,16 +514,99 @@ class TarkovMap {
     // level: 위키 지도에서 이 마커가 그려진 층 이름 (탈출구, null = 기본 층)
     isOnActiveLevel(p, top, bottom, level) {
         if (this.wikiLevels) return (level !== undefined ? this.levelIndexOf(level) : this.wikiLevelOf(p)) === this.activeLevel;
+        return this.isOnLevel(this.levelIndex, p, top, bottom);
+    }
+
+    // 해당 위치가 index 층(-1 = 기본 층)에 보이는지
+    isOnLevel(index, p, top, bottom) {
         for (let i = 0; i < this.layers.length; i++) {
             const layer = this.layers[i];
-            if (i === this.levelIndex || !layer.extents) continue;
+            if (i === index || !layer.extents) continue;
             const hasBounds = layer.extents.some((e) => e.bounds);
             if (hasBounds && onExtents(layer.extents, p, top, bottom) === 'full') return false;
         }
-        const active = this.layers[this.levelIndex];
+        const active = this.layers[index];
         if (active) return !!onExtents(active.extents, p, top, bottom);
         const baseExtents = [{ height: this.cfg.heightRange || [-1e9, 1e9], bounds: [this.cfg.bounds] }];
         return !!onExtents(baseExtents, p, top, bottom);
+    }
+
+    // 탈출구가 있는 층 하나 (-1 = 기본 층). 위키 지도에 그려진 층이 있으면 그 층,
+    // 없으면 탈출 구역이 걸친 층 중 탈출 지점 높이에 가장 가까운 층 (기본 층은 0.5m 여유를 둔다)
+    extractLevel(o) {
+        if (this.wikiLevels) return o.level !== undefined ? this.levelIndexOf(o.level) : this.wikiLevelOf(o.gamePos);
+        if (o.level) {
+            const index = this.layers.findIndex((l) => l.name === o.level);
+            if (index !== -1) return index;
+        }
+        const p = o.gamePos;
+        const gap = (extents) => {
+            let best = Infinity;
+            for (const e of extents) {
+                if (e.bounds && !e.bounds.some((b) => inGameBounds(b, p))) continue;
+                const [lo, hi] = e.height;
+                best = Math.min(best, p.y < lo ? lo - p.y : p.y >= hi ? p.y - hi : 0);
+            }
+            return best;
+        };
+        const score = (i) => (i === -1
+            ? Math.max(0, gap([{ height: this.cfg.heightRange || [-1e9, 1e9] }]) - 0.5)
+            : gap(this.layers[i].extents || [{ height: [-1e9, 1e9] }]));
+        const all = [-1, ...this.layers.keys()];
+        const on = all.filter((i) => this.isOnLevel(i, p, o.top, o.bottom));
+        return (on.length ? on : all).reduce((a, b) => (score(b) < score(a) ? b : a));
+    }
+
+    // 지금 보는 층 번호 (extractLevel 과 같은 기준)
+    get currentLevel() {
+        return this.wikiLevels ? this.activeLevel : this.levelIndex;
+    }
+
+    // 층 번호(-1 = 기본 층) → 표시할 층 이름. 한 층 버튼에 여러 실제 층이 함께 그려진 층이면 높이로 실제 층 이름을 쓴다
+    levelLabel(index, y) {
+        if (index === -1) {
+            const baseName = this.wikiLevels ? wikiView.base.levels[0] : null;
+            return baseName ? this.levelName(baseName) : '1층';
+        }
+        const layer = this.layers[index];
+        const floors = FLOOR_BY_HEIGHT[this.mapInfo?.key]?.[layer.name];
+        if (floors && y !== undefined) return floors.find(([below]) => y < below)[1];
+        return this.levelName(layer.name);
+    }
+
+    // 게임 좌표가 있는 층 이름 (층이 없는 맵이면 '')
+    floorOf(p, top, bottom) {
+        if (!this.map || !this.layers.length) return '';
+        return this.levelLabel(this.extractLevel({ gamePos: p, top, bottom }), p.y);
+    }
+
+    // 층 번호(-1 = 기본 층)를 낮은 층부터 (층 단축키 위·아래 이동용).
+    // 층마다 높이 구간 가운데의 중앙값으로 비교한다 (끝이 열린 구간은 열린 쪽으로 3m)
+    levelsByHeight() {
+        const mid = ([lo, hi]) => {
+            const open = (v) => Math.abs(v) >= 1e3;
+            if (open(lo) && open(hi)) return null;
+            if (open(lo)) return hi - 3;
+            if (open(hi)) return lo + 3;
+            return (lo + hi) / 2;
+        };
+        const median = (vals) => {
+            const v = vals.filter((x) => x !== null).sort((a, b) => a - b);
+            return v.length ? v[Math.floor(v.length / 2)] : null;
+        };
+        const heights = this.layers.map((l) => median((l.extents || []).map((e) => mid(e.height))));
+        // 기본 층: heightRange 가 있으면 그 가운데, 없으면 다른 층들 아래쪽 끝 중 가장 낮은 곳 바로 아래
+        let base = this.cfg?.heightRange ? mid(this.cfg.heightRange) : null;
+        if (base === null) {
+            const los = this.layers.flatMap((l) => (l.extents || []).map((e) => e.height[0])).filter((v) => Math.abs(v) < 1e3);
+            base = los.length ? Math.min(...los) - 1.5 : 0;
+        }
+        // 기본 판과 같은 층 버튼이 있으면(Icebreaker 의무실) 그 버튼만 쓴다
+        const sameAsBase = this.wikiLevels && wikiView.base.levels.length > 0;
+        return [...(sameAsBase ? [] : [-1]), ...this.layers.keys()]
+            .map((i) => ({ i, h: i === -1 ? base : heights[i] ?? base }))
+            .sort((a, b) => a.h - b.h)
+            .map((x) => x.i);
     }
 
     detectLevel(p) {
@@ -502,12 +652,147 @@ class TarkovMap {
             const o = layer.options || {};
             const label = layer._icon?.querySelector('.extract-label');
             if (!o.gamePos || !label) return;
-            const name = otherLevelName(o);
-            label.textContent = name ? `${o.label} (${name})` : o.label;
+            // 탈출구는 한 층에만 속하게 해, 고른 층의 탈출구만 선명하고 나머지는 층 이름을 붙인다
+            const home = this.extractLevel(o);
+            const name = home !== this.currentLevel ? this.levelLabel(home, o.gamePos.y) : null;
+            label.innerHTML = escapeHtml(name ? `${o.label} (${name})` : o.label)
+                + (o.icons ? `<span class="extract-conds">${o.icons}</span>` : '');
+            // 현재 층이 아닌 탈출구는 반투명하게
+            layer._icon.classList.toggle('other-level', name !== null);
+        };
+        // 보스: 다른 층이면 반투명
+        const applyBoss = (layer) => {
+            const o = layer.options || {};
+            if (!o.gamePos || !layer._icon) return;
+            layer._icon.classList.toggle('other-level', this.extractLevel({ gamePos: o.gamePos }) !== this.currentLevel);
+        };
+        // 메모: 적어 둔 층이 아니면 반투명하고 층 이름을 붙인다
+        const currentName = this.layers[this.levelIndex]?.name ?? null;
+        const applyMemo = (layer) => {
+            const o = layer.options || {};
+            const label = layer._icon?.querySelector('.memo-label');
+            if (!label) return;
+            const other = !!this.layers.length && (o.memoLevel ?? null) !== currentName;
+            const index = this.layers.findIndex((l) => l.name === o.memoLevel);
+            label.textContent = other ? `${o.memoText} (${index === -1 ? '1층' : this.levelName(o.memoLevel)})` : o.memoText;
+            layer._icon.classList.toggle('other-level', other);
         };
         this.questLayer?.eachLayer((l) => (l.eachLayer ? l.eachLayer(applyQuest) : applyQuest(l)));
         this.extractLayer?.eachLayer(applyExtract);
+        this.bossLayer?.eachLayer(applyBoss);
+        this.memoLayer?.eachLayer(applyMemo);
         this.scheduleExtractLabelLayout();
+    }
+
+    // 보스 출현 위치 표시 (show: 켬/끔). 지도 라벨에는 이름만, 확률은 팝업과 오른쪽 보스 목록에 쓴다
+    // (확률이 하나로 정해지지 않은 보스(chance: null)는 확률을 쓰지 않는다)
+    setBosses(show) {
+        if (!this.bossLayer) return;
+        this.bossLayer.clearLayers();
+        const info = this.mapInfo;
+        const inside = (p) => this.containsPosition(p);
+        if (show) {
+            // 같은 자리에 나오는 보스(세관 요새의 르샬라·나이트·사제 등)는 마커 하나로 묶는다
+            const spots = new Map();
+            for (const b of info.bosses || []) {
+                for (const loc of b.locations) {
+                    loc.positions.forEach((p) => {
+                        if (!inside(p)) return;
+                        const key = `${Math.round(p.x)},${Math.round(p.z)}`;
+                        const spot = spots.get(key) || { p, entries: [] };
+                        if (!spot.entries.some((e) => e.b === b)) spot.entries.push({ b, loc });
+                        spots.set(key, spot);
+                    });
+                }
+            }
+            const pct = (v) => (v === null || v === undefined ? '' : `${Math.round(v * 100)}%`);
+            // 보스 종류·확률은 오른쪽 보스 목록에 있으므로 지도에는 아이콘만 (이름은 마우스를 올렸을 때·팝업)
+            for (const { p, entries } of spots.values()) {
+                const m = L.marker(pos(p), {
+                    icon: L.divIcon({ className: 'boss-marker', html: '<span class="boss-dot">💀</span>', iconSize: [0, 0] }),
+                    gamePos: p,
+                    title: entries.map((e) => e.b.name).join(' · '),
+                });
+                m.bindPopup(entries.map(({ b, loc }) => {
+                    const escorts = b.escorts ? ` · 호위 ${b.escorts[0] === b.escorts[1] ? b.escorts[0] : `${b.escorts[0]}~${b.escorts[1]}`}명` : '';
+                    const chance = pct(b.chance);
+                    const line = [chance && `출현 확률 ${chance}`, escorts.replace(/^ · /, '')].filter(Boolean).join(' · ');
+                    const locChance = pct(loc.chance);
+                    return `<div class="popup-task">💀 ${escapeHtml(b.name)}${b.enName !== b.name ? ` <span class="muted">(${escapeHtml(b.enName)})</span>` : ''}</div>`
+                        + (line ? `<div class="popup-item">${line}</div>` : '')
+                        + `<div class="popup-elev">출현 구역: ${escapeHtml(loc.name)}${locChance ? ` (이 구역 ${locChance})` : ''}</div>`;
+                }).join('<hr class="popup-sep">'));
+                m.on('add', () => this.refreshMarkerLevels());
+                m.addTo(this.bossLayer);
+            }
+        }
+        this.refreshMarkerLevels();
+    }
+
+    // memos: [{ id, x, z, level, text }], onEdit(memo) / onDelete(memo)
+    setMemos(memos, { onEdit, onDelete } = {}) {
+        if (!this.memoLayer) return;
+        this.memoLayer.clearLayers();
+        for (const memo of memos || []) {
+            const p = { x: memo.x, z: memo.z };
+            if (!this.containsPosition(p)) continue;
+            const m = L.marker(pos(p), {
+                icon: L.divIcon({ className: 'memo-marker', html: `<span class="memo-pin">📌</span><span class="memo-label">${escapeHtml(memo.text)}</span>`, iconSize: [0, 0] }),
+                memoText: memo.text,
+                memoLevel: memo.level,
+            });
+            const box = document.createElement('div');
+            box.className = 'memo-popup';
+            box.innerHTML = `<div class="memo-text">${escapeHtml(memo.text)}</div>`
+                + '<div class="memo-actions"><button class="ghost-btn small" data-act="edit">수정</button><button class="ghost-btn small danger" data-act="delete">삭제</button></div>';
+            box.addEventListener('click', (e) => {
+                const act = e.target.closest('[data-act]')?.dataset.act;
+                if (!act) return;
+                m.closePopup();
+                if (act === 'edit') onEdit?.(memo);
+                if (act === 'delete') onDelete?.(memo);
+            });
+            m.bindPopup(box);
+            m.on('add', () => this.refreshMarkerLevels());
+            m.addTo(this.memoLayer);
+        }
+        this.refreshMarkerLevels();
+    }
+
+    // 메모 입력 창 (지도 위 팝업). onSave(text) — 빈 글이면 저장하지 않는다
+    openMemoEditor(latlng, text, onSave) {
+        if (!this.map) return;
+        const box = document.createElement('div');
+        box.className = 'memo-editor';
+        box.innerHTML = `<textarea rows="3" maxlength="200" placeholder="메모 (Enter 저장 · Shift+Enter 줄바꿈)">${escapeHtml(text || '')}</textarea>`
+            + '<div class="memo-actions"><button class="ghost-btn small" data-act="cancel">취소</button><button class="accent-btn small" data-act="save">저장</button></div>';
+        const popup = L.popup({ minWidth: 220 }).setLatLng(latlng).setContent(box).openOn(this.map);
+        const area = box.querySelector('textarea');
+        const save = () => {
+            const value = area.value.trim();
+            this.map.closePopup(popup);
+            if (value) onSave(value);
+        };
+        box.addEventListener('click', (e) => {
+            const act = e.target.closest('[data-act]')?.dataset.act;
+            if (act === 'save') save();
+            if (act === 'cancel') this.map.closePopup(popup);
+        });
+        area.addEventListener('keydown', (e) => {
+            e.stopPropagation();
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                save();
+            }
+            if (e.key === 'Escape') this.map.closePopup(popup);
+        });
+        L.DomEvent.disableClickPropagation(box);
+        setTimeout(() => area.focus(), 0);
+    }
+
+    // 메모의 Leaflet 좌표
+    latLngOf(p) {
+        return L.latLng(pos(p));
     }
 
     scheduleExtractLabelLayout() {
@@ -576,23 +861,31 @@ class TarkovMap {
         }
     }
 
-    // filter: { pmc, scav, transit } 종류별 표시 여부
+    // filter: { pmc, scav, transit } 종류별 표시 여부, icons: 탈출 조건 아이콘 표시 (기본 켬)
     setExtracts(filter) {
         if (!this.extractLayer) return;
         this.extractLayer.clearLayers();
         this.unplacedControl?.remove();
         this.unplacedControl = null;
         const info = this.mapInfo;
+        const showIcons = filter?.icons !== false;
         const unplaced = [];
         const add = (item, cls, label) => {
             if (!extractVisible(item, cls, filter)) return;
-            if (!item.position || !this.containsPosition(item.position)) {
+            if (!item.position) {
                 unplaced.push({ item, cls, label });
                 return;
             }
-            const m = L.marker(pos(item.position), {
+            // 지도 밖 좌표(맵 끝 조명탄 탈출구 등)는 가장 가까운 지도 안쪽 자리에 놓는다
+            const spot = OFF_MAP_SPOTS[info.key]?.find((s) => s.name.test(label));
+            const edge = this.offMap(item.position)
+                ? (spot ? { x: spot.x, y: item.position.y, z: spot.z } : this.insidePosition(item.position))
+                : null;
+            // 탈출 조건 아이콘은 라벨 뒤에 붙인다 (뜻은 팝업과 마우스를 올렸을 때)
+            const icons = showIcons ? conditionTags(extractConditions(item)) : '';
+            const m = L.marker(pos(edge || item.position), {
                 icon: L.divIcon({
-                    className: `extract-marker ${cls}`,
+                    className: `extract-marker ${cls}${edge ? ' off-map' : ''}`,
                     html: `<span class="extract-dot"></span><span class="extract-label">${escapeHtml(label)}</span>`,
                     iconSize: [0, 0],
                 }),
@@ -601,9 +894,12 @@ class TarkovMap {
                 bottom: item.bottom,
                 level: item.level,
                 label,
+                icons,
+                title: extractConditions(item).map((c) => `${c.text}: ${c.title}`).join('\n'),
                 interactive: true,
             });
-            m.bindPopup(extractPopupHtml(item, cls, label));
+            m.bindPopup(extractPopupHtml(item, cls, label)
+                + (edge ? '<div class="popup-elev">실제 위치는 지도 밖 맵 끝 (표시 위치는 가장 가까운 지도 안쪽)</div>' : ''));
             m.on('add', () => this.refreshMarkerLevels());
             m.addTo(this.extractLayer);
         };
@@ -653,6 +949,8 @@ class TarkovMap {
                 const popupHtml = (p, approx) => `<div class="popup-task" style="border-color:${color}">${escapeHtml(taskTitle(task))}</div>`
                     + `<div class="popup-obj">${escapeHtml(obj.description)}</div>`
                     + (obj.questItem ? `<div class="popup-item">퀘스트 아이템: ${escapeHtml(obj.questItem.name)}</div>` : '')
+                    + (obj.keys || []).map((g) => `<div class="popup-item">필요 열쇠: ${escapeHtml([...new Set(g.map((k) => k.name))].join(' 또는 '))}</div>`).join('')
+                    + (obj.bring?.length ? `<div class="popup-item">가져갈 아이템: ${escapeHtml([...new Set(obj.bring.map((k) => k.name))].join(' 또는 '))}</div>` : '')
                     + (approx ? '<div class="popup-elev">위키 가이드 지도 기준 대략 위치</div>' : `<div class="popup-elev">높이: ${p.y.toFixed(1)}</div>`);
                 for (const zone of obj.zones) {
                     if (!apiIds.includes(zone.map)) continue;
@@ -726,6 +1024,43 @@ class TarkovMap {
         // 확대 없이 현재 배율 그대로 위치만 표시
         this.map.panTo(pos(t.position), { animate: true, duration: 0.4 });
         setTimeout(() => t.marker.openPopup(), 450);
+    }
+
+    // 지금 보는 지도 스타일과 상관없이, tarkov.dev 지도 범위나 위키 이미지 범위 중 하나라도 벗어나는지
+    offMap(p) {
+        if (!inGameBounds(this.cfg.bounds, p)) return true;
+        return !!this.mapInfo.wikiMap && !new WikiView(this.mapInfo.wikiMap).contains(p);
+    }
+
+    // 지도 밖 게임 좌표 → 지도 안쪽 게임 좌표 (맵 끝 지뢰 지대 쪽).
+    // 위키·도면·위성 지도에서 같은 자리에 보이도록 tarkov.dev 지도 범위와 위키 이미지 범위 둘 다의 안쪽(가장자리에서 15m 들인 곳)으로,
+    // 지도 가운데를 향해 가장 적게 옮긴다
+    insidePosition(p) {
+        const INSET_M = 15;
+        const [[bx1, bz1], [bx2, bz2]] = this.cfg.bounds;
+        const inRange = (v, a, b, d) => v >= Math.min(a, b) + d && v <= Math.max(a, b) - d;
+        const wiki = this.mapInfo.wikiMap ? new WikiView(this.mapInfo.wikiMap) : null;
+        // 위키 이미지 1m 의 픽셀 수
+        const wikiInset = wiki ? INSET_M / Math.sqrt(Math.abs(wiki.m.det)) : 0;
+        const ok = (q) => {
+            if (!inRange(q.x, bx1, bx2, INSET_M) || !inRange(q.z, bz1, bz2, INSET_M)) return false;
+            if (!wiki) return true;
+            const [wx, wy] = wiki.toWiki(q);
+            const [x1, y1, x2, y2] = wiki.rect;
+            return inRange(wx, x1, x2, wikiInset) && inRange(wy, y1, y2, wikiInset);
+        };
+        const center = { x: (bx1 + bx2) / 2, y: p.y, z: (bz1 + bz2) / 2 };
+        const at = (t) => ({ x: p.x + (center.x - p.x) * t, y: p.y, z: p.z + (center.z - p.z) * t });
+        if (!ok(center)) return center;
+        // 두 범위 모두 볼록한 사각형이라 가운데 쪽으로 갈수록 한 번 들어오면 계속 안쪽이다 → 이분 탐색
+        let lo = 0;
+        let hi = 1;
+        for (let i = 0; i < 30; i++) {
+            const mid = (lo + hi) / 2;
+            if (ok(at(mid))) hi = mid;
+            else lo = mid;
+        }
+        return at(hi);
     }
 
     // 지금 지도 범위 안의 좌표인지 (다른 맵의 스크린샷인지 확인용)
